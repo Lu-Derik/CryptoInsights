@@ -1,0 +1,6 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#003399" />
+  <path d="M200,50 L220,100 L270,100 L230,130 L250,180 L200,150 L150,180 L170,130 L130,100 L180,100 Z" fill="#ffcc00" transform="translate(0, 50)" />
+  <text x="200" y="280" font-family="Arial" font-size="36" fill="#fff" text-anchor="middle" font-weight="bold">MiCA License</text>
+  <text x="200" y="330" font-family="Arial" font-size="24" fill="#ffcc00" text-anchor="middle">Binance in Greece</text>
+</svg>

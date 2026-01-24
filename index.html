@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Insights Portal | 加密货币深度观察</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #080808; color: #e5e7eb; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 153, 0, 0.3);
+            transform: translateY(-5px);
+        }
+        .orange-glow {
+            box-shadow: 0 0 20px rgba(255, 153, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <div class="inline-block p-3 rounded-2xl bg-orange-500/10 mb-4">
+                <i class="fa-solid fa-chart-line text-orange-500 text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-black tracking-tight mb-2">Crypto <span class="text-orange-500">Insights</span> Portal</h1>
+            <p class="text-gray-500">每日加密货币市场深度分析与宏观动态追踪</p>
+        </header>
+
+        <!-- Featured Latest -->
+        <section class="mb-16">
+            <h2 class="text-sm font-bold text-orange-500 uppercase tracking-widest mb-6 flex items-center gap-2">
+                <span class="w-8 h-[1px] bg-orange-500/30"></span>
+                最新发布
+            </h2>
+            <a href="/content/2026/01/24/index.html" class="block group">
+                <div class="glass-card orange-glow p-8 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-8">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="px-3 py-1 bg-orange-500/20 text-orange-500 text-xs font-bold rounded-full">LATEST UPDATE</span>
+                            <span class="text-gray-500 text-sm font-mono">2026-01-24</span>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-4 group-hover:text-orange-500 transition-colors">加密货币市场日报 - 2026-01-24</h3>
+                        <p class="text-gray-400 leading-relaxed mb-6">
+                            包含过去24小时的核心市场动态、宏观经济影响分析、重大投融资事件及行业合规进展。点击进入完整可视化看板。
+                        </p>
+                        <div class="flex items-center text-orange-500 font-bold gap-2">
+                            立即阅读 <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-2"></i>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-64 h-48 bg-orange-500/5 rounded-2xl border border-orange-500/10 flex items-center justify-center overflow-hidden">
+                         <i class="fa-solid fa-newspaper text-6xl text-orange-500/20"></i>
+                    </div>
+                </div>
+            </a>
+        </section>
+
+        <!-- Archive Grid -->
+        <section>
+            <h2 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-6 flex items-center gap-2">
+                <span class="w-8 h-[1px] bg-gray-500/30"></span>
+                历史存档
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <p class="text-gray-600 col-span-full italic">暂无更多历史记录</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-24 pt-8 border-t border-white/5 text-center text-gray-600 text-sm">
+            <p>&copy; 2026 Crypto Insights. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
