@@ -1,6 +1,27 @@
 import os
-import json
 import re
+import json
+
+def get_summary_from_md(date_str):
+    md_path = f"{date_str}.md"
+    if not os.path.exists(md_path):
+        return "暂无摘要信息"
+    
+    with open(md_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+        
+    # 提取前三个摘要作为精选
+    summaries = re.findall(r'\* \*\*摘要\*\*：(.*?)(?=\n|$)', content)
+    if summaries:
+        # 只取前三个，并限制字数
+        selected = []
+        for s in summaries[:3]:
+            s = s.strip()
+            if len(s) > 80:
+                s = s[:77] + "..."
+            selected.append(s)
+        return selected
+    return ["暂无摘要信息"]
 
 def update_latest():
     content_dir = 'content'
@@ -26,12 +47,16 @@ def update_latest():
         if date_match:
             date_str = "-".join(date_match.groups())
             url = '/' + path.replace('\\', '/')
-            entries.append({"date": date_str, "url": url})
+            summary = get_summary_from_md(date_str)
+            entries.append({"date": date_str, "url": url, "summaries": summary})
 
     latest_entry = entries[0]
     past_entries = entries[1:]
 
     print(f"Detected {len(entries)} entries. Latest: {latest_entry['date']}")
+
+    # 生成摘要 HTML
+    latest_summaries_html = "".join([f'<li class="flex items-start gap-2 mb-2"><i class="fa-solid fa-circle-dot text-[8px] mt-2 text-orange-500/60"></i><span>{s}</span></li>' for s in latest_entry['summaries']])
 
     # 生成 Portal HTML
     portal_html = f"""<!DOCTYPE html>
@@ -60,8 +85,9 @@ def update_latest():
             border-color: rgba(255, 255, 255, 0.05);
         }}
         .light .glass-card {{
-            background: rgba(0, 0, 0, 0.02);
+            background: rgba(255, 255, 255, 0.8);
             border-color: rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }}
         .glass-card:hover {{
             transform: translateY(-5px);
@@ -71,8 +97,9 @@ def update_latest():
             border-color: rgba(255, 153, 0, 0.3);
         }}
         .light .glass-card:hover {{
-            background: rgba(0, 0, 0, 0.04);
+            background: rgba(255, 255, 255, 0.95);
             border-color: rgba(255, 153, 0, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }}
         .orange-glow {{
             box-shadow: 0 0 20px rgba(255, 153, 0, 0.1);
@@ -93,7 +120,7 @@ def update_latest():
                 localStorage.setItem('theme', 'dark');
             }}
         }}
-        
+
         // Initialize theme
         (function() {{
             const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -125,22 +152,29 @@ def update_latest():
                 最新发布
             </h2>
             <a href="{latest_entry['url']}" class="block group">
-                <div class="glass-card orange-glow p-8 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="glass-card orange-glow p-8 rounded-3xl flex flex-col md:flex-row justify-between items-start gap-8">
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-4">
                             <span class="px-3 py-1 bg-orange-500/20 text-orange-500 text-xs font-bold rounded-full">LATEST UPDATE</span>
                             <span class="text-gray-500 dark:text-gray-400 text-sm font-mono">{latest_entry['date']}</span>
                         </div>
                         <h3 class="text-3xl font-bold mb-4 group-hover:text-orange-500 transition-colors">加密货币市场日报 - {latest_entry['date']}</h3>
-                        <p class="text-gray-400 dark:text-gray-400 leading-relaxed mb-6">
-                            包含过去24小时的核心市场动态、宏观经济影响分析、重大投融资事件及行业合规进展。点击进入完整可视化看板。
-                        </p>
+                        
+                        <div class="bg-black/20 dark:bg-white/5 rounded-2xl p-6 mb-6 border border-white/5">
+                            <p class="text-xs font-bold text-orange-500/80 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-bolt-lightning"></i> 核心动态预览
+                            </p>
+                            <ul class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed space-y-2">
+                                {latest_summaries_html}
+                            </ul>
+                        </div>
+
                         <div class="flex items-center text-orange-500 font-bold gap-2">
-                            立即阅读 <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-2"></i>
+                            立即阅读全文 <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-2"></i>
                         </div>
                     </div>
-                    <div class="w-full md:w-64 h-48 bg-orange-500/5 rounded-2xl border border-orange-500/10 flex items-center justify-center overflow-hidden">
-                         <i class="fa-solid fa-newspaper text-6xl text-orange-500/20"></i>
+                    <div class="w-full md:w-64 h-64 bg-orange-500/5 rounded-2xl border border-orange-500/10 flex items-center justify-center overflow-hidden shrink-0">
+                         <i class="fa-solid fa-newspaper text-8xl text-orange-500/20"></i>
                     </div>
                 </div>
             </a>
@@ -154,13 +188,16 @@ def update_latest():
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {" ".join([f'''
-                <a href="{item['url']}" class="glass-card p-6 rounded-2xl group">
+                <a href="{item['url']}" class="glass-card p-6 rounded-2xl group flex flex-col h-full">
                     <div class="flex justify-between items-start mb-4">
                         <span class="text-gray-500 dark:text-gray-400 font-mono text-sm">{item['date']}</span>
                         <i class="fa-solid fa-calendar-day text-gray-700 dark:text-gray-600 group-hover:text-orange-500/50 transition-colors"></i>
                     </div>
                     <h4 class="font-bold mb-4 group-hover:text-orange-500 transition-colors">市场日报</h4>
-                    <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-3 mb-6 flex-1">
+                        {item['summaries'][0] if item['summaries'] else '查看当日详细市场报告...'}
+                    </p>
+                    <div class="text-xs text-orange-500 font-bold flex items-center gap-1 mt-auto">
                         查看详情 <i class="fa-solid fa-chevron-right text-[10px]"></i>
                     </div>
                 </a>
@@ -178,7 +215,7 @@ def update_latest():
 """
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(portal_html)
-    print("Generated Portal index.html at root")
+    print("Generated Portal index.html at root with summaries")
 
     # 2. 更新 vercel.json
     vercel_config = {
@@ -186,7 +223,7 @@ def update_latest():
     }
     with open('vercel.json', 'w', encoding='utf-8') as f:
         json.dump(vercel_config, f, indent=2)
-    print("Updated vercel.json (removed auto-rewrite to latest)")
+    print("Updated vercel.json")
 
 if __name__ == "__main__":
     update_latest()

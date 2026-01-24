@@ -110,7 +110,12 @@
                     <div class="flex justify-between items-start mb-6">
                         <div>
                             <h2 class="text-2xl font-bold mb-1">Market Sentiment</h2>
-                            <p class="text-gray-400 text-sm">持有者行为分析 (24H)</p>
+                            <p class="text-gray-400 text-sm mb-4">持有者行为分析 (24H)</p>
+                            <div class="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4 max-w-md">
+                                <p class="text-sm leading-relaxed text-gray-300 dark:text-gray-300">
+                                    <span class="text-orange-500 font-bold">核心摘要：</span>根据 CryptoQuant 数据，比特币持有者自 2023 年 10 月以来首次开始实现净亏损。目前 BTC 价格在 $89,000 附近波动。
+                                </p>
+                            </div>
                         </div>
                         <div class="flex items-center gap-3">
                             <a href="https://www.theblock.co/latest-crypto-news" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
@@ -131,41 +136,67 @@
                 </a>
                 <div>
                     <h3 class="text-xl font-bold mb-2">Ledger NYSE IPO</h3>
-                    <p class="text-gray-400 text-sm">估值突破 40 亿美元，标志着基建类项目回归二级市场。</p>
+                    <p class="text-gray-400 text-sm mb-4">估值突破 40 亿美元</p>
+                    <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
+                        硬件钱包巨头 Ledger 正筹备在纽约上市，估值预计超过 40 亿美元。高盛、杰富瑞和巴克莱银保持其顾问。
+                    </p>
                 </div>
                 <div class="mt-6 flex justify-center">
                     <img src="../../../../imgs/ledger_ipo.svg" class="h-32 w-auto group-hover:scale-110 transition-transform duration-500" alt="Ledger IPO">
                 </div>
             </div>
 
-            <!-- Compliance Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between bg-blue-900/10 border-blue-500/20 relative">
-                <a href="https://www.theblock.co/latest-crypto-news" target="_blank" class="absolute top-4 right-4 text-blue-500/40 hover:text-blue-400 transition-colors">
+            <!-- Binance MiCA Card -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative overflow-hidden">
+                <a href="https://www.theblock.co/latest-crypto-news" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors z-10">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <div class="flex justify-between items-start">
-                    <h3 class="text-xl font-bold mb-2">MiCA Progress</h3>
-                    <i class="fa-solid fa-shield-halved text-blue-500 text-2xl"></i>
+                <div class="relative z-10">
+                    <h3 class="text-xl font-bold mb-2">Binance MiCA</h3>
+                    <p class="text-gray-400 text-sm mb-4">希腊合规许可申请</p>
+                    <p class="text-xs text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
+                        Binance 确认正在希腊申请合规许可，以符合欧盟新的加密资产市场（MiCA）监管框架。
+                    </p>
                 </div>
-                <p class="text-gray-400 text-sm mb-4">Binance 在希腊申请合规牌照，加速欧洲市场布局。</p>
-                <img src="../../../../imgs/compliance.svg" class="h-20 w-auto object-contain opacity-50" alt="Compliance">
+                <div class="mt-4 flex justify-end">
+                    <img src="../../../../imgs/compliance.svg" class="h-24 w-auto opacity-50 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-500" alt="Compliance">
+                </div>
             </div>
 
             <!-- Macro Alert Card -->
-            <div class="md:col-span-3 lg:col-span-3 bento-card p-8 flex flex-col md:flex-row items-center gap-8 relative">
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative bg-gradient-to-br from-red-500/5 to-transparent">
                 <a href="https://coinpedia.org/news/major-u-s-economic-events-this-week-could-trigger-extreme-volatility-in-crypto-markets/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <div class="flex-1">
-                    <h3 class="text-2xl font-bold mb-2 tracking-tight">Macro Pressures</h3>
-                    <p class="text-gray-400 text-sm">日本加息预期与美国 Q3 GDP 数据公布在即，风险资产面临流动性考验。</p>
-                    <div class="flex gap-4 mt-4">
-                        <span class="text-xs font-bold text-gray-500">#GDP</span>
-                        <span class="text-xs font-bold text-gray-500">#PCE</span>
-                        <span class="text-xs font-bold text-gray-500">#Rates</span>
-                    </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-2 flex items-center gap-2">
+                        Macro Alert <i class="fa-solid fa-triangle-exclamation text-red-500 text-sm animate-pulse"></i>
+                    </h3>
+                    <p class="text-gray-400 text-sm mb-4">全球加息与通胀压力</p>
+                    <p class="text-xs text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
+                        市场关注本周美国 Q3 GDP、PCE 通胀数据以及日本可能的加息决定。全球利率上升预期正对风险资产造成压力。
+                    </p>
                 </div>
-                <img src="../../../../imgs/macro_alert.svg" class="w-32 h-32" alt="Macro Alert">
+                <div class="mt-4">
+                    <img src="../../../../imgs/macro_alert.svg" class="w-full h-16 object-cover rounded-lg" alt="Macro Alert">
+                </div>
+            </div>
+
+            <!-- Kansas BTC Card -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative">
+                <a href="https://investingnews.com/cryptocurrency-market-recap/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <div>
+                    <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-landmark text-blue-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Kansas BTC Reserve</h3>
+                    <p class="text-gray-400 text-sm mb-4">州级储备金提案</p>
+                    <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
+                        堪萨斯州立法者提议利用州政府持有的无人认领数字资产建立州级比特币储备，旨在提升资产安全性与增值空间。
+                    </p>
+                </div>
             </div>
 
             <!-- CZ Quote Card -->
