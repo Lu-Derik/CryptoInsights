@@ -41,34 +41,81 @@ def update_latest():
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto Insights Portal | 加密货币深度观察</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {{
+            darkMode: 'class',
+        }}
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {{ background-color: #080808; color: #e5e7eb; }}
+        body {{ transition: background-color 0.3s, color 0.3s; }}
         .glass-card {{
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
         }}
+        .dark .glass-card {{
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.05);
+        }}
+        .light .glass-card {{
+            background: rgba(0, 0, 0, 0.02);
+            border-color: rgba(0, 0, 0, 0.05);
+        }}
         .glass-card:hover {{
+            transform: translateY(-5px);
+        }}
+        .dark .glass-card:hover {{
             background: rgba(255, 255, 255, 0.06);
             border-color: rgba(255, 153, 0, 0.3);
-            transform: translateY(-5px);
+        }}
+        .light .glass-card:hover {{
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(255, 153, 0, 0.3);
         }}
         .orange-glow {{
             box-shadow: 0 0 20px rgba(255, 153, 0, 0.1);
         }}
+        .light {{ background-color: #f9fafb; color: #111827; }}
+        .dark {{ background-color: #080808; color: #e5e7eb; }}
     </style>
+    <script>
+        function toggleTheme() {{
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {{
+                html.classList.remove('dark');
+                html.classList.add('light');
+                localStorage.setItem('theme', 'light');
+            }} else {{
+                html.classList.remove('light');
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }}
+        }}
+        
+        // Initialize theme
+        (function() {{
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.classList.add(savedTheme);
+        }})();
+    </script>
 </head>
 <body class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-5xl mx-auto">
+        <!-- Theme Toggle -->
+        <div class="flex justify-end mb-8">
+            <button onclick="toggleTheme()" class="p-3 rounded-xl glass-card text-orange-500 hover:scale-110 active:scale-95 transition-all">
+                <i class="fa-solid fa-circle-half-stroke text-xl"></i>
+            </button>
+        </div>
         <!-- Header -->
         <header class="text-center mb-16">
             <div class="inline-block p-3 rounded-2xl bg-orange-500/10 mb-4">
                 <i class="fa-solid fa-chart-line text-orange-500 text-3xl"></i>
             </div>
             <h1 class="text-4xl font-black tracking-tight mb-2">Crypto <span class="text-orange-500">Insights</span> Portal</h1>
-            <p class="text-gray-500">每日加密货币市场深度分析与宏观动态追踪</p>
+            <p class="text-gray-500 dark:text-gray-400">每日加密货币市场深度分析与宏观动态追踪</p>
         </header>
 
         <!-- Featured Latest -->
@@ -82,10 +129,10 @@ def update_latest():
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-4">
                             <span class="px-3 py-1 bg-orange-500/20 text-orange-500 text-xs font-bold rounded-full">LATEST UPDATE</span>
-                            <span class="text-gray-500 text-sm font-mono">{latest_entry['date']}</span>
+                            <span class="text-gray-500 dark:text-gray-400 text-sm font-mono">{latest_entry['date']}</span>
                         </div>
                         <h3 class="text-3xl font-bold mb-4 group-hover:text-orange-500 transition-colors">加密货币市场日报 - {latest_entry['date']}</h3>
-                        <p class="text-gray-400 leading-relaxed mb-6">
+                        <p class="text-gray-400 dark:text-gray-400 leading-relaxed mb-6">
                             包含过去24小时的核心市场动态、宏观经济影响分析、重大投融资事件及行业合规进展。点击进入完整可视化看板。
                         </p>
                         <div class="flex items-center text-orange-500 font-bold gap-2">
@@ -101,7 +148,7 @@ def update_latest():
 
         <!-- Archive Grid -->
         <section>
-            <h2 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-6 flex items-center gap-2">
+            <h2 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
                 <span class="w-8 h-[1px] bg-gray-500/30"></span>
                 历史存档
             </h2>
@@ -109,20 +156,20 @@ def update_latest():
                 {" ".join([f'''
                 <a href="{item['url']}" class="glass-card p-6 rounded-2xl group">
                     <div class="flex justify-between items-start mb-4">
-                        <span class="text-gray-500 font-mono text-sm">{item['date']}</span>
-                        <i class="fa-solid fa-calendar-day text-gray-700 group-hover:text-orange-500/50 transition-colors"></i>
+                        <span class="text-gray-500 dark:text-gray-400 font-mono text-sm">{item['date']}</span>
+                        <i class="fa-solid fa-calendar-day text-gray-700 dark:text-gray-600 group-hover:text-orange-500/50 transition-colors"></i>
                     </div>
                     <h4 class="font-bold mb-4 group-hover:text-orange-500 transition-colors">市场日报</h4>
-                    <div class="text-xs text-gray-500 flex items-center gap-1">
+                    <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
                         查看详情 <i class="fa-solid fa-chevron-right text-[10px]"></i>
                     </div>
                 </a>
-                ''' for item in past_entries]) if past_entries else '<p class="text-gray-600 col-span-full italic">暂无更多历史记录</p>'}
+                ''' for item in past_entries]) if past_entries else '<p class="text-gray-600 dark:text-gray-500 col-span-full italic">暂无更多历史记录</p>'}
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="mt-24 pt-8 border-t border-white/5 text-center text-gray-600 text-sm">
+        <footer class="mt-24 pt-8 border-t border-white/5 dark:border-white/5 text-center text-gray-600 dark:text-gray-500 text-sm">
             <p>&copy; 2026 Crypto Insights. All rights reserved.</p>
         </footer>
     </div>
@@ -133,12 +180,9 @@ def update_latest():
         f.write(portal_html)
     print("Generated Portal index.html at root")
 
-    # 2. 更新 vercel.json (移除自动跳转，让用户先看到 Portal)
-    # 或者如果你仍然希望默认看到最新的，可以保留跳转，但在页面里提供入口。
-    # 既然用户问“我从主界面可以看到没一天的信息入口”，说明主界面应该是 Portal。
+    # 2. 更新 vercel.json
     vercel_config = {
         "cleanUrls": True
-        # 移除了 rewrites，直接访问 / 就会显示 root index.html
     }
     with open('vercel.json', 'w', encoding='utf-8') as f:
         json.dump(vercel_config, f, indent=2)
