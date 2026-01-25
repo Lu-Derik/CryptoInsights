@@ -1,0 +1,7 @@
+<svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="200" rx="20" fill="#22c55e" fill-opacity="0.05"/>
+  <path d="M50 150 L100 130 L150 140 L200 100 L250 110 L300 70 L350 80" stroke="#22c55e" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="350" cy="80" r="6" fill="#22c55e"/>
+  <text x="50" y="50" font-family="Arial" font-size="24" font-weight="bold" fill="#22c55e">USDC 24/7</text>
+  <text x="50" y="80" font-family="Arial" font-size="14" fill="#666">Real-time Settlement</text>
+</svg>
