@@ -50,16 +50,17 @@ def update_latest():
             summary = get_summary_from_md(date_str)
             entries.append({"date": date_str, "url": url, "summaries": summary})
 
-    latest_entry = entries[0]
-    past_entries = entries[1:]
+    if entries:
+        latest_entry = entries[0]
+        past_entries = entries[1:]
 
-    print(f"Detected {len(entries)} entries. Latest: {latest_entry['date']}")
+        print(f"Detected {len(entries)} entries. Latest: {latest_entry['date']}")
 
-    # 生成摘要 HTML
-    latest_summaries_html = "".join([f'<li class="flex items-start gap-2 mb-2"><i class="fa-solid fa-circle-dot text-[8px] mt-2 text-orange-500/60"></i><span>{s}</span></li>' for s in latest_entry['summaries']])
+        # 生成摘要 HTML
+        latest_summaries_html = "".join([f'<li class="flex items-start gap-2 mb-2"><i class="fa-solid fa-circle-dot text-[8px] mt-2 text-orange-500/60"></i><span>{s}</span></li>' for s in latest_entry['summaries']])
 
-    # 生成 Portal HTML
-    portal_html = f"""<!DOCTYPE html>
+        # 生成 Portal HTML
+        portal_html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -213,17 +214,23 @@ def update_latest():
 </body>
 </html>
 """
-    with open('index.html', 'w', encoding='utf-8') as f:
-        f.write(portal_html)
-    print("Generated Portal index.html at root with summaries")
+        with open('index.html', 'w', encoding='utf-8') as f:
+            f.write(portal_html)
+        print("Generated Portal index.html at root with summaries")
 
-    # 2. 更新 vercel.json
-    vercel_config = {
-        "cleanUrls": True
-    }
-    with open('vercel.json', 'w', encoding='utf-8') as f:
-        json.dump(vercel_config, f, indent=2)
-    print("Updated vercel.json")
+        # Update vercel.json
+        vercel_config = {
+            "cleanUrls": True,
+            "rewrites": [
+                { "source": "/", "destination": "/index.html" },
+                { "source": "/latest", "destination": f"/content/{latest_entry['date'].replace('-', '/')}/index.html" }
+            ]
+        }
+        with open('vercel.json', 'w', encoding='utf-8') as f:
+            json.dump(vercel_config, f, indent=4)
+        print("Updated vercel.json")
+    else:
+        print("No entries found.")
 
 if __name__ == "__main__":
     update_latest()
