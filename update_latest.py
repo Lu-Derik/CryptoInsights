@@ -5,7 +5,7 @@ import json
 def get_summary_from_md(date_str):
     md_path = f"{date_str}.md"
     if not os.path.exists(md_path):
-        return "暂无摘要信息"
+        return ["暂无摘要信息"]
     
     with open(md_path, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -50,105 +50,165 @@ def update_latest():
             summary = get_summary_from_md(date_str)
             entries.append({"date": date_str, "url": url, "summaries": summary})
 
-    if entries:
-        latest_entry = entries[0]
-        past_entries = entries[1:]
+    if not entries:
+        print("No entries found.")
+        return
 
-        print(f"Detected {len(entries)} entries. Latest: {latest_entry['date']}")
+    latest_entry = entries[0]
+    past_entries = entries[1:]
+    print(f"Detected {len(entries)} entries. Latest: {latest_entry['date']}")
 
-        # 生成摘要 HTML
-        latest_summaries_html = "".join([f'<li class="flex items-start gap-2 mb-2"><i class="fa-solid fa-circle-dot text-[8px] mt-2 text-orange-500/60"></i><span>{s}</span></li>' for s in latest_entry['summaries']])
+    # 生成通用的 Auth 模态框和脚本引用
+    def get_auth_assets(base_path="./"):
+        return f'''
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="{base_path}js/config.js"></script>
+    <script src="{base_path}js/auth.js"></script>
 
-        # 生成导航栏 HTML (用于 Portal 和所有页面)
-        def generate_nav_html(current_date=None, is_portal=False):
-            portal_link_class = "flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl" if is_portal else "flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors"
-            
-            nav_items = [f'''
-                <a href="/" class="{portal_link_class}">
-                    <i class="fa-solid fa-house"></i> Portal
-                </a>
-            ''']
-            
-            # 日期条目
-            display_entries = entries[:8]
-            for entry in display_entries:
-                active_class = "flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl" if current_date == entry['date'] else "flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors"
-                nav_items.append(f'''
-                    <a href="{entry['url']}" class="{active_class}">
-                        <i class="fa-solid fa-calendar-day"></i> {entry['date'].replace('-', '.')}
-                    </a>
-                ''')
-            
-            # History 区域 (如果多于8个条目)
-            history_section = ""
-            if len(entries) > 8:
-                # 按照年、月、周、日层级
-                history_data = {}
-                for entry in entries[8:]: # 剩下的条目进入 History
-                    y, m, d = entry['date'].split('-')
-                    if y not in history_data: history_data[y] = {}
-                    if m not in history_data[y]: history_data[y][m] = []
-                    history_data[y][m].append(entry)
-                
-                years_html = []
-                for year, months in history_data.items():
-                    months_html = []
-                    for month, days in months.items():
-                        days_html = []
-                        for day_entry in days:
-                            days_html.append(f'''
-                                <a href="{day_entry['url']}" class="block text-[11px] text-gray-500 hover:text-orange-500 py-1 border-l border-white/5 pl-3 -ml-[1px]">
-                                    {day_entry['date']}
-                                </a>
-                            ''')
-                        
-                        months_html.append(f'''
-                            <details class="group/month ml-2">
-                                <summary class="flex items-center justify-between text-[12px] text-gray-400 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none">
-                                    <span>{month}月</span>
-                                    <i class="fa-solid fa-chevron-right text-[8px] transition-transform group-open/month:rotate-90"></i>
-                                </summary>
-                                <div class="pl-2 mt-1 space-y-1">
-                                    {" ".join(days_html)}
-                                </div>
-                            </details>
-                        ''')
-                    
-                    years_html.append(f'''
-                        <details class="group/year">
-                            <summary class="flex items-center justify-between text-sm text-gray-300 p-2 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none">
-                                <span class="flex items-center gap-2"><i class="fa-solid fa-folder text-xs text-orange-500/50"></i> {year}年</span>
-                                <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/year:rotate-90"></i>
-                            </summary>
-                            <div class="pl-2 mt-1 space-y-1">
-                                {" ".join(months_html)}
-                            </div>
-                        </details>
-                    ''')
-
-                history_section = f'''
-                <div class="mt-8 pt-6 border-t border-white/5">
-                    <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">History Archive</p>
-                    <div class="space-y-1">
-                        {" ".join(years_html)}
-                    </div>
+    <!-- Auth Modal -->
+    <div id="authModal" class="hidden fixed inset-0 z-[100] items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div class="w-full max-w-md bento-card p-8 relative overflow-hidden">
+            <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-orange-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-shield-halved text-orange-500 text-3xl"></i>
                 </div>
-                '''
-            
-            return f'''
-            <div class="space-y-2">
-                <div>
-                    <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Navigation</p>
-                    <div class="space-y-1">
-                        {" ".join(nav_items)}
-                    </div>
-                </div>
-                {history_section}
+                <h2 id="authTitle" class="text-2xl font-black tracking-tight">登录</h2>
+                <p class="text-gray-500 text-sm mt-2">加入 Crypto Insights，解锁更多深度内容</p>
             </div>
-            '''
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">邮箱地址</label>
+                    <input id="authEmail" type="email" required placeholder="name@example.com" class="w-full bg-black/20 dark:bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-orange-500 outline-none transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">密码</label>
+                    <input id="authPassword" type="password" required placeholder="••••••••" class="w-full bg-black/20 dark:bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-orange-500 outline-none transition-colors">
+                </div>
+                <button id="authSubmitBtn" type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-black font-bold py-3 rounded-xl transition-all active:scale-95">立即登录</button>
+            </form>
+            <div class="mt-6 text-center">
+                <button id="authToggleText" onclick="toggleAuthMode()" class="text-xs text-gray-500 hover:text-orange-500 transition-colors">没有账号？去注册</button>
+            </div>
+        </div>
+    </div>
+    '''
 
-        # 生成 Portal HTML
-        portal_html = f"""<!DOCTYPE html>
+    # 生成导航栏 HTML (用于 Portal 和所有页面)
+    def generate_nav_html(current_date=None, is_portal=False):
+        portal_link_class = "flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl" if is_portal else "flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors"
+        
+        # 基础导航项
+        nav_items = [f'''
+            <a href="/" class="{portal_link_class}">
+                <i class="fa-solid fa-house"></i> Portal
+            </a>
+        ''']
+        
+        # 日期条目
+        display_entries = entries[:8]
+        for entry in display_entries:
+            active_class = "flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl" if current_date == entry['date'] else "flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors"
+            nav_items.append(f'''
+                <a href="{entry['url']}" class="{active_class}">
+                    <i class="fa-solid fa-calendar-day"></i> {entry['date'].replace('-', '.')}
+                </a>
+            ''')
+        
+        # History 区域 (如果多于8个条目)
+        history_section = ""
+        if len(entries) > 8:
+            history_data = {}
+            for entry in entries[8:]: 
+                y, m, d = entry['date'].split('-')
+                if y not in history_data: history_data[y] = {}
+                if m not in history_data[y]: history_data[y][m] = []
+                history_data[y][m].append(entry)
+            
+            years_html = []
+            for year, months in history_data.items():
+                months_html = []
+                for month, days in months.items():
+                    days_html = []
+                    for day_entry in days:
+                        days_html.append(f'''
+                            <a href="{day_entry['url']}" class="block text-[11px] text-gray-500 hover:text-orange-500 py-1 border-l border-white/5 pl-3 -ml-[1px]">
+                                {day_entry['date']}
+                            </a>
+                        ''')
+                    months_html.append(f'''<details class="group/month ml-2"><summary class="flex items-center justify-between text-[12px] text-gray-400 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none"><span>{month}月</span><i class="fa-solid fa-chevron-right text-[8px] transition-transform group-open/month:rotate-90"></i></summary><div class="pl-2 mt-1 space-y-1">{" ".join(days_html)}</div></details>''')
+                years_html.append(f'''<details class="group/year"><summary class="flex items-center justify-between text-sm text-gray-300 p-2 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none"><span class="flex items-center gap-2"><i class="fa-solid fa-folder text-xs text-orange-500/50"></i> {year}年</span><i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/year:rotate-90"></i></summary><div class="pl-2 mt-1 space-y-1">{" ".join(months_html)}</div></details>''')
+            
+            history_section = f'''<div class="mt-8 pt-6 border-t border-white/5"><p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">History Archive</p><div class="space-y-1">{" ".join(years_html)}</div></div>'''
+        
+        # 用户 Auth UI (登录按钮和用户信息)
+        auth_ui = f'''
+        <div class="mt-6 pt-6 border-t border-white/5">
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Account</p>
+            <div id="authBtnContainer">
+                <button onclick="toggleAuthModal()" class="w-full flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
+                    <i class="fa-solid fa-user-plus"></i> 登录 / 注册
+                </button>
+            </div>
+            <div id="userProfileContainer" class="hidden space-y-3">
+                <div class="flex items-center gap-3 p-2 rounded-xl bg-orange-500/5 border border-orange-500/10">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-orange-500 to-red-500 flex items-center justify-center text-[10px] text-white font-bold">VIP</div>
+                    <div class="overflow-hidden">
+                        <p id="userEmailDisplay" class="text-[10px] font-medium truncate text-gray-400"></p>
+                    </div>
+                </div>
+                <button onclick="handleSignOut()" class="w-full flex items-center gap-3 text-sm text-red-500/70 p-2 hover:text-red-500 transition-colors">
+                    <i class="fa-solid fa-right-from-bracket"></i> 注销退出
+                </button>
+            </div>
+        </div>
+        '''
+
+        return f'''
+        <div class="space-y-2">
+            <div>
+                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Navigation</p>
+                <div class="space-y-1">
+                    {" ".join(nav_items)}
+                </div>
+            </div>
+            {auth_ui}
+            {history_section}
+        </div>
+        '''
+
+    # 生成侧边栏 HTML
+    def generate_sidebar_html(current_date=None):
+        return f'''<!-- Sidebar -->
+    <aside class="hidden lg:flex flex-col w-64 p-6 sidebar sticky top-0 h-screen">
+        <a href="/" class="flex items-center gap-3 mb-10 hover:opacity-80 transition-opacity">
+            <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-bolt text-black"></i>
+            </div>
+            <span class="font-extrabold text-xl tracking-tighter">INSIGHT</span>
+        </a>
+        <nav class="space-y-6">
+            {generate_nav_html(current_date)}
+        </nav>
+        <div class="mt-auto pt-6 border-t border-white/5">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500"></div>
+                <div>
+                    <p class="text-sm font-bold">Analyst</p>
+                    <p class="text-xs text-gray-500">@Derik LU</p>
+                </div>
+            </div>
+        </div>
+    </aside>'''
+
+    # 生成摘要 HTML
+    latest_summaries_html = "".join([f'<li class="flex items-start gap-2 mb-2"><i class="fa-solid fa-circle-dot text-[8px] mt-2 text-orange-500/60"></i><span>{s}</span></li>' for s in latest_entry['summaries']])
+
+    # 生成 Portal HTML
+    portal_html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -301,53 +361,55 @@ def update_latest():
             <p>&copy; 2026 Crypto Insights. All rights reserved.</p>
         </footer>
     </div>
+    {get_auth_assets()}
 </body>
 </html>
 """
-        with open('index.html', 'w', encoding='utf-8') as f:
-            f.write(portal_html)
-        print("Generated Portal index.html at root with summaries")
+    with open('index.html', 'w', encoding='utf-8') as f:
+        f.write(portal_html)
+    print("Generated Portal index.html at root")
 
-        # 更新所有页面的 Sidebar
-        for entry in entries:
-            file_path = entry['url'].lstrip('/')
-            abs_path = os.path.join(os.getcwd(), file_path)
-            if os.path.exists(abs_path):
-                with open(abs_path, 'r', encoding='utf-8') as f:
-                    page_content = f.read()
-                
-                # 1. 更新 Logo 跳转链接
-                logo_pattern = r'<div class="flex items-center gap-3 mb-10">.*?</div>'
-                new_logo = f'''<a href="/" class="flex items-center gap-3 mb-10 hover:opacity-80 transition-opacity">
-            <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                <i class="fa-solid fa-bolt text-black"></i>
-            </div>
-            <span class="font-extrabold text-xl tracking-tighter">INSIGHT</span>
-        </a>'''
-                page_content = re.sub(logo_pattern, new_logo, page_content, flags=re.DOTALL)
-                
-                # 2. 更新 Nav 导航逻辑
-                nav_pattern = r'<nav class="space-y-6">.*?</nav>'
-                new_nav = f'<nav class="space-y-6">{generate_nav_html(entry["date"])}</nav>'
-                page_content = re.sub(nav_pattern, new_nav, page_content, flags=re.DOTALL)
-                
-                with open(abs_path, 'w', encoding='utf-8') as f:
-                    f.write(page_content)
-                print(f"Updated sidebar for {entry['date']}")
+    # 更新所有页面的 Sidebar 和 Auth Assets
+    for entry in entries:
+        file_path = entry['url'].lstrip('/')
+        abs_path = os.path.join(os.getcwd(), file_path)
+        if os.path.exists(abs_path):
+            with open(abs_path, 'r', encoding='utf-8') as f:
+                page_content = f.read()
+            
+            # 更新整个 Sidebar
+            sidebar_pattern = r'<!-- Sidebar -->\s*<aside.*?>.*?</aside>'
+            new_sidebar = generate_sidebar_html(entry["date"])
+            
+            if re.search(sidebar_pattern, page_content, flags=re.DOTALL):
+                page_content = re.sub(sidebar_pattern, new_sidebar, page_content, flags=re.DOTALL)
+            else:
+                # 备用方案：如果没找到注释，尝试匹配 <aside>
+                page_content = re.sub(r'<aside.*?>.*?</aside>', new_sidebar, page_content, flags=re.DOTALL)
 
-        # Update vercel.json
-        vercel_config = {
-            "cleanUrls": True,
-            "rewrites": [
-                { "source": "/", "destination": "/index.html" },
-                { "source": "/latest", "destination": f"/content/{latest_entry['date'].replace('-', '/')}/index.html" }
-            ]
-        }
-        with open('vercel.json', 'w', encoding='utf-8') as f:
-            json.dump(vercel_config, f, indent=4)
-        print("Updated vercel.json")
-    else:
-        print("No entries found.")
+            # 3. 注入 Auth Assets (如果尚未存在)
+            if 'authModal' not in page_content:
+                # 计算相对路径深度以正确引用 js/
+                depth = file_path.count('/')
+                base_path = "../" * depth
+                auth_assets = get_auth_assets(base_path)
+                page_content = page_content.replace('</body>', f'{auth_assets}</body>')
+            
+            with open(abs_path, 'w', encoding='utf-8') as f:
+                f.write(page_content)
+            print(f"Updated sidebar and auth for {entry['date']}")
+
+    # Update vercel.json
+    vercel_config = {
+        "cleanUrls": True,
+        "rewrites": [
+            { "source": "/", "destination": "/index.html" },
+            { "source": "/latest", "destination": f"/content/{latest_entry['date'].replace('-', '/')}/index.html" }
+        ]
+    }
+    with open('vercel.json', 'w', encoding='utf-8') as f:
+        json.dump(vercel_config, f, indent=4)
+    print("Updated vercel.json")
 
 if __name__ == "__main__":
     update_latest()

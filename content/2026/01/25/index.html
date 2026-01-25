@@ -67,33 +67,52 @@
             </div>
             <span class="font-extrabold text-xl tracking-tighter">INSIGHT</span>
         </a>
-            <span class="font-extrabold text-xl tracking-tighter">INSIGHT</span>
-        </div>
         <nav class="space-y-6">
-            <div class="space-y-2">
-                <div>
-                    <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Navigation</p>
-                    <div class="space-y-1">
-                        
-                <a href="/" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
-                    <i class="fa-solid fa-house"></i> Portal
+            
+        <div class="space-y-2">
+            <div>
+                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Navigation</p>
+                <div class="space-y-1">
+                    
+            <a href="/" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
+                <i class="fa-solid fa-house"></i> Portal
+            </a>
+         
+                <a href="/content/2026/01/25/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
+                    <i class="fa-solid fa-calendar-day"></i> 2026.01.25
                 </a>
              
-                    <a href="/content/2026/01/25/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
-                        <i class="fa-solid fa-calendar-day"></i> 2026.01.25
-                    </a>
-                 
-                    <a href="/content/2026/01/24/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
-                        <i class="fa-solid fa-calendar-day"></i> 2026.01.24
-                    </a>
-                
+                <a href="/content/2026/01/24/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
+                    <i class="fa-solid fa-calendar-day"></i> 2026.01.24
+                </a>
+            
+                </div>
+            </div>
+            
+        <div class="mt-6 pt-6 border-t border-white/5">
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Account</p>
+            <div id="authBtnContainer">
+                <button onclick="toggleAuthModal()" class="w-full flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
+                    <i class="fa-solid fa-user-plus"></i> 登录 / 注册
+                </button>
+            </div>
+            <div id="userProfileContainer" class="hidden space-y-3">
+                <div class="flex items-center gap-3 p-2 rounded-xl bg-orange-500/5 border border-orange-500/10">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-orange-500 to-red-500 flex items-center justify-center text-[10px] text-white font-bold">VIP</div>
+                    <div class="overflow-hidden">
+                        <p id="userEmailDisplay" class="text-[10px] font-medium truncate text-gray-400"></p>
                     </div>
                 </div>
-                
+                <button onclick="handleSignOut()" class="w-full flex items-center gap-3 text-sm text-red-500/70 p-2 hover:text-red-500 transition-colors">
+                    <i class="fa-solid fa-right-from-bracket"></i> 注销退出
+                </button>
             </div>
-            </nav>
-            </nav>
-            </nav>
+        </div>
+        
+            
+        </div>
+        
+        </nav>
         <div class="mt-auto pt-6 border-t border-white/5">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500"></div>
@@ -272,5 +291,40 @@
         </footer>
     </main>
 
-</body>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../../../js/config.js"></script>
+    <script src="../../../../js/auth.js"></script>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="hidden fixed inset-0 z-[100] items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div class="w-full max-w-md bento-card p-8 relative overflow-hidden">
+            <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-orange-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-shield-halved text-orange-500 text-3xl"></i>
+                </div>
+                <h2 id="authTitle" class="text-2xl font-black tracking-tight">登录</h2>
+                <p class="text-gray-500 text-sm mt-2">加入 Crypto Insights，解锁更多深度内容</p>
+            </div>
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">邮箱地址</label>
+                    <input id="authEmail" type="email" required placeholder="name@example.com" class="w-full bg-black/20 dark:bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-orange-500 outline-none transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">密码</label>
+                    <input id="authPassword" type="password" required placeholder="••••••••" class="w-full bg-black/20 dark:bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-orange-500 outline-none transition-colors">
+                </div>
+                <button id="authSubmitBtn" type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-black font-bold py-3 rounded-xl transition-all active:scale-95">立即登录</button>
+            </form>
+            <div class="mt-6 text-center">
+                <button id="authToggleText" onclick="toggleAuthMode()" class="text-xs text-gray-500 hover:text-orange-500 transition-colors">没有账号？去注册</button>
+            </div>
+        </div>
+    </div>
+    </body>
 </html>
