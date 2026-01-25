@@ -388,12 +388,16 @@ def update_latest():
                 page_content = re.sub(r'<aside.*?>.*?</aside>', new_sidebar, page_content, flags=re.DOTALL)
 
             # 3. 注入 Auth Assets (如果尚未存在)
-            if 'authModal' not in page_content:
+            if 'id="authModal"' not in page_content:
                 # 计算相对路径深度以正确引用 js/
                 depth = file_path.count('/')
                 base_path = "../" * depth
                 auth_assets = get_auth_assets(base_path)
                 page_content = page_content.replace('</body>', f'{auth_assets}</body>')
+            else:
+                # 如果已存在，但可能是旧版本，尝试替换掉重复的脚本引用或更新它
+                # 简单起见，我们先确保 auth.js 的逻辑是健壮的（已在 auth.js 中处理）
+                pass
             
             with open(abs_path, 'w', encoding='utf-8') as f:
                 f.write(page_content)

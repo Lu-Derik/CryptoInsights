@@ -1,5 +1,8 @@
 // Auth 逻辑实现
-let supabase;
+// 使用 var 或 window 属性以避免重复声明错误
+if (typeof window.supabaseClient === 'undefined') {
+    window.supabaseClient = null;
+}
 
 // 将所有函数暴露到全局作用域
 window.toggleAuthModal = function() {
@@ -35,9 +38,9 @@ window.handleAuthSubmit = async function(event) {
     try {
         let result;
         if (isLogin) {
-            result = await supabase.auth.signInWithPassword({ email, password });
+            result = await window.supabaseClient.auth.signInWithPassword({ email, password });
         } else {
-            result = await supabase.auth.signUp({ email, password });
+            result = await window.supabaseClient.auth.signUp({ email, password });
             if (!result.error) alert('注册成功！请查收确认邮件（如果开启了邮件验证）。');
         }
 
@@ -52,24 +55,26 @@ window.handleAuthSubmit = async function(event) {
 };
 
 window.handleSignOut = async function() {
-    await supabase.auth.signOut();
+    await window.supabaseClient.auth.signOut();
     location.reload();
 };
 
 // 初始化
 (function initSupabase() {
+    if (window.supabaseClient) return; // 已经初始化过
+
     try {
         if (typeof supabasejs !== 'undefined') {
-            supabase = supabasejs.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+            window.supabaseClient = supabasejs.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
         } else if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-            supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+            window.supabaseClient = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
         } else {
             console.error("Supabase SDK not found. Make sure the script is loaded.");
             return;
         }
 
         // 监听 Auth 状态
-        supabase.auth.onAuthStateChange((event, session) => {
+        window.supabaseClient.auth.onAuthStateChange((event, session) => {
             const user = session?.user;
             const authBtnContainer = document.getElementById('authBtnContainer');
             const userProfileContainer = document.getElementById('userProfileContainer');
