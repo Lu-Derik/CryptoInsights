@@ -61,7 +61,7 @@ def update_latest():
 
         # 生成导航栏 HTML (用于 Portal 和所有页面)
         def generate_nav_html(current_date=None, is_portal=False):
-            portal_link_class = "flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl" if is_portal else "flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-white transition-colors"
+            portal_link_class = "flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl" if is_portal else "flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors"
             
             nav_items = [f'''
                 <a href="/" class="{portal_link_class}">
@@ -72,7 +72,7 @@ def update_latest():
             # 日期条目
             display_entries = entries[:8]
             for entry in display_entries:
-                active_class = "flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl" if current_date == entry['date'] else "flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-white transition-colors"
+                active_class = "flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl" if current_date == entry['date'] else "flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors"
                 nav_items.append(f'''
                     <a href="{entry['url']}" class="{active_class}">
                         <i class="fa-solid fa-calendar-day"></i> {entry['date'].replace('-', '.')}
@@ -104,7 +104,7 @@ def update_latest():
                         
                         months_html.append(f'''
                             <details class="group/month ml-2">
-                                <summary class="flex items-center justify-between text-[12px] text-gray-400 p-1 cursor-pointer hover:text-white list-none">
+                                <summary class="flex items-center justify-between text-[12px] text-gray-400 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none">
                                     <span>{month}月</span>
                                     <i class="fa-solid fa-chevron-right text-[8px] transition-transform group-open/month:rotate-90"></i>
                                 </summary>
@@ -116,7 +116,7 @@ def update_latest():
                     
                     years_html.append(f'''
                         <details class="group/year">
-                            <summary class="flex items-center justify-between text-sm text-gray-300 p-2 cursor-pointer hover:text-white list-none">
+                            <summary class="flex items-center justify-between text-sm text-gray-300 p-2 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none">
                                 <span class="flex items-center gap-2"><i class="fa-solid fa-folder text-xs text-orange-500/50"></i> {year}年</span>
                                 <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/year:rotate-90"></i>
                             </summary>
@@ -136,7 +136,7 @@ def update_latest():
                 '''
             
             return f'''
-            <nav class="space-y-2">
+            <div class="space-y-2">
                 <div>
                     <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Navigation</p>
                     <div class="space-y-1">
@@ -144,7 +144,7 @@ def update_latest():
                     </div>
                 </div>
                 {history_section}
-            </nav>
+            </div>
             '''
 
         # 生成 Portal HTML
