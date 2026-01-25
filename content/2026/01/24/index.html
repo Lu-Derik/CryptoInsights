@@ -61,25 +61,38 @@
 
     <!-- Sidebar -->
     <aside class="hidden lg:flex flex-col w-64 p-6 sidebar sticky top-0 h-screen">
-        <div class="flex items-center gap-3 mb-10">
+        <a href="/" class="flex items-center gap-3 mb-10 hover:opacity-80 transition-opacity">
             <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
                 <i class="fa-solid fa-bolt text-black"></i>
             </div>
             <span class="font-extrabold text-xl tracking-tighter">INSIGHT</span>
+        </a>
+            <span class="font-extrabold text-xl tracking-tighter">INSIGHT</span>
         </div>
         <nav class="space-y-6">
-            <div>
-                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Timeline</p>
-                <div class="space-y-2">
-                    <a href="#" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
+            <nav class="space-y-2">
+                <div>
+                    <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Navigation</p>
+                    <div class="space-y-1">
+                        
+                <a href="/" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-white transition-colors">
+                    <i class="fa-solid fa-house"></i> Portal
+                </a>
+             
+                    <a href="/content/2026/01/25/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-white transition-colors">
+                        <i class="fa-solid fa-calendar-day"></i> 2026.01.25
+                    </a>
+                 
+                    <a href="/content/2026/01/24/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
                         <i class="fa-solid fa-calendar-day"></i> 2026.01.24
                     </a>
-                    <a href="#" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-white transition-colors">
-                        <i class="fa-solid fa-calendar"></i> History
-                    </a>
+                
+                    </div>
                 </div>
-            </div>
-        </nav>
+                
+            </nav>
+            </nav>
+            </nav>
         <div class="mt-auto pt-6 border-t border-white/5">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500"></div>

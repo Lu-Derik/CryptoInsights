@@ -59,6 +59,94 @@ def update_latest():
         # 生成摘要 HTML
         latest_summaries_html = "".join([f'<li class="flex items-start gap-2 mb-2"><i class="fa-solid fa-circle-dot text-[8px] mt-2 text-orange-500/60"></i><span>{s}</span></li>' for s in latest_entry['summaries']])
 
+        # 生成导航栏 HTML (用于 Portal 和所有页面)
+        def generate_nav_html(current_date=None, is_portal=False):
+            portal_link_class = "flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl" if is_portal else "flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-white transition-colors"
+            
+            nav_items = [f'''
+                <a href="/" class="{portal_link_class}">
+                    <i class="fa-solid fa-house"></i> Portal
+                </a>
+            ''']
+            
+            # 日期条目
+            display_entries = entries[:8]
+            for entry in display_entries:
+                active_class = "flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl" if current_date == entry['date'] else "flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-white transition-colors"
+                nav_items.append(f'''
+                    <a href="{entry['url']}" class="{active_class}">
+                        <i class="fa-solid fa-calendar-day"></i> {entry['date'].replace('-', '.')}
+                    </a>
+                ''')
+            
+            # History 区域 (如果多于8个条目)
+            history_section = ""
+            if len(entries) > 8:
+                # 按照年、月、周、日层级
+                history_data = {}
+                for entry in entries[8:]: # 剩下的条目进入 History
+                    y, m, d = entry['date'].split('-')
+                    if y not in history_data: history_data[y] = {}
+                    if m not in history_data[y]: history_data[y][m] = []
+                    history_data[y][m].append(entry)
+                
+                years_html = []
+                for year, months in history_data.items():
+                    months_html = []
+                    for month, days in months.items():
+                        days_html = []
+                        for day_entry in days:
+                            days_html.append(f'''
+                                <a href="{day_entry['url']}" class="block text-[11px] text-gray-500 hover:text-orange-500 py-1 border-l border-white/5 pl-3 -ml-[1px]">
+                                    {day_entry['date']}
+                                </a>
+                            ''')
+                        
+                        months_html.append(f'''
+                            <details class="group/month ml-2">
+                                <summary class="flex items-center justify-between text-[12px] text-gray-400 p-1 cursor-pointer hover:text-white list-none">
+                                    <span>{month}月</span>
+                                    <i class="fa-solid fa-chevron-right text-[8px] transition-transform group-open/month:rotate-90"></i>
+                                </summary>
+                                <div class="pl-2 mt-1 space-y-1">
+                                    {" ".join(days_html)}
+                                </div>
+                            </details>
+                        ''')
+                    
+                    years_html.append(f'''
+                        <details class="group/year">
+                            <summary class="flex items-center justify-between text-sm text-gray-300 p-2 cursor-pointer hover:text-white list-none">
+                                <span class="flex items-center gap-2"><i class="fa-solid fa-folder text-xs text-orange-500/50"></i> {year}年</span>
+                                <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/year:rotate-90"></i>
+                            </summary>
+                            <div class="pl-2 mt-1 space-y-1">
+                                {" ".join(months_html)}
+                            </div>
+                        </details>
+                    ''')
+
+                history_section = f'''
+                <div class="mt-8 pt-6 border-t border-white/5">
+                    <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">History Archive</p>
+                    <div class="space-y-1">
+                        {" ".join(years_html)}
+                    </div>
+                </div>
+                '''
+            
+            return f'''
+            <nav class="space-y-2">
+                <div>
+                    <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Navigation</p>
+                    <div class="space-y-1">
+                        {" ".join(nav_items)}
+                    </div>
+                </div>
+                {history_section}
+            </nav>
+            '''
+
         # 生成 Portal HTML
         portal_html = f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -139,10 +227,12 @@ def update_latest():
         </div>
         <!-- Header -->
         <header class="text-center mb-16">
-            <div class="inline-block p-3 rounded-2xl bg-orange-500/10 mb-4">
-                <i class="fa-solid fa-chart-line text-orange-500 text-3xl"></i>
-            </div>
-            <h1 class="text-4xl font-black tracking-tight mb-2">Crypto <span class="text-orange-500">Insights</span> Portal</h1>
+            <a href="/" class="inline-block hover:opacity-80 transition-opacity">
+                <div class="p-3 rounded-2xl bg-orange-500/10 mb-4 inline-block">
+                    <i class="fa-solid fa-chart-line text-orange-500 text-3xl"></i>
+                </div>
+                <h1 class="text-4xl font-black tracking-tight mb-2">Crypto <span class="text-orange-500">Insights</span> Portal</h1>
+            </a>
             <p class="text-gray-500 dark:text-gray-400">每日加密货币市场深度分析与宏观动态追踪</p>
         </header>
 
@@ -217,6 +307,33 @@ def update_latest():
         with open('index.html', 'w', encoding='utf-8') as f:
             f.write(portal_html)
         print("Generated Portal index.html at root with summaries")
+
+        # 更新所有页面的 Sidebar
+        for entry in entries:
+            file_path = entry['url'].lstrip('/')
+            abs_path = os.path.join(os.getcwd(), file_path)
+            if os.path.exists(abs_path):
+                with open(abs_path, 'r', encoding='utf-8') as f:
+                    page_content = f.read()
+                
+                # 1. 更新 Logo 跳转链接
+                logo_pattern = r'<div class="flex items-center gap-3 mb-10">.*?</div>'
+                new_logo = f'''<a href="/" class="flex items-center gap-3 mb-10 hover:opacity-80 transition-opacity">
+            <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-bolt text-black"></i>
+            </div>
+            <span class="font-extrabold text-xl tracking-tighter">INSIGHT</span>
+        </a>'''
+                page_content = re.sub(logo_pattern, new_logo, page_content, flags=re.DOTALL)
+                
+                # 2. 更新 Nav 导航逻辑
+                nav_pattern = r'<nav class="space-y-6">.*?</nav>'
+                new_nav = f'<nav class="space-y-6">{generate_nav_html(entry["date"])}</nav>'
+                page_content = re.sub(nav_pattern, new_nav, page_content, flags=re.DOTALL)
+                
+                with open(abs_path, 'w', encoding='utf-8') as f:
+                    f.write(page_content)
+                print(f"Updated sidebar for {entry['date']}")
 
         # Update vercel.json
         vercel_config = {
