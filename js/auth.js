@@ -1,33 +1,28 @@
 // Auth 逻辑实现
 let supabase;
 
-try {
-    supabase = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
-} catch (e) {
-    console.error("Supabase client failed to initialize. Check config.js.");
-}
-
-// 切换模态框
-function toggleAuthModal() {
+// 将所有函数暴露到全局作用域
+window.toggleAuthModal = function() {
     const modal = document.getElementById('authModal');
+    if (!modal) return;
     modal.classList.toggle('hidden');
     modal.classList.toggle('flex');
-}
+};
 
-// 切换登录/注册表单
-function toggleAuthMode() {
+window.toggleAuthMode = function() {
     const title = document.getElementById('authTitle');
     const submitBtn = document.getElementById('authSubmitBtn');
     const toggleText = document.getElementById('authToggleText');
+    if (!title || !submitBtn || !toggleText) return;
+    
     const isLogin = title.innerText === '登录';
 
     title.innerText = isLogin ? '注册' : '登录';
     submitBtn.innerText = isLogin ? '立即注册' : '立即登录';
     toggleText.innerText = isLogin ? '已有账号？去登录' : '没有账号？去注册';
-}
+};
 
-// 处理表单提交
-async function handleAuthSubmit(event) {
+window.handleAuthSubmit = async function(event) {
     event.preventDefault();
     const email = document.getElementById('authEmail').value;
     const password = document.getElementById('authPassword').value;
@@ -47,39 +42,51 @@ async function handleAuthSubmit(event) {
         }
 
         if (result.error) throw result.error;
-        if (isLogin) toggleAuthModal();
+        if (isLogin) window.toggleAuthModal();
     } catch (error) {
         alert(error.message || '操作失败，请检查配置或网络');
     } finally {
         btn.disabled = false;
         btn.innerText = isLogin ? '立即登录' : '立即注册';
     }
-}
+};
 
-// 注销
-async function handleSignOut() {
+window.handleSignOut = async function() {
     await supabase.auth.signOut();
     location.reload();
-}
+};
 
-// 监听 Auth 状态
-if (supabase) {
-    supabase.auth.onAuthStateChange((event, session) => {
-        const user = session?.user;
-        const authBtnContainer = document.getElementById('authBtnContainer');
-        const userProfileContainer = document.getElementById('userProfileContainer');
-
-        if (user) {
-            // 已登录
-            if (authBtnContainer) authBtnContainer.classList.add('hidden');
-            if (userProfileContainer) {
-                userProfileContainer.classList.remove('hidden');
-                document.getElementById('userEmailDisplay').innerText = user.email;
-            }
+// 初始化
+(function initSupabase() {
+    try {
+        if (typeof supabasejs !== 'undefined') {
+            supabase = supabasejs.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+        } else if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+            supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
         } else {
-            // 未登录
-            if (authBtnContainer) authBtnContainer.classList.remove('hidden');
-            if (userProfileContainer) userProfileContainer.classList.add('hidden');
+            console.error("Supabase SDK not found. Make sure the script is loaded.");
+            return;
         }
-    });
-}
+
+        // 监听 Auth 状态
+        supabase.auth.onAuthStateChange((event, session) => {
+            const user = session?.user;
+            const authBtnContainer = document.getElementById('authBtnContainer');
+            const userProfileContainer = document.getElementById('userProfileContainer');
+
+            if (user) {
+                if (authBtnContainer) authBtnContainer.classList.add('hidden');
+                if (userProfileContainer) {
+                    userProfileContainer.classList.remove('hidden');
+                    const display = document.getElementById('userEmailDisplay');
+                    if (display) display.innerText = user.email;
+                }
+            } else {
+                if (authBtnContainer) authBtnContainer.classList.remove('hidden');
+                if (userProfileContainer) userProfileContainer.classList.add('hidden');
+            }
+        });
+    } catch (e) {
+        console.error("Supabase client failed to initialize:", e);
+    }
+})();
