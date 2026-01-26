@@ -59,7 +59,7 @@
         <i class="fa-solid fa-circle-half-stroke text-xl"></i>
     </button>
 
-    <!-- Sidebar (Will be updated by script) -->
+    <!-- Sidebar placeholder - will be updated by script -->
     <!-- Sidebar -->
     <aside class="hidden lg:flex flex-col w-64 p-6 sidebar sticky top-0 h-screen">
         <a href="/" class="flex items-center gap-3 mb-10 hover:opacity-80 transition-opacity">
@@ -134,9 +134,9 @@
         <header class="mb-12">
             <p class="text-orange-500 font-bold text-sm uppercase tracking-widest mb-2">Market Briefing</p>
             <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-4 leading-none">
-                BTCFi <span class="grad-orange">Institutional</span> Shift
+                BTC <span class="grad-orange">Stability</span> Above $100K
             </h1>
-            <p class="text-gray-400 text-lg max-w-2xl">比特币进入高位盘整期，市场重心转向 BTCFi 基础设施建设；稳定币市值突破 3000 亿美元。</p>
+            <p class="text-gray-400 text-lg max-w-2xl">比特币在 10 万美元上方震荡盘整，市场正处于“信任重定价”阶段，机构避险需求推高市场主导地位。</p>
         </header>
 
         <!-- Bento Grid -->
@@ -151,53 +151,55 @@
                             <p class="text-gray-400 text-sm mb-4">核心市场动态 (24H)</p>
                             <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4 max-w-md">
                                 <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                                    比特币在 2026 年 1 月进入整合阶段，机构资金正积极布局 BTCFi 赛道。
+                                    比特币（BTC）继续在 100,000 美元至 110,000 美元区间震荡。尽管价格较 2025 年峰值有所回调，但 BTC Dominance 依然保持高位，反映出机构投资者在宏观不确定性下向避险资产转移的趋势。
                                 </p>
                             </div>
                         </div>
                         <div class="flex items-center gap-3">
-                            <a href="https://www.coindesk.com/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
+                            <a href="https://www.coinbase.com/institutional/research-insights" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             </a>
-                            <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-bold rounded-full border border-blue-500/30">CONSOLIDATION</span>
+                            <span class="px-3 py-1 bg-orange-500/20 text-orange-400 text-xs font-bold rounded-full border border-orange-500/30">CONSOLIDATION</span>
                         </div>
                     </div>
                 </div>
-                <img src="../../../../imgs/market_trend.svg" class="w-full h-auto rounded-xl mt-4 relative z-10 opacity-80 hover:opacity-100 transition-opacity" alt="Market Trend">
+                <div class="mt-4 relative z-10 flex-1 flex items-center justify-center">
+                    <i class="fa-solid fa-chart-line text-[120px] text-orange-500/10"></i>
+                </div>
                 <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-orange-500/5 to-transparent pointer-events-none"></div>
             </div>
 
-            <!-- Stablecoin Card -->
+            <!-- ETH Upgrade Card -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative">
-                <a href="https://www.forbes.com/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://www.investing.com/crypto/ethereum" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
                 <div>
-                    <h3 class="text-xl font-bold mb-2">Stablecoin $300B+</h3>
-                    <p class="text-gray-400 text-sm mb-4">GENIUS Act Impact</p>
+                    <h3 class="text-xl font-bold mb-2">ETH Fusaka Fork</h3>
+                    <p class="text-gray-400 text-sm mb-4">网络升级预期</p>
                     <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                        稳定币市场总市值突破 3000 亿美元，Stripe、Klarna 等巨头介入改变支付版图。
+                        以太坊目前在 3,000 美元上方波动。随着 2026 年“Fusaka”硬分叉推进，市场关注其对 L2 扩容及网络实用性的长远影响。
                     </p>
                 </div>
                 <div class="mt-6 flex justify-center">
-                    <img src="../../../../imgs/usdc_settlement.svg" class="h-32 w-auto group-hover:scale-110 transition-transform duration-500" alt="USDC">
+                    <i class="fa-brands fa-ethereum text-blue-400 text-6xl group-hover:scale-110 transition-transform duration-500"></i>
                 </div>
             </div>
 
-            <!-- Regulatory Exemption Card -->
+            <!-- Stablecoin Card -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative overflow-hidden">
-                <a href="https://www.forbes.com/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors z-10">
+                <a href="https://www.forbes.com/digital-assets" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors z-10">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
                 <div class="relative z-10">
-                    <h3 class="text-xl font-bold mb-2">Innovation Exemption</h3>
-                    <p class="text-gray-400 text-sm mb-4">Paul Atkins SEC Stance</p>
-                    <p class="text-xs text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
-                        SEC 主席 Paul Atkins 预计推出“创新豁免”框架，为 DeFi 领域代币化证券提供合规缓冲。
+                    <h3 class="text-xl font-bold mb-2">$300B Milestone</h3>
+                    <p class="text-gray-400 text-sm mb-4">稳定币市场规模</p>
+                    <p class="text-xs text-gray-500 leading-relaxed bg-green-500/5 p-3 rounded-lg border border-green-500/10">
+                        受《GENIUS 法案》通过的持续利好，稳定币市场总市值突破 3000 亿美元。传统金融科技巨头 Stripe、Klarna 等深度介入支付版图。
                     </p>
                 </div>
                 <div class="mt-4 flex justify-end">
-                    <i class="fa-solid fa-shield-halved text-blue-500 text-6xl opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"></i>
+                    <i class="fa-solid fa-coins text-green-500 text-6xl opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"></i>
                 </div>
             </div>
 
@@ -210,63 +212,83 @@
                     <h3 class="text-xl font-bold mb-2 flex items-center gap-2 text-red-500">
                         Shutdown Risk <i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i>
                     </h3>
-                    <p class="text-gray-400 text-sm mb-4">Government Impasse</p>
+                    <p class="text-gray-400 text-sm mb-4">宏观不确定性</p>
                     <p class="text-xs text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                        1 月下旬美国政府面临停摆风险，宏观不确定性导致市场情绪趋于谨慎。
+                        2026 年 1 月下旬，美国政府面临潜在停摆危机。这一不确定性导致投资者情绪谨慎，BTC 作为“数字黄金”的避险属性再次凸显。
                     </p>
                 </div>
-                <div class="mt-4">
-                    <img src="../../../../imgs/shutdown_risk.svg" class="w-full h-16 object-cover rounded-lg" alt="Shutdown">
+                <div class="mt-4 flex justify-center">
+                    <i class="fa-solid fa-building-columns text-gray-600 text-5xl"></i>
                 </div>
             </div>
 
-            <!-- Telegram Gaming Card -->
+            <!-- SEC Policy Card -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative">
-                <a href="https://www.hokanews.com/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://www.galaxy.com/research" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
                 <div>
-                    <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
-                        <i class="fa-brands fa-telegram text-green-400 text-xl"></i>
+                    <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-gavel text-blue-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">Telegram Gaming</h3>
-                    <p class="text-gray-400 text-sm mb-4">Beetz Ecological Growth</p>
+                    <h3 class="text-xl font-bold mb-2">SEC Innovation</h3>
+                    <p class="text-gray-400 text-sm mb-4">监管框架转型</p>
                     <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                        以 Beetz 为代表的 Telegram 链游持续扩张，正在引入大量非原生加密用户。
+                        SEC 主席 Paul Atkins 预计推出“创新豁免”框架，为 DeFi 中的代币化证券提供合规缓冲期，标志着向“指导式监管”转向。
                     </p>
                 </div>
             </div>
 
-            <!-- Davos Quote Card -->
-            <div class="md:col-span-3 lg:col-span-3 bento-card p-8 relative overflow-hidden">
-                <i class="fa-solid fa-quote-left text-orange-500/20 text-6xl absolute -top-2 -left-2"></i>
+            <!-- Telegram Ecosystem Card -->
+            <div class="md:col-span-3 lg:col-span-3 bento-card p-8 relative overflow-hidden group">
+                <a href="https://hokanews.com/" target="_blank" class="absolute top-4 right-4 text-gray-700 hover:text-orange-500 transition-colors z-20">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <i class="fa-brands fa-telegram text-blue-500/10 text-8xl absolute -bottom-4 -right-4 group-hover:scale-110 transition-transform"></i>
                 <div class="relative z-10">
-                    <h3 class="text-xl font-bold mb-4">Davos 2026 Insight</h3>
-                    <p class="text-gray-300 italic mb-4">"2026 年将不再是炒作，而是加密行业走向成熟的一年，代币化资本将改变全球金融。"</p>
+                    <h3 class="text-xl font-bold mb-4">Telegram Crypto</h3>
+                    <p class="text-gray-300 italic mb-4">"以 Beetz 为代表的 Telegram 链游保持高速增长。简单、低门槛的交互机制正在为市场引入大量非原生用户。"</p>
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-landmark"></i></div>
-                        <span class="text-sm font-semibold text-gray-400">EmTech Invest Davos</span>
+                        <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-xs font-bold text-blue-500"><i class="fa-solid fa-users"></i></div>
+                        <span class="text-sm font-semibold text-gray-400">Mass Adoption</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Industry News List -->
+            <!-- Global Liquidity Card -->
+            <div class="md:col-span-3 lg:col-span-3 bento-card p-8 relative overflow-hidden group">
+                <a href="https://coindcx.com/blog" target="_blank" class="absolute top-4 right-4 text-gray-700 hover:text-orange-500 transition-colors z-20">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <div class="relative z-10">
+                    <h3 class="text-xl font-bold mb-4">Global Liquidity</h3>
+                    <p class="text-gray-300 italic mb-4">"2026 年美联储降息预期被视为主要增长驱动力。现货加密 ETF 的持续流入将抵消宏观波动带来的压力。"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-xs font-bold text-green-500"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                        <span class="text-sm font-semibold text-gray-400">Fed Watch</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Events List -->
             <div class="md:col-span-6 bento-card p-8">
                 <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-bolt-lightning text-yellow-500"></i> Industry Highlights
+                    <i class="fa-solid fa-calendar-check text-orange-500"></i> Upcoming Key Events
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="border-l-2 border-orange-500/30 pl-4 group">
-                        <h4 class="font-bold text-sm mb-1">BTCFi Infrastructure</h4>
-                        <p class="text-xs text-gray-500">机构资金正积极布局比特币 DeFi 赛道，提升 BTC 的资产效率。</p>
+                        <a href="https://incrypted.com/events" target="_blank" class="flex items-center gap-2 hover:text-orange-500 transition-colors">
+                            <h4 class="font-bold text-sm mb-1">Davos Forum Conclusion</h4>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                        </a>
+                        <p class="text-xs text-gray-500">1月25-26日。全球金融领袖对代币化资本和数字金融未来的讨论结论将影响接下来的市场信心。</p>
                     </div>
                     <div class="border-l-2 border-blue-500/30 pl-4 group">
-                        <h4 class="font-bold text-sm mb-1">Tokenized Equities</h4>
-                        <p class="text-xs text-gray-500">主流银行开始接受代币化股票，RWA 领域迎来合规爆发期。</p>
-                    </div>
-                    <div class="border-l-2 border-red-500/30 pl-4 group">
-                        <h4 class="font-bold text-sm mb-1">Fed Policy Cautious</h4>
-                        <p class="text-xs text-gray-500">联储官员表态谨慎，潜在降息预期仍是市场流动的核心支撑。</p>
+                        <a href="https://coingape.com/" target="_blank" class="flex items-center gap-2 hover:text-blue-500 transition-colors">
+                            <h4 class="font-bold text-sm mb-1">SEC & CFTC Chairs Speech</h4>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                        </a>
+                        <p class="text-xs text-gray-500">预计下周初。Atkins (SEC) 与 Selig (CFTC) 共同亮相，可能明确 2026 年数字商品的法律定义。</p>
                     </div>
                 </div>
             </div>
@@ -275,9 +297,16 @@
 
         <!-- Footer -->
         <footer class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
-            <p>&copy; 2026 Crypto Insight. Sources: Forbes, CNBC, Galaxy Digital, CoinGape.</p>
+            <p>&copy; 2026 Crypto Insight. @Derik LU. Sources: Coinbase, Forbes, CoinGape, Investing.com.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white transition-colors">Twitter</a>
+                <a href="#" class="hover:text-white transition-colors">Discord</a>
+                <a href="#" class="hover:text-white transition-colors">Github</a>
+            </div>
         </footer>
     </main>
+
+    <!-- Supabase and Auth will be injected by script -->
 
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
