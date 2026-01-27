@@ -33,9 +33,13 @@ def verify_images(directory):
     return all_ok
 
 if __name__ == "__main__":
-    target_dir = "imgs/2026/01/26"
-    if not verify_images(target_dir):
+    import argparse
+    parser = argparse.ArgumentParser(description="Verify images in a directory.")
+    parser.add_argument("--dir", type=str, default="imgs/2026/01/26", help="Directory to verify")
+    args = parser.parse_args()
+    
+    if not verify_images(args.dir):
         sys.exit(1)
     else:
-        print("--- All images verified successfully ---")
+        print(f"--- All images in {args.dir} verified successfully ---")
         sys.exit(0)

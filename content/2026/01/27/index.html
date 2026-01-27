@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Insight - 2026.01.25</title>
+    <title>Crypto Insight - 2026.01.27</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -17,7 +17,7 @@
         .dark body { background-color: #050505; color: #e5e5e5; }
         .light body { background-color: #f3f4f6; color: #111827; }
         
-        .bento-card { backdrop-filter: blur(10px); border-radius: 24px; transition: all 0.3s ease; }
+        .bento-card { backdrop-filter: blur(10px); border-radius: 24px; transition: all 0.3s ease; overflow: hidden; }
         .dark .bento-card { background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); }
         .light .bento-card { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
         
@@ -26,12 +26,14 @@
         .light .bento-card:hover { border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         
         .grad-orange { background: linear-gradient(135deg, #ff9900, #ff4d4d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .grad-green { background: linear-gradient(135deg, #4caf50, #8bc34a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .grad-blue { background: linear-gradient(135deg, #00c6ff, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .grad-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .grad-silver { background: linear-gradient(135deg, #9ca3af, #4b5563); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .sidebar { transition: all 0.3s ease; }
         .dark .sidebar { background: rgba(10, 10, 10, 0.8); border-right: 1px solid rgba(255, 255, 255, 0.05); }
         .light .sidebar { background: rgba(255, 255, 255, 0.9); border-right: 1px solid rgba(0, 0, 0, 0.05); }
+
+        .card-img { width: 100%; height: 160px; object-fit: cover; border-radius: 16px; margin-bottom: 1rem; }
     </style>
     <script>
         function toggleTheme() {
@@ -78,7 +80,7 @@
                 <i class="fa-solid fa-house"></i> Portal
             </a>
          
-                <a href="/content/2026/01/27/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
+                <a href="/content/2026/01/27/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
                     <i class="fa-solid fa-calendar-day"></i> 2026.01.27
                 </a>
              
@@ -86,7 +88,7 @@
                     <i class="fa-solid fa-calendar-day"></i> 2026.01.26
                 </a>
              
-                <a href="/content/2026/01/25/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
+                <a href="/content/2026/01/25/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
                     <i class="fa-solid fa-calendar-day"></i> 2026.01.25
                 </a>
              
@@ -137,160 +139,105 @@
         <header class="mb-12">
             <p class="text-orange-500 font-bold text-sm uppercase tracking-widest mb-2">Market Briefing</p>
             <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-4 leading-none">
-                Fed Pivot Odds <span class="grad-orange">Plummet</span>
+                BTC <span class="grad-orange">$87,500</span> 拉锯战
             </h1>
-            <p class="text-gray-400 text-lg max-w-2xl">受超预期 GDP 数据影响，1 月降息概率降至 13.3%，BTC 在 $88,000 关口面临方向性选择。</p>
+            <p class="text-gray-400 text-lg max-w-2xl">企业国库减持压力与南美机构入场利好并存，比特币在 8.8 万美元下方震荡。白银表现罕见超越加密资产。</p>
         </header>
 
         <!-- Bento Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
             
-            <!-- Main Chart Card -->
-            <div class="md:col-span-4 lg:col-span-4 row-span-2 bento-card p-8 flex flex-col justify-between overflow-hidden relative">
+            <!-- GameStop BTC Card -->
+            <div class="md:col-span-4 lg:col-span-4 row-span-2 bento-card p-8 flex flex-col justify-between group">
                 <div class="relative z-10">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h2 class="text-2xl font-bold mb-1">Market Sentiment</h2>
-                            <p class="text-gray-400 text-sm mb-4">核心市场动态 (24H)</p>
-                            <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4 max-w-md">
-                                <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                                    加密货币总市值微涨 0.79%，比特币持稳于 $88,000 左右。受 GDP 数据影响，CME 显示 1 月维持利率不变概率升至 86%。
-                                </p>
-                            </div>
+                            <h2 class="text-2xl font-bold mb-1">GameStop 清仓式转移 4,710 BTC</h2>
+                            <p class="text-gray-400 text-sm mb-4">Corporate Treasury Update</p>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <a href="https://www.coindesk.com/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            </a>
-                            <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-bold rounded-full border border-blue-500/30">NEUTRAL / WAIT</span>
-                        </div>
-                    </div>
-                </div>
-                <img src="../../../../imgs/market_trend.svg" class="w-full h-auto rounded-xl mt-4 relative z-10 opacity-80 hover:opacity-100 transition-opacity" alt="Market Trend">
-                <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-orange-500/5 to-transparent pointer-events-none"></div>
-            </div>
-
-            <!-- USDC Settlement Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative">
-                <a href="https://crypto.news/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <div>
-                    <h3 class="text-xl font-bold mb-2">IBKR USDC 24/7</h3>
-                    <p class="text-gray-400 text-sm mb-4">实时美元结算支持</p>
-                    <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                        盈透证券实现 USDC 24/7 存款及自动兑换，显著降低跨境汇款延迟，未来将接入 RLUSD 与 PYUSD。
-                    </p>
-                </div>
-                <div class="mt-6 flex justify-center">
-                    <img src="../../../../imgs/usdc_settlement.svg" class="h-32 w-auto group-hover:scale-110 transition-transform duration-500" alt="USDC">
-                </div>
-            </div>
-
-            <!-- Grayscale BNB Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative overflow-hidden">
-                <a href="https://www.theblock.co/latest-crypto-news" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors z-10">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <div class="relative z-10">
-                    <h3 class="text-xl font-bold mb-2">Grayscale GBNB</h3>
-                    <p class="text-gray-400 text-sm mb-4">BNB 现货 ETF 申请推进</p>
-                    <p class="text-xs text-gray-500 leading-relaxed bg-yellow-500/5 p-3 rounded-lg border border-yellow-500/10">
-                        继昨日提交申请后，市场热议 GBNB 基金是否能在 Nasdaq 顺利挂牌，这可能成为首个挂钩非单一共识代币的 ETF。
-                    </p>
-                </div>
-                <div class="mt-4 flex justify-end">
-                    <i class="fa-brands fa-binance text-yellow-500 text-6xl opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"></i>
-                </div>
-            </div>
-
-            <!-- Gov Shutdown Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative bg-gradient-to-br from-red-500/5 to-transparent">
-                <a href="https://coingape.com/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <div>
-                    <h3 class="text-xl font-bold mb-2 flex items-center gap-2 text-red-500">
-                        Shutdown Risk <i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i>
-                    </h3>
-                    <p class="text-gray-400 text-sm mb-4">1月31日关门红线迫近</p>
-                    <p class="text-xs text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                        国会预算僵局若不破除，政府停摆可能导致 SEC 和 CFTC 等监管机构工作停滞，推迟关键加密政策执行。
-                    </p>
-                </div>
-                <div class="mt-4">
-                    <img src="../../../../imgs/shutdown_risk.svg" class="w-full h-16 object-cover rounded-lg" alt="Shutdown">
-                </div>
-            </div>
-
-            <!-- CLARITY Act Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative">
-                <a href="https://coingape.com/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <div>
-                    <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mb-4">
-                        <i class="fa-solid fa-gavel text-blue-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">CLARITY Act</h3>
-                    <p class="text-gray-400 text-sm mb-4">参议院审议启动</p>
-                    <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                        旨在明确数字商品定义、限制 SEC 越权监管的法案正寻求参议院支持。
-                    </p>
-                </div>
-            </div>
-
-            <!-- Crypto Week Quote Card -->
-            <div class="md:col-span-3 lg:col-span-3 bento-card p-8 relative overflow-hidden">
-                <a href="https://www.cryptocraft.com/calendar" target="_blank" class="absolute top-4 right-4 text-gray-700 hover:text-orange-500 transition-colors z-20">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <i class="fa-solid fa-calendar-check text-orange-500/20 text-6xl absolute -top-2 -left-2"></i>
-                <div class="relative z-10">
-                    <h3 class="text-xl font-bold mb-4">Washington Crypto Week</h3>
-                    <p class="text-gray-300 italic mb-4">"下周二多位监管高官将发表演讲，特朗普总统也可能参与相关讨论，政策转折点在即。"</p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-user-tie"></i></div>
-                        <span class="text-sm font-semibold text-gray-400">Policy Outlook</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick News List -->
-            <div class="md:col-span-6 bento-card p-8">
-                <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-bolt-lightning text-yellow-500"></i> Industry & Tech
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="border-l-2 border-orange-500/30 pl-4 group">
-                        <a href="https://crypto.news/" target="_blank" class="flex items-center gap-2 hover:text-orange-500 transition-colors">
-                            <h4 class="font-bold text-sm mb-1">Cloud Mining Industrialization</h4>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                        <a href="https://coinmarketcap.com/cmc-ai/bitcoin/latest-updates/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
-                        <p class="text-xs text-gray-500">比特币挖矿难度攀升，HashBitcoin 等透明化云挖矿平台成为散户新选择。</p>
                     </div>
-                    <div class="border-l-2 border-blue-500/30 pl-4 group">
-                        <a href="https://coingape.com/" target="_blank" class="flex items-center gap-2 hover:text-blue-500 transition-colors">
-                            <h4 class="font-bold text-sm mb-1">Altcoin Demand Weak</h4>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                        </a>
-                        <p class="text-xs text-gray-500">机构对山寨币需求疲软，交易员正将资金转向更具确定性的资产。</p>
-                    </div>
-                    <div class="border-l-2 border-red-500/30 pl-4 group">
-                        <a href="https://www.cryptocraft.com/calendar" target="_blank" class="flex items-center gap-2 hover:text-red-500 transition-colors">
-                            <h4 class="font-bold text-sm mb-1">Regulatory Keynote</h4>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                        </a>
-                        <p class="text-xs text-gray-500">下周二 SEC 主席 Atkins 与 CFTC 主席 Selig 将发表监管框架演讲。</p>
+                    <img src="../../../../imgs/2026/01/27/gamestop_btc.jpg" alt="GameStop BTC" class="card-img h-64">
+                    <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4">
+                        <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                            零售巨头 GameStop 将其持有的全部 4,710 枚 BTC（约 4.22 亿美元）转移至 Coinbase Prime。市场普遍认为这是清仓抛售信号，标志着该公司战略重心的重大调整。
+                        </p>
                     </div>
                 </div>
+            </div>
+
+            <!-- Colombia Pension Card -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://coinmarketcap.com/cmc-ai/bitcoin/latest-updates/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">哥伦比亚养老金进场</h3>
+                <p class="text-gray-400 text-sm mb-4">Institutional Adoption</p>
+                <img src="../../../../imgs/2026/01/27/colombia_pension.jpg" alt="Colombia Pension" class="card-img">
+                <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
+                    AFP Protección (550亿 AUM) 推出比特币投资产品。这是南美洲养老金体系拥抱数字资产的里程碑事件。
+                </p>
+            </div>
+
+            <!-- Silver vs BTC Card -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://www.theblock.co/post/337148/silver-overtakes-bitcoins-post-2017-gains" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">银价超越比特币涨幅</h3>
+                <p class="text-gray-400 text-sm mb-4">Macro Trends</p>
+                <img src="../../../../imgs/2026/01/27/silver_vs_btc.jpg" alt="Silver vs BTC" class="card-img">
+                <p class="text-xs text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
+                    白银突破 $115，其自 2017 年以来的累计表现已超过 BTC。资金在宏观风险中寻求多元化避险。
+                </p>
+            </div>
+
+            <!-- US Policy Card -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://www.theblock.co/post/337149/democratic-aide-we-are-all-willing-to-return-to-the-table-after-senate-ag-crypto-talks-unravel" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2 text-blue-500">加密法案谈判僵局</h3>
+                <p class="text-gray-400 text-sm mb-4">Regulatory Policy</p>
+                <img src="../../../../imgs/2026/01/27/congress_policy.jpg" alt="US Congress" class="card-img">
+                <p class="text-xs text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
+                    参议院农委会谈判破裂。立法延迟可能在短期内限制美加密企业估值，并维持监管不确定性。
+                </p>
+            </div>
+
+            <!-- Hyperliquid Card -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://www.theblock.co/post/337150/hyperliquids-hip-3-dexs-hit-all-time-high" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">Hyperliquid OI 创新高</h3>
+                <p class="text-gray-400 text-sm mb-4">DeFi Activity</p>
+                <img src="../../../../imgs/2026/01/27/hyperliquid_dex.jpg" alt="Hyperliquid" class="card-img">
+                <p class="text-xs text-gray-500 leading-relaxed bg-green-500/5 p-3 rounded-lg border border-green-500/10">
+                    未平仓合约达到 7.9 亿美元历史高点。受商品交易热潮驱动，去中心化衍生品市场保持高度活跃。
+                </p>
+            </div>
+
+            <!-- AVAX ETF Card -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://www.theblock.co/post/337151/first-avalanche-etf-hits-us-markets" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">VanEck 推出 AVAX ETF</h3>
+                <p class="text-gray-400 text-sm mb-4">Spot ETF Expansion</p>
+                <img src="../../../../imgs/2026/01/27/avax_etf.jpg" alt="AVAX ETF" class="card-img">
+                <p class="text-xs text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
+                    美国首只 Avalanche 现货 ETF 落地。山寨币 ETF 浪潮开始从主流币向头部 Layer1 协议扩散。
+                </p>
             </div>
 
         </div>
 
         <!-- Footer -->
         <footer class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
-            <p>&copy; 2026 Crypto Insight. Sources: CoinDesk, CoinGape, The Block, Crypto.news.</p>
+            <p>&copy; 2026 Crypto Insight. @Derik LU. Sources: CoinDesk, The Block, CoinMarketCap.</p>
             <div class="flex gap-6">
                 <a href="#" class="hover:text-white transition-colors">Twitter</a>
                 <a href="#" class="hover:text-white transition-colors">Discord</a>
@@ -299,6 +246,7 @@
         </footer>
     </main>
 
+    <!-- Supabase and Auth will be injected by script -->
 
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
