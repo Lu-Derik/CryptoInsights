@@ -34,8 +34,52 @@
         .light .sidebar { background: rgba(255, 255, 255, 0.9); border-right: 1px solid rgba(0, 0, 0, 0.05); }
 
         .card-img { width: 100%; height: 160px; object-fit: cover; border-radius: 16px; margin-bottom: 1rem; }
+        header .update-time { font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem; display: flex; items-center: center; gap: 0.25rem; }
+        .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
     <script>
+        async function fetchMarketData() {
+            try {
+                // Fetch BTC and ETH prices from CoinGecko
+                const priceResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+                const priceData = await priceResponse.json();
+                
+                if (priceData.bitcoin) {
+                    const btcPrice = priceData.bitcoin.usd;
+                    const btcChange = priceData.bitcoin.usd_24h_change;
+                    document.getElementById('btc-price-display').innerHTML = `$${btcPrice.toLocaleString()} <span class="text-xs font-normal ${btcChange >= 0 ? 'text-green-500' : 'text-red-500'}">${btcChange >= 0 ? '+' : ''}${btcChange.toFixed(2)}%</span>`;
+                    document.getElementById('header-btc-price').innerText = `$${btcPrice.toLocaleString()}`;
+                }
+                
+                if (priceData.ethereum) {
+                    const ethPrice = priceData.ethereum.usd;
+                    const ethChange = priceData.ethereum.usd_24h_change;
+                    document.getElementById('eth-price-display').innerHTML = `$${ethPrice.toLocaleString()} <span class="text-xs font-normal ${ethChange >= 0 ? 'text-green-500' : 'text-red-500'}">${ethChange >= 0 ? '+' : ''}${ethChange.toFixed(2)}%</span>`;
+                }
+
+                // Fetch Fear & Greed Index
+                const fngResponse = await fetch('https://api.alternative.me/fng/');
+                const fngData = await fngResponse.json();
+                
+                if (fngData.data && fngData.data.length > 0) {
+                    const sentiment = fngData.data[0];
+                    const fngValue = sentiment.value;
+                    const fngClass = sentiment.value_classification;
+                    document.getElementById('sentiment-display').innerHTML = `${fngClass} <span class="text-xs font-normal text-gray-400">Index: ${fngValue}</span>`;
+                }
+                
+                document.getElementById('last-update-time').innerText = new Date().toLocaleTimeString();
+            } catch (error) {
+                console.error('Failed to fetch market data:', error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchMarketData();
+            setInterval(fetchMarketData, 60000); // Update every minute
+        });
+
         function toggleTheme() {
             const html = document.documentElement;
             if (html.classList.contains('dark')) {
@@ -142,24 +186,30 @@
     <!-- Main Content -->
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto">
         <header class="mb-12">
-            <p class="text-orange-500 font-bold text-sm uppercase tracking-widest mb-2">Market Briefing</p>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+                <p class="text-orange-500 font-bold text-sm uppercase tracking-widest">Market Briefing</p>
+                <div class="update-time flex items-center gap-2">
+                    <span class="live-dot"></span>
+                    <span>Live Market Status • Last updated: <span id="last-update-time">Loading...</span></span>
+                </div>
+            </div>
             <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-4 leading-none">
-                BTC <span class="grad-orange">$86,400</span> 支撑测试
+                BTC <span class="grad-orange" id="header-btc-price">$86,400</span> 支撑测试
             </h1>
             <p class="text-gray-400 text-lg max-w-2xl">受宏观贸易局势及大规模强平影响，市场情绪转入“恐惧”。Tether 推出美国监管稳定币 USAT 挑战 Circle。</p>
             
             <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-orange-500/5 border border-orange-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">BTC Price</p>
-                    <p class="text-xl font-black text-orange-500">$86,400 <span class="text-xs font-normal text-gray-400">Weekly -7%</span></p>
+                    <p class="text-xl font-black text-orange-500" id="btc-price-display">$86,400 <span class="text-xs font-normal text-gray-400">Loading...</span></p>
                 </div>
                 <div class="bg-blue-500/5 border border-blue-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">ETH Momentum</p>
-                    <p class="text-xl font-black text-blue-500">$2,850 <span class="text-xs font-normal text-gray-400">Self-Sovereignty Year</span></p>
+                    <p class="text-xl font-black text-blue-500" id="eth-price-display">$2,850 <span class="text-xs font-normal text-gray-400">Loading...</span></p>
                 </div>
                 <div class="bg-red-500/5 border border-red-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">Market Sentiment</p>
-                    <p class="text-xl font-black text-red-500">Fear <span class="text-xs font-normal text-gray-400">High Liquidations</span></p>
+                    <p class="text-xl font-black text-red-500" id="sentiment-display">Fear <span class="text-xs font-normal text-gray-400">Loading...</span></p>
                 </div>
             </div>
         </header>
