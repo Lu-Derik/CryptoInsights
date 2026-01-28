@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Insight - 2026.01.27</title>
+    <title>Crypto Insight - 2026.01.28</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -27,7 +27,7 @@
         
         .grad-orange { background: linear-gradient(135deg, #ff9900, #ff4d4d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .grad-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .grad-silver { background: linear-gradient(135deg, #9ca3af, #4b5563); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .grad-purple { background: linear-gradient(135deg, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .sidebar { transition: all 0.3s ease; }
         .dark .sidebar { background: rgba(10, 10, 10, 0.8); border-right: 1px solid rgba(255, 255, 255, 0.05); }
@@ -61,6 +61,7 @@
         <i class="fa-solid fa-circle-half-stroke text-xl"></i>
     </button>
 
+    <!-- Sidebar (Will be synced by update_latest.py) -->
     <!-- Sidebar -->
     <aside class="hidden lg:flex flex-col w-64 p-6 sidebar sticky top-0 h-screen">
         <a href="/" class="flex items-center gap-3 mb-10 hover:opacity-80 transition-opacity">
@@ -80,11 +81,11 @@
                 <i class="fa-solid fa-house"></i> Portal
             </a>
          
-                <a href="/content/2026/01/28/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
+                <a href="/content/2026/01/28/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
                     <i class="fa-solid fa-calendar-day"></i> 2026.01.28
                 </a>
              
-                <a href="/content/2026/01/27/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
+                <a href="/content/2026/01/27/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
                     <i class="fa-solid fa-calendar-day"></i> 2026.01.27
                 </a>
              
@@ -143,21 +144,22 @@
         <header class="mb-12">
             <p class="text-orange-500 font-bold text-sm uppercase tracking-widest mb-2">Market Briefing</p>
             <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-4 leading-none">
-                BTC <span class="grad-orange">$87,500</span> 拉锯战
+                BTC <span class="grad-orange">$86,400</span> 支撑测试
             </h1>
-            <p class="text-gray-400 text-lg max-w-2xl">企业国库减持压力与南美机构入场利好并存，比特币在 8.8 万美元下方震荡。白银表现罕见超越加密资产。</p>
+            <p class="text-gray-400 text-lg max-w-2xl">受宏观贸易局势及大规模强平影响，市场情绪转入“恐惧”。Tether 推出美国监管稳定币 USAT 挑战 Circle。</p>
+            
             <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-orange-500/5 border border-orange-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">BTC Price</p>
-                    <p class="text-xl font-black text-orange-500">$87,500 <span class="text-xs font-normal text-gray-400">Under Pressure</span></p>
+                    <p class="text-xl font-black text-orange-500">$86,400 <span class="text-xs font-normal text-gray-400">Weekly -7%</span></p>
                 </div>
                 <div class="bg-blue-500/5 border border-blue-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">ETH Momentum</p>
-                    <p class="text-xl font-black text-blue-500">$2,900 <span class="text-xs font-normal text-gray-400">Institutional Buy</span></p>
+                    <p class="text-xl font-black text-blue-500">$2,850 <span class="text-xs font-normal text-gray-400">Self-Sovereignty Year</span></p>
                 </div>
-                <div class="bg-purple-500/5 border border-purple-500/10 rounded-2xl p-4">
+                <div class="bg-red-500/5 border border-red-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">Market Sentiment</p>
-                    <p class="text-xl font-black text-purple-500">Neutral <span class="text-xs font-normal text-gray-400">Multi-Factor Tug</span></p>
+                    <p class="text-xl font-black text-red-500">Fear <span class="text-xs font-normal text-gray-400">High Liquidations</span></p>
                 </div>
             </div>
         </header>
@@ -165,116 +167,100 @@
         <!-- Bento Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
             
-            <!-- GameStop BTC Card -->
+            <!-- Tether USAT Card -->
             <div class="md:col-span-4 lg:col-span-4 row-span-2 bento-card p-8 flex flex-col justify-between group">
                 <div class="relative z-10">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h2 class="text-2xl font-bold mb-1">GameStop 清仓式转移 4,710 BTC</h2>
-                            <p class="text-gray-400 text-sm mb-4">Corporate Treasury Update</p>
+                            <h2 class="text-2xl font-bold mb-1">Tether 推出“美国制造”稳定币 USAT</h2>
+                            <p class="text-gray-400 text-sm mb-4">Stablecoin Wars</p>
                         </div>
-                        <a href="https://coinmarketcap.com/cmc-ai/bitcoin/latest-updates/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
+                        <a href="https://www.coindesk.com/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <img src="../../../../imgs/2026/01/27/gamestop_btc.jpg" alt="GameStop BTC" class="card-img h-64">
+                    <img src="../../../../imgs/2026/01/28/tether_usat.jpg" alt="Tether USAT" class="card-img h-64">
                     <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4">
                         <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                            零售巨头 GameStop 将其持有的全部 4,710 枚 BTC（约 4.22 亿美元）转移至 Coinbase Prime。市场普遍认为这是清仓抛售信号，标志着该公司战略重心的重大调整。
+                            Tether 联合 Anchorage Digital Bank 推出符合 GENIUS 法案的稳定币 USAT。该代币旨在满足机构对美国监管下数字美元的需求，直接挑战 Circle 的市场地位。
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- Colombia Pension Card -->
+            <!-- White House Davos Card -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://coinmarketcap.com/cmc-ai/bitcoin/latest-updates/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://www.coindesk.com/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">哥伦比亚养老金进场</h3>
-                <p class="text-gray-400 text-sm mb-4">Institutional Adoption</p>
-                <img src="../../../../imgs/2026/01/27/colombia_pension.jpg" alt="Colombia Pension" class="card-img">
+                <h3 class="text-xl font-bold mb-2">达沃斯 2026：监管转折</h3>
+                <p class="text-gray-400 text-sm mb-4">Policy & Regulation</p>
+                <img src="../../../../imgs/2026/01/28/white_house_davos.jpg" alt="Davos 2026" class="card-img">
                 <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                    AFP Protección (550亿 AUM) 推出比特币投资产品。这是南美洲养老金体系拥抱数字资产的里程碑事件。
+                    白宫顾问 Patrick Witt 认为 2026 年达沃斯是加密货币全球常态化的关键节点，稳定币正成为全球金融的“门户”。
                 </p>
             </div>
 
-            <!-- Silver vs BTC Card -->
+            <!-- Vitalik ETH Card -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/337148/silver-overtakes-bitcoins-post-2017-gains" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://cryptonews.com/news/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">银价超越比特币涨幅</h3>
-                <p class="text-gray-400 text-sm mb-4">Macro Trends</p>
-                <img src="../../../../imgs/2026/01/27/silver_vs_btc.jpg" alt="Silver vs BTC" class="card-img">
+                <h3 class="text-xl font-bold mb-2">Vitalik：2026 主权回归</h3>
+                <p class="text-gray-400 text-sm mb-4">Ethereum Vision</p>
+                <img src="../../../../imgs/2026/01/28/vitalik_eth.jpg" alt="Vitalik ETH" class="card-img">
                 <p class="text-xs text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
-                    白银突破 $115，其自 2017 年以来的累计表现已超过 BTC。资金在宏观风险中寻求多元化避险。
+                    Vitalik 呼吁以太坊回归无许可核心，夺回在追求主流化过程中失去的“自我主权”。
                 </p>
             </div>
 
-            <!-- US Policy Card -->
+            <!-- Steak 'n Shake BTC Card -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/337149/democratic-aide-we-are-all-willing-to-return-to-the-table-after-senate-ag-crypto-talks-unravel" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://cryptonews.com/news/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2 text-blue-500">加密法案谈判僵局</h3>
-                <p class="text-gray-400 text-sm mb-4">Regulatory Policy</p>
-                <img src="../../../../imgs/2026/01/27/congress_policy.jpg" alt="US Congress" class="card-img">
-                <p class="text-xs text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
-                    参议院农委会谈判破裂。立法延迟可能在短期内限制美加密企业估值，并维持监管不确定性。
+                <h3 class="text-xl font-bold mb-2">餐饮巨头购入 $10M BTC</h3>
+                <p class="text-gray-400 text-sm mb-4">Corporate Treasury</p>
+                <img src="../../../../imgs/2026/01/28/steak_shake_btc.jpg" alt="Steak n Shake" class="card-img">
+                <p class="text-xs text-gray-500 leading-relaxed bg-orange-500/5 p-3 rounded-lg border border-orange-500/10">
+                    Steak ’n Shake 将 BTC 作为资产储备。餐饮连锁巨头开始模仿 MicroStrategy 的财务策略。
                 </p>
             </div>
 
-            <!-- Hyperliquid Card -->
+            <!-- BRICS Digital Card -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/337150/hyperliquids-hip-3-dexs-hit-all-time-high" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://cryptonews.com/news/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">Hyperliquid OI 创新高</h3>
-                <p class="text-gray-400 text-sm mb-4">DeFi Activity</p>
-                <img src="../../../../imgs/2026/01/27/hyperliquid_dex.jpg" alt="Hyperliquid" class="card-img">
-                <p class="text-xs text-gray-500 leading-relaxed bg-green-500/5 p-3 rounded-lg border border-green-500/10">
-                    未平仓合约达到 7.9 亿美元历史高点。受商品交易热潮驱动，去中心化衍生品市场保持高度活跃。
+                <h3 class="text-xl font-bold mb-2">BRICS 跨境结算提案</h3>
+                <p class="text-gray-400 text-sm mb-4">Global CBDC</p>
+                <img src="../../../../imgs/2026/01/28/brics_digital.jpg" alt="BRICS Digital" class="card-img">
+                <p class="text-xs text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
+                    印度提议 BRICS 国家链接数字货币以简化支付，旨在建立去 SWIFT 化的跨境结算体系。
                 </p>
             </div>
 
-            <!-- AVAX ETF Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/337151/first-avalanche-etf-hits-us-markets" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <h3 class="text-xl font-bold mb-2">VanEck 推出 AVAX ETF</h3>
-                <p class="text-gray-400 text-sm mb-4">Spot ETF Expansion</p>
-                <img src="../../../../imgs/2026/01/27/avax_etf.jpg" alt="AVAX ETF" class="card-img">
-                <p class="text-xs text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                    美国首只 Avalanche 现货 ETF 落地。山寨币 ETF 浪潮开始从主流币向头部 Layer1 协议扩散。
-                </p>
-            </div>
-
-            <!-- Saylor Debate Card -->
+            <!-- BTC Mining Card -->
             <div class="md:col-span-4 lg:col-span-4 bento-card p-8 flex flex-col justify-center relative overflow-hidden group">
                 <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <i class="fa-solid fa-quote-right text-9xl"></i>
+                    <i class="fa-solid fa-microchip text-9xl"></i>
                 </div>
                 <div class="relative z-10">
                     <div class="flex justify-between items-start mb-4">
-                        <span class="px-3 py-1 rounded-full bg-orange-500/10 text-orange-500 text-[10px] font-bold uppercase tracking-wider">Protocol Debate</span>
-                        <a href="https://coinmarketcap.com/cmc-ai/bitcoin/latest-updates/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
+                        <span class="px-3 py-1 rounded-full bg-red-500/10 text-red-500 text-[10px] font-bold uppercase tracking-wider">Network Status</span>
+                        <a href="https://www.coindesk.com/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <h2 class="text-3xl font-black mb-4 tracking-tight italic">“Ossification is protection.”</h2>
+                    <h2 class="text-3xl font-black mb-4 tracking-tight">BTC 算力跌破 1,000 EH/s</h2>
                     <p class="text-gray-400 text-lg mb-6 leading-relaxed">
-                        Michael Saylor 警告称，主张对比特币协议进行重大升级的开发者是“野心勃勃的投机者”。他认为协议僵化是保护网络的最佳方式。
+                        受矿工向 AI 与高效计算（HPC）业务转型影响，全网算力自 9 月以来首次大幅回落。矿工正在宏观压力下寻找更多元化的收益来源。
                     </p>
                     <div class="flex items-center gap-4">
                         <div class="h-px flex-1 bg-white/10"></div>
-                        <span class="text-xs text-gray-500 font-medium uppercase tracking-widest">Saylor vs Developers</span>
+                        <span class="text-xs text-gray-500 font-medium uppercase tracking-widest">Mining Economics Shift</span>
                         <div class="h-px flex-1 bg-white/10"></div>
                     </div>
-                    <p class="mt-6 text-sm text-gray-500 leading-relaxed text-center italic">
-                        该言论引发了社区关于比特币“创新与安全平衡”的激烈辩论。
-                    </p>
                 </div>
             </div>
 
@@ -291,7 +277,10 @@
         </footer>
     </main>
 
-    <!-- Supabase and Auth will be injected by script -->
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../../../js/config.js"></script>
+    <script src="../../../../js/auth.js"></script>
 
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
