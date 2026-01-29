@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Insight - 2026.01.26</title>
+    <title>Crypto Insight - 2026.01.29</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -26,15 +26,60 @@
         .light .bento-card:hover { border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         
         .grad-orange { background: linear-gradient(135deg, #ff9900, #ff4d4d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .grad-red { background: linear-gradient(135deg, #f87171, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .grad-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .grad-purple { background: linear-gradient(135deg, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .sidebar { transition: all 0.3s ease; }
         .dark .sidebar { background: rgba(10, 10, 10, 0.8); border-right: 1px solid rgba(255, 255, 255, 0.05); }
         .light .sidebar { background: rgba(255, 255, 255, 0.9); border-right: 1px solid rgba(0, 0, 0, 0.05); }
 
         .card-img { width: 100%; height: 160px; object-fit: cover; border-radius: 16px; margin-bottom: 1rem; }
+        header .update-time { font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem; display: flex; items-center: center; gap: 0.25rem; }
+        .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
     <script>
+        async function fetchMarketData() {
+            try {
+                // Fetch BTC and ETH prices from CoinGecko
+                const priceResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+                const priceData = await priceResponse.json();
+                
+                if (priceData.bitcoin) {
+                    const btcPrice = priceData.bitcoin.usd;
+                    const btcChange = priceData.bitcoin.usd_24h_change;
+                    document.getElementById('btc-price-display').innerHTML = `$${btcPrice.toLocaleString()} <span class="text-xs font-normal ${btcChange >= 0 ? 'text-green-500' : 'text-red-500'}">${btcChange >= 0 ? '+' : ''}${btcChange.toFixed(2)}%</span>`;
+                    document.getElementById('header-btc-price').innerText = `$${btcPrice.toLocaleString()}`;
+                }
+                
+                if (priceData.ethereum) {
+                    const ethPrice = priceData.ethereum.usd;
+                    const ethChange = priceData.ethereum.usd_24h_change;
+                    document.getElementById('eth-price-display').innerHTML = `$${ethPrice.toLocaleString()} <span class="text-xs font-normal ${ethChange >= 0 ? 'text-green-500' : 'text-red-500'}">${ethChange >= 0 ? '+' : ''}${ethChange.toFixed(2)}%</span>`;
+                }
+
+                // Fetch Fear & Greed Index
+                const fngResponse = await fetch('https://api.alternative.me/fng/');
+                const fngData = await fngResponse.json();
+                
+                if (fngData.data && fngData.data.length > 0) {
+                    const sentiment = fngData.data[0];
+                    const fngValue = sentiment.value;
+                    const fngClass = sentiment.value_classification;
+                    document.getElementById('sentiment-display').innerHTML = `${fngClass} <span class="text-xs font-normal text-gray-400">Index: ${fngValue}</span>`;
+                }
+                
+                document.getElementById('last-update-time').innerText = new Date().toLocaleTimeString();
+            } catch (error) {
+                console.error('Failed to fetch market data:', error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchMarketData();
+            setInterval(fetchMarketData, 60000); // Update every minute
+        });
+
         function toggleTheme() {
             const html = document.documentElement;
             if (html.classList.contains('dark')) {
@@ -79,7 +124,7 @@
                 <i class="fa-solid fa-house"></i> Portal
             </a>
          
-                <a href="/content/2026/01/29/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
+                <a href="/content/2026/01/29/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
                     <i class="fa-solid fa-calendar-day"></i> 2026.01.29
                 </a>
              
@@ -91,7 +136,7 @@
                     <i class="fa-solid fa-calendar-day"></i> 2026.01.27
                 </a>
              
-                <a href="/content/2026/01/26/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
+                <a href="/content/2026/01/26/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
                     <i class="fa-solid fa-calendar-day"></i> 2026.01.26
                 </a>
              
@@ -144,109 +189,139 @@
     <!-- Main Content -->
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto">
         <header class="mb-12">
-            <p class="text-orange-500 font-bold text-sm uppercase tracking-widest mb-2">Market Briefing</p>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+                <p class="text-orange-500 font-bold text-sm uppercase tracking-widest">Market Briefing</p>
+                <div class="update-time flex items-center gap-2">
+                    <span class="live-dot"></span>
+                    <span>Live Market Status • Last updated: <span id="last-update-time">Loading...</span></span>
+                </div>
+            </div>
             <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-4 leading-none">
-                BTC <span class="grad-red">跌破 $88,000</span>
+                BTC <span class="grad-orange" id="header-btc-price">$87,970</span> 关口整合
             </h1>
-            <p class="text-gray-400 text-lg max-w-2xl">受美国政府停摆担忧及宏观政策不确定性影响，加密市场今日普遍回调，比特币领跌至 8.7 万美元区间。</p>
+            <p class="text-gray-400 text-lg max-w-2xl">恒生银行推出基于以太坊的代币化黄金 ETF，RWA 赛道迎金融巨头。Tether 持续增持黄金，机构对冲情绪升温。</p>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-orange-500/5 border border-orange-500/10 rounded-2xl p-4">
+                    <p class="text-xs font-bold text-gray-500 uppercase mb-1">BTC Price</p>
+                    <p class="text-xl font-black text-orange-500" id="btc-price-display">$87,970 <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                </div>
+                <div class="bg-blue-500/5 border border-blue-500/10 rounded-2xl p-4">
+                    <p class="text-xs font-bold text-gray-500 uppercase mb-1">ETH Momentum</p>
+                    <p class="text-xl font-black text-blue-500" id="eth-price-display">$2,949 <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                </div>
+                <div class="bg-red-500/5 border border-red-500/10 rounded-2xl p-4">
+                    <p class="text-xs font-bold text-gray-500 uppercase mb-1">Market Sentiment</p>
+                    <p class="text-xl font-black text-red-500" id="sentiment-display">Neutral <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                </div>
+            </div>
         </header>
 
         <!-- Bento Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
             
-            <!-- BTC Price Card -->
+            <!-- Gold ETF Card -->
             <div class="md:col-span-4 lg:col-span-4 row-span-2 bento-card p-8 flex flex-col justify-between group">
                 <div class="relative z-10">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h2 class="text-2xl font-bold mb-1">比特币跌破 88,000 美元</h2>
-                            <p class="text-gray-400 text-sm mb-4">Market Core Insights</p>
+                            <h2 class="text-2xl font-bold mb-1">恒生银行推出以太坊代币化黄金 ETF</h2>
+                            <p class="text-gray-400 text-sm mb-4">RWA & Institutional Adoption</p>
                         </div>
-                        <a href="https://www.coindesk.com/price/bitcoin" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
+                        <a href="https://www.theblock.co/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <img src="../../../../imgs/2026/01/26/btc_drop.jpg" alt="BTC Chart" class="card-img h-64">
-                    <div class="bg-red-500/5 dark:bg-red-500/10 border border-red-500/10 dark:border-red-500/20 rounded-xl p-4">
+                    <img src="../../../../imgs/2026/01/29/gold_etf.jpg" alt="Gold ETF" class="card-img h-64">
+                    <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4">
                         <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                            2026年1月26日，比特币（BTC）价格跌至约 $87,826.83，24小时跌幅约 1.08%。市场避险情绪升温，投资者对华盛顿预算僵局感到不安。
+                            恒生银行首次推出包含以太坊代币化份额的黄金 ETF。这标志着传统金融巨头进一步将真实世界资产（RWA）带入区块链生态，以太坊作为全球结算层的作用日益凸显。
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- ETH Whale Card -->
+            <!-- Tether Gold Card -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/337145/ethereum-whale-resurfaces-after-nine-years-moves-145-million-in-eth" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://investingnews.com/cryptocurrency-market-recap/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">以太坊巨鲸复苏</h3>
-                <p class="text-gray-400 text-sm mb-4">ETH 价格波动</p>
-                <img src="../../../../imgs/2026/01/26/eth_whale.jpg" alt="ETH Whale" class="card-img">
+                <h3 class="text-xl font-bold mb-2">Tether：每周增持 1 吨黄金</h3>
+                <p class="text-gray-400 text-sm mb-4">Reserve Strategy</p>
+                <img src="../../../../imgs/2026/01/29/tether_gold.jpg" alt="Tether Gold" class="card-img">
                 <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                    ETH 今日价约 $2,882.67。一名沉睡九年的巨鲸苏醒并转移了 1.45 亿美元 ETH，引发市场对其抛售压力的关注。
+                    Tether 已在瑞士地堡持有 140 吨黄金储备，通过实物资产对冲法币风险，强化稳定币背书。
                 </p>
             </div>
 
-            <!-- Matcha Meta Card -->
+            <!-- UAE Stablecoin Card -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/337146/matcha-meta-sees-16-8-million-drained-in-swapnet-incident-peckshield" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://www.theblock.co/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">Matcha Meta 遭攻击</h3>
-                <p class="text-gray-400 text-sm mb-4">DeFi 安全警示</p>
-                <img src="../../../../imgs/2026/01/26/matcha_hack.jpg" alt="Matcha Hack" class="card-img">
-                <p class="text-xs text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                    Matcha Meta 在 SwapNet 事件中损失 1680 万美元。PeckShield 监测显示该攻击凸显了 DeFi 生态系统的持续安全风险。
-                </p>
-            </div>
-
-            <!-- Gov Shutdown Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/337143/bitcoin-slides-near-87000-as-us-government-shutdown-fears-weigh-on-crypto" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <h3 class="text-xl font-bold mb-2 text-red-500">政府停摆危机倒计时</h3>
-                <p class="text-gray-400 text-sm mb-4">宏观政治影响</p>
-                <img src="../../../../imgs/2026/01/26/gov_shutdown.jpg" alt="Gov Shutdown" class="card-img">
-                <p class="text-xs text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                    1 月 31 日红线逼近，预算僵局未破。政府停摆可能导致 SEC/CFTC 关键监管工作停滞，推迟 2026 年重要加密政策。
-                </p>
-            </div>
-
-            <!-- Fed Rate Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.coindesk.com/markets/2026/01/21/heres-what-feds-highly-anticipated-rate-decision-this-week-means-for-bitcoin-and-the-dollar/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <h3 class="text-xl font-bold mb-2">美联储利率决议</h3>
-                <p class="text-gray-400 text-sm mb-4">经济宏观影响</p>
-                <div class="flex-1 flex items-center justify-center p-4 bg-orange-500/5 rounded-xl mb-4 border border-orange-500/10">
-                    <i class="fa-solid fa-landmark text-orange-500 text-5xl opacity-50"></i>
-                </div>
-                <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                    市场预期本周利率决议为“鸽派暂停”，但鲍威尔对未来政策的表态将直接影响 BTC 等风险资产的流动性。
-                </p>
-            </div>
-
-            <!-- SEC & CFTC Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/336442/the-blocks-2026-digital-asset-outlook-report-is-out-now" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <h3 class="text-xl font-bold mb-2">监管框架演讲预告</h3>
-                <p class="text-gray-400 text-sm mb-4">重点事件预告</p>
-                <img src="../../../../imgs/2026/01/26/sec_reg.jpg" alt="SEC Regulation" class="card-img">
+                <h3 class="text-xl font-bold mb-2">阿联酋央行发布合规美元稳定币</h3>
+                <p class="text-gray-400 text-sm mb-4">Regional Regulation</p>
+                <img src="../../../../imgs/2026/01/29/uae_stablecoin.jpg" alt="UAE Stablecoin" class="card-img">
                 <p class="text-xs text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
-                    SEC 主席 Atkins 与 CFTC 主席 Selig 预计下周明确 2026 年数字商品的法律定义，发布年度重要监管信号。
+                    首个受中东核心监管机构直接监督的美元稳定币上线，旨在提升跨境数字资产结算效率。
                 </p>
+            </div>
+
+            <!-- Russia Crypto Card -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://www.theblock.co/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">俄罗斯 7 月推行加密框架</h3>
+                <p class="text-gray-400 text-sm mb-4">International Policy</p>
+                <img src="../../../../imgs/2026/01/29/russia_crypto.jpg" alt="Russia Crypto" class="card-img">
+                <p class="text-xs text-gray-500 leading-relaxed bg-orange-500/5 p-3 rounded-lg border border-orange-500/10">
+                    明确允许零售投资者参与。俄罗斯旨在通过加密合法化应对制裁并促进跨境贸易支付。
+                </p>
+            </div>
+
+            <!-- Sony Web3 Card -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://www.theblock.co/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">索尼投资 Soneium 开发团队</h3>
+                <p class="text-gray-400 text-sm mb-4">Venture Capital</p>
+                <img src="../../../../imgs/2026/01/29/sony_web3.jpg" alt="Sony Web3" class="card-img">
+                <p class="text-xs text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
+                    索尼创新基金投资 1300 万美元支持 Startale Group，加速以太坊 L2 网络 Soneium 的生态建设。
+                </p>
+            </div>
+
+            <!-- South Dakota BTC Card -->
+            <div class="md:col-span-4 lg:col-span-4 bento-card p-8 flex flex-col justify-center relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <i class="fa-solid fa-landmark text-9xl"></i>
+                </div>
+                <div class="relative z-10">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-[10px] font-bold uppercase tracking-wider">US Policy</span>
+                        <a href="https://investingnews.com/cryptocurrency-market-recap/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                    <h2 class="text-3xl font-black mb-4 tracking-tight">南达科他州重启 10% BTC 储备提案</h2>
+                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+                        南达科他州议员重新提交法案，拟允许公共基金分配最多 10% 给比特币。美国各州对 BTC 作为战略储备的兴趣正从理论走向立法。
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="h-px flex-1 bg-white/10"></div>
+                        <span class="text-xs text-gray-500 font-medium uppercase tracking-widest">State Level Strategic Reserve</span>
+                        <div class="h-px flex-1 bg-white/10"></div>
+                    </div>
+                </div>
             </div>
 
         </div>
 
         <!-- Footer -->
         <footer class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
-            <p>&copy; 2026 Crypto Insight. @Derik LU. Sources: CoinDesk, The Block.</p>
+            <p>&copy; 2026 Crypto Insight. @Derik LU. Sources: The Block, CoinDesk, Investing News.</p>
             <div class="flex gap-6">
                 <a href="#" class="hover:text-white transition-colors">Twitter</a>
                 <a href="#" class="hover:text-white transition-colors">Discord</a>
@@ -255,7 +330,10 @@
         </footer>
     </main>
 
-    <!-- Supabase and Auth will be injected by script -->
+    <!-- Supabase SDK & Auth (Will be synced) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../../../js/config.js"></script>
+    <script src="../../../../js/auth.js"></script>
 
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
