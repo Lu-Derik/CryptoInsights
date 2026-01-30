@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Insight - 2026.01.28</title>
+    <title>Crypto Insight - 2026.01.30</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -41,7 +41,6 @@
     <script>
         async function fetchMarketData() {
             try {
-                // Fetch BTC and ETH prices from CoinGecko
                 const priceResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
                 const priceData = await priceResponse.json();
                 
@@ -58,7 +57,6 @@
                     document.getElementById('eth-price-display').innerHTML = `$${ethPrice.toLocaleString()} <span class="text-xs font-normal ${ethChange >= 0 ? 'text-green-500' : 'text-red-500'}">${ethChange >= 0 ? '+' : ''}${ethChange.toFixed(2)}%</span>`;
                 }
 
-                // Fetch Fear & Greed Index
                 const fngResponse = await fetch('https://api.alternative.me/fng/');
                 const fngData = await fngResponse.json();
                 
@@ -77,7 +75,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             fetchMarketData();
-            setInterval(fetchMarketData, 60000); // Update every minute
+            setInterval(fetchMarketData, 60000);
         });
 
         function toggleTheme() {
@@ -100,12 +98,11 @@
     </script>
 </head>
 <body class="flex min-h-screen">
-    <!-- Theme Toggle Floating -->
     <button onclick="toggleTheme()" class="fixed top-6 right-6 z-50 p-3 rounded-xl bento-card text-orange-500 hover:scale-110 active:scale-95 transition-all">
         <i class="fa-solid fa-circle-half-stroke text-xl"></i>
     </button>
 
-    <!-- Sidebar (Will be synced by update_latest.py) -->
+    <!-- Sidebar (Placeholder for update_latest.py) -->
     <!-- Sidebar -->
     <aside class="hidden lg:flex flex-col w-64 p-6 sidebar sticky top-0 h-screen">
         <a href="/" class="flex items-center gap-3 mb-10 hover:opacity-80 transition-opacity">
@@ -125,7 +122,7 @@
                 <i class="fa-solid fa-house"></i> Portal
             </a>
          
-                <a href="/content/2026/01/30/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
+                <a href="/content/2026/01/30/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
                     <i class="fa-solid fa-calendar-day"></i> 2026.01.30
                 </a>
              
@@ -133,7 +130,7 @@
                     <i class="fa-solid fa-calendar-day"></i> 2026.01.29
                 </a>
              
-                <a href="/content/2026/01/28/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
+                <a href="/content/2026/01/28/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
                     <i class="fa-solid fa-calendar-day"></i> 2026.01.28
                 </a>
              
@@ -191,7 +188,6 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto">
         <header class="mb-12">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
@@ -202,14 +198,14 @@
                 </div>
             </div>
             <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-4 leading-none">
-                BTC <span class="grad-orange" id="header-btc-price">$86,400</span> 支撑测试
+                Bitwise 展望 2026 <span class="grad-orange">爆发之年</span>
             </h1>
-            <p class="text-gray-400 text-lg max-w-2xl">受宏观贸易局势及大规模强平影响，市场情绪转入“恐惧”。Tether 推出美国监管稳定币 USAT 挑战 Circle。</p>
+            <p class="text-gray-400 text-lg max-w-2xl">第 2000 万枚比特币挖矿里程碑临近。机构采用率、监管突破与 ETF 资金流正重塑加密市场四年周期。</p>
             
             <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-orange-500/5 border border-orange-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">BTC Price</p>
-                    <p class="text-xl font-black text-orange-500" id="btc-price-display">$86,400 <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                    <p class="text-xl font-black text-orange-500" id="btc-price-display">$86,403 <span class="text-xs font-normal text-gray-400">Loading...</span></p>
                 </div>
                 <div class="bg-blue-500/5 border border-blue-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">ETH Momentum</p>
@@ -217,128 +213,119 @@
                 </div>
                 <div class="bg-red-500/5 border border-red-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">Market Sentiment</p>
-                    <p class="text-xl font-black text-red-500" id="sentiment-display">Fear <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                    <p class="text-xl font-black text-red-500" id="sentiment-display">Greed <span class="text-xs font-normal text-gray-400">Loading...</span></p>
                 </div>
             </div>
         </header>
 
-        <!-- Bento Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            
-            <!-- Tether USAT Card -->
+            <!-- Main Story: Bitwise -->
             <div class="md:col-span-4 lg:col-span-4 row-span-2 bento-card p-8 flex flex-col justify-between group">
                 <div class="relative z-10">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h2 class="text-2xl font-bold mb-1">Tether 推出“美国制造”稳定币 USAT</h2>
-                            <p class="text-gray-400 text-sm mb-4">Stablecoin Wars</p>
+                            <h2 class="text-2xl font-bold mb-1">Bitwise 预测 2026 年将成为“爆发之年”</h2>
+                            <p class="text-gray-400 text-sm mb-4">Institutional Era & All-Time Highs</p>
                         </div>
-                        <a href="https://www.coindesk.com/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
+                        <a href="https://finance.yahoo.com/news/bitcoin-ethereum-solana-hit-time-023109855.html" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <img src="../../../../imgs/2026/01/28/tether_usat.jpg" alt="Tether USAT" class="card-img h-64">
+                    <img src="../../../../imgs/2026/01/30/bitwise_prediction.jpg" alt="Bitwise Prediction" class="card-img h-64">
                     <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4">
                         <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                            Tether 联合 Anchorage Digital Bank 推出符合 GENIUS 法案的稳定币 USAT。该代币旨在满足机构对美国监管下数字美元的需求，直接挑战 Circle 的市场地位。
+                            Bitwise 认为 2026 年将是加密货币创下历史新高的关键年份。机构采用率的提高、现货 ETF 的持续流入以及监管环境的改善，将取代传统的四年减半周期，成为市场的主要驱动力。
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- White House Davos Card -->
+            <!-- BTC Milestone -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.coindesk.com/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://research.grayscale.com/reports/2026-digital-asset-outlook-dawn-of-the-institutional-era" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">达沃斯 2026：监管转折</h3>
-                <p class="text-gray-400 text-sm mb-4">Policy & Regulation</p>
-                <img src="../../../../imgs/2026/01/28/white_house_davos.jpg" alt="Davos 2026" class="card-img">
+                <h3 class="text-xl font-bold mb-2">第 2000 万枚比特币 3 月挖出</h3>
+                <p class="text-gray-400 text-sm mb-4">Supply Scarcity</p>
+                <img src="../../../../imgs/2026/01/30/btc_milestone.jpg" alt="BTC Milestone" class="card-img">
                 <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                    白宫顾问 Patrick Witt 认为 2026 年达沃斯是加密货币全球常态化的关键节点，稳定币正成为全球金融的“门户”。
+                    比特币即将迎来 2000 万枚的心理里程碑，稀缺性叙事在全球法币不确定性中愈发响亮。
                 </p>
             </div>
 
-            <!-- Vitalik ETH Card -->
+            <!-- Solana Infra -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://cryptonews.com/news/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://www.coindesk.com/tech/2026-01-03/ethereum-and-solana-set-the-stage-for-2026-s-defi-reboot" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">Vitalik：2026 主权回归</h3>
-                <p class="text-gray-400 text-sm mb-4">Ethereum Vision</p>
-                <img src="../../../../imgs/2026/01/28/vitalik_eth.jpg" alt="Vitalik ETH" class="card-img">
+                <h3 class="text-xl font-bold mb-2">Solana 重心转向金融基建</h3>
+                <p class="text-gray-400 text-sm mb-4">DeFi Reboot</p>
+                <img src="../../../../imgs/2026/01/30/solana_infra.jpg" alt="Solana Infra" class="card-img">
                 <p class="text-xs text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
-                    Vitalik 呼吁以太坊回归无许可核心，夺回在追求主流化过程中失去的“自我主权”。
+                    Solana 生态从 Meme 币转向稳健的金融基础设施，2026 年将见证 RWA 与 DeFi 的深度融合。
                 </p>
             </div>
 
-            <!-- Steak 'n Shake BTC Card -->
+            <!-- Crypto ETF Assets -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://cryptonews.com/news/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://coinpedia.org/research-report/exclusive-report-crypto-market-predictions-2026/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">餐饮巨头购入 $10M BTC</h3>
-                <p class="text-gray-400 text-sm mb-4">Corporate Treasury</p>
-                <img src="../../../../imgs/2026/01/28/steak_shake_btc.jpg" alt="Steak n Shake" class="card-img">
-                <p class="text-xs text-gray-500 leading-relaxed bg-orange-500/5 p-3 rounded-lg border border-orange-500/10">
-                    Steak ’n Shake 将 BTC 作为资产储备。餐饮连锁巨头开始模仿 MicroStrategy 的财务策略。
-                </p>
-            </div>
-
-            <!-- BRICS Digital Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://cryptonews.com/news/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <h3 class="text-xl font-bold mb-2">BRICS 跨境结算提案</h3>
-                <p class="text-gray-400 text-sm mb-4">Global CBDC</p>
-                <img src="../../../../imgs/2026/01/28/brics_digital.jpg" alt="BRICS Digital" class="card-img">
+                <h3 class="text-xl font-bold mb-2">ETF 资产将突破 4000 亿美元</h3>
+                <p class="text-gray-400 text-sm mb-4">ETP Growth</p>
+                <img src="../../../../imgs/2026/01/30/crypto_etf.jpg" alt="Crypto ETF" class="card-img">
                 <p class="text-xs text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
-                    印度提议 BRICS 国家链接数字货币以简化支付，旨在建立去 SWIFT 化的跨境结算体系。
+                    随着更多样化的山寨币 ETF 上市，全球加密 ETP 总资产有望在 2026 年翻倍。
                 </p>
             </div>
 
-            <!-- BTC Mining Card -->
+            <!-- SEC Standards -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://www.investing.com/analysis/us-crypto-regulation-sets-the-stage-for-stablecoins-to-enter-core-finance-in-2026-200672588" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">SEC 上市标准通用化</h3>
+                <p class="text-gray-400 text-sm mb-4">Regulatory Clarity</p>
+                <img src="../../../../imgs/2026/01/30/sec_standard.jpg" alt="SEC Standard" class="card-img">
+                <p class="text-xs text-gray-500 leading-relaxed bg-orange-500/5 p-3 rounded-lg border border-orange-500/10">
+                    SEC 推动加密 ETF 上市标准简化，为大规模机构入场铺平道路。
+                </p>
+            </div>
+
+            <!-- BTC Forecast -->
             <div class="md:col-span-4 lg:col-span-4 bento-card p-8 flex flex-col justify-center relative overflow-hidden group">
                 <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <i class="fa-solid fa-microchip text-9xl"></i>
+                    <i class="fa-solid fa-chart-line text-9xl"></i>
                 </div>
                 <div class="relative z-10">
                     <div class="flex justify-between items-start mb-4">
-                        <span class="px-3 py-1 rounded-full bg-red-500/10 text-red-500 text-[10px] font-bold uppercase tracking-wider">Network Status</span>
-                        <a href="https://www.coindesk.com/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
+                        <span class="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-[10px] font-bold uppercase tracking-wider">Market Analysis</span>
+                        <a href="https://www.cnbc.com/2026/01/08/bitcoin-btc-price-predictions-for-2026.html" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <h2 class="text-3xl font-black mb-4 tracking-tight">BTC 算力跌破 1,000 EH/s</h2>
+                    <h2 class="text-3xl font-black mb-4 tracking-tight">BTC 2026 年最高目标价指向 22.5 万美元</h2>
                     <p class="text-gray-400 text-lg mb-6 leading-relaxed">
-                        受矿工向 AI 与高效计算（HPC）业务转型影响，全网算力自 9 月以来首次大幅回落。矿工正在宏观压力下寻找更多元化的收益来源。
+                        业内高管对比特币在 2026 年的表现持极度乐观态度。随着宏观利率下降与机构资金的深度渗透，22.5 万美元成为不少分析师眼中的多头目标。
                     </p>
                     <div class="flex items-center gap-4">
                         <div class="h-px flex-1 bg-white/10"></div>
-                        <span class="text-xs text-gray-500 font-medium uppercase tracking-widest">Mining Economics Shift</span>
+                        <span class="text-xs text-gray-500 font-medium uppercase tracking-widest">Bullish Sentiment Index</span>
                         <div class="h-px flex-1 bg-white/10"></div>
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- Footer -->
         <footer class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
-            <p>&copy; 2026 Crypto Insight. @Derik LU. Sources: CoinDesk, The Block, CoinMarketCap.</p>
+            <p>&copy; 2026 Crypto Insight. @Derik LU. Sources: Yahoo Finance, Grayscale, CoinDesk.</p>
             <div class="flex gap-6">
-                <a href="#" class="hover:text-white transition-colors">Twitter</a>
-                <a href="#" class="hover:text-white transition-colors">Discord</a>
-                <a href="#" class="hover:text-white transition-colors">Github</a>
+                <a href="#" class="hover:text-orange-500 transition-colors"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="hover:text-orange-500 transition-colors"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="hover:text-orange-500 transition-colors"><i class="fa-brands fa-telegram"></i></a>
             </div>
         </footer>
     </main>
-
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="../../../../js/config.js"></script>
-    <script src="../../../../js/auth.js"></script>
 
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
