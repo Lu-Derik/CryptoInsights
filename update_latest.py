@@ -11,7 +11,11 @@ def get_summary_from_md(date_str):
         content = f.read()
         
     # 提取前三个摘要作为精选
-    summaries = re.findall(r'\* \*\*摘要\*\*：(.*?)(?=\n|$)', content)
+    summaries = re.findall(r'\*\*摘要\*\*：(.*?)(?=\n|$)', content)
+    if not summaries:
+        # 兼容旧格式或不同符号
+        summaries = re.findall(r'\*\*摘要\*\*:(.*?)(?=\n|$)', content)
+    
     if summaries:
         # 只取前三个，并限制字数
         selected = []
