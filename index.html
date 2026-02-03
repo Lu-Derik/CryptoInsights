@@ -264,6 +264,23 @@
         </footer>
     </div>
     
+    <!-- Image Fallback Script -->
+    <script>
+        function handleImageError(img) {
+            console.warn('Image failed to load:', img.src);
+            const fallbackUrls = [
+                'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1622790698141-94e30457ef12?auto=format&fit=crop&w=800&q=80'
+            ];
+            if (img.dataset.triedFallback) {
+                img.src = 'https://via.placeholder.com/800x450/1a1a1a/ffffff?text=Image+Unavailable';
+                return;
+            }
+            img.dataset.triedFallback = 'true';
+            img.src = fallbackUrls[Math.floor(Math.random() * fallbackUrls.length)];
+        }
+    </script>
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./js/config.js"></script>

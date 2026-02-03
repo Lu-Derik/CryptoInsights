@@ -52,6 +52,7 @@
             document.documentElement.classList.add(savedTheme);
         })();
     </script>
+<script>function handleImageError(img) { /* fallback logic */ img.src="https://via.placeholder.com/800x450?text=Error"; }</script>
 </head>
 <body class="flex min-h-screen">
     <!-- Theme Toggle Floating -->
@@ -190,7 +191,7 @@
                         </div>
                     </div>
                 </div>
-                <img src="../../../../imgs/market_trend.svg" class="w-full h-auto rounded-xl mt-4 relative z-10 opacity-80 hover:opacity-100 transition-opacity" alt="Market Trend">
+                <img src="../../../../imgs/market_trend.svg" class="w-full h-auto rounded-xl mt-4 relative z-10 opacity-80 hover:opacity-100 transition-opacity" alt="Market Trend" onerror="handleImageError(this)">
                 <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-orange-500/5 to-transparent pointer-events-none"></div>
             </div>
 
@@ -207,7 +208,7 @@
                     </p>
                 </div>
                 <div class="mt-6 flex justify-center">
-                    <img src="../../../../imgs/ledger_ipo.svg" class="h-32 w-auto group-hover:scale-110 transition-transform duration-500" alt="Ledger IPO">
+                    <img src="../../../../imgs/ledger_ipo.svg" class="h-32 w-auto group-hover:scale-110 transition-transform duration-500" alt="Ledger IPO" onerror="handleImageError(this)">
                 </div>
             </div>
 
@@ -224,7 +225,7 @@
                     </p>
                 </div>
                 <div class="mt-4 flex justify-end">
-                    <img src="../../../../imgs/compliance.svg" class="h-24 w-auto opacity-50 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-500" alt="Compliance">
+                    <img src="../../../../imgs/compliance.svg" class="h-24 w-auto opacity-50 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-500" alt="Compliance" onerror="handleImageError(this)">
                 </div>
             </div>
 
@@ -243,7 +244,7 @@
                     </p>
                 </div>
                 <div class="mt-4">
-                    <img src="../../../../imgs/macro_alert.svg" class="w-full h-16 object-cover rounded-lg" alt="Macro Alert">
+                    <img src="../../../../imgs/macro_alert.svg" class="w-full h-16 object-cover rounded-lg" alt="Macro Alert" onerror="handleImageError(this)">
                 </div>
             </div>
 

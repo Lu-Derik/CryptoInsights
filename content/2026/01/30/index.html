@@ -96,6 +96,7 @@
             document.documentElement.classList.add(savedTheme);
         })();
     </script>
+<script>function handleImageError(img) { /* fallback logic */ img.src="https://via.placeholder.com/800x450?text=Error"; }</script>
 </head>
 <body class="flex min-h-screen">
     <button onclick="toggleTheme()" class="fixed top-6 right-6 z-50 p-3 rounded-xl bento-card text-orange-500 hover:scale-110 active:scale-95 transition-all">
@@ -243,7 +244,7 @@
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <img src="../../../../imgs/2026/01/30/bitwise_prediction.jpg" alt="Bitwise Prediction" class="card-img h-64">
+                    <img src="../../../../imgs/2026/01/30/bitwise_prediction.jpg" alt="Bitwise Prediction" class="card-img h-64" onerror="handleImageError(this)">
                     <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4">
                         <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
                             Bitwise 认为 2026 年将是加密货币创下历史新高的关键年份。机构采用率的提高、现货 ETF 的持续流入以及监管环境的改善，将取代传统的四年减半周期，成为市场的主要驱动力。
@@ -259,7 +260,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">第 2000 万枚比特币 3 月挖出</h3>
                 <p class="text-gray-400 text-sm mb-4">Supply Scarcity</p>
-                <img src="../../../../imgs/2026/01/30/btc_milestone.jpg" alt="BTC Milestone" class="card-img">
+                <img src="../../../../imgs/2026/01/30/btc_milestone.jpg" alt="BTC Milestone" class="card-img" onerror="handleImageError(this)">
                 <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
                     比特币即将迎来 2000 万枚的心理里程碑，稀缺性叙事在全球法币不确定性中愈发响亮。
                 </p>
@@ -272,7 +273,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">Solana 重心转向金融基建</h3>
                 <p class="text-gray-400 text-sm mb-4">DeFi Reboot</p>
-                <img src="../../../../imgs/2026/01/30/solana_infra.jpg" alt="Solana Infra" class="card-img">
+                <img src="../../../../imgs/2026/01/30/solana_infra.jpg" alt="Solana Infra" class="card-img" onerror="handleImageError(this)">
                 <p class="text-xs text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
                     Solana 生态从 Meme 币转向稳健的金融基础设施，2026 年将见证 RWA 与 DeFi 的深度融合。
                 </p>
@@ -285,7 +286,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">ETF 资产将突破 4000 亿美元</h3>
                 <p class="text-gray-400 text-sm mb-4">ETP Growth</p>
-                <img src="../../../../imgs/2026/01/30/crypto_etf.jpg" alt="Crypto ETF" class="card-img">
+                <img src="../../../../imgs/2026/01/30/crypto_etf.jpg" alt="Crypto ETF" class="card-img" onerror="handleImageError(this)">
                 <p class="text-xs text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
                     随着更多样化的山寨币 ETF 上市，全球加密 ETP 总资产有望在 2026 年翻倍。
                 </p>
@@ -298,7 +299,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">SEC 上市标准通用化</h3>
                 <p class="text-gray-400 text-sm mb-4">Regulatory Clarity</p>
-                <img src="../../../../imgs/2026/01/30/sec_standard.jpg" alt="SEC Standard" class="card-img">
+                <img src="../../../../imgs/2026/01/30/sec_standard.jpg" alt="SEC Standard" class="card-img" onerror="handleImageError(this)">
                 <p class="text-xs text-gray-500 leading-relaxed bg-orange-500/5 p-3 rounded-lg border border-orange-500/10">
                     SEC 推动加密 ETF 上市标准简化，为大规模机构入场铺平道路。
                 </p>

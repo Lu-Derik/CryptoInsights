@@ -65,6 +65,23 @@ def update_latest():
     # 生成通用的 Auth 模态框和脚本引用
     def get_auth_assets(base_path="./"):
         return f'''
+    <!-- Image Fallback Script -->
+    <script>
+        function handleImageError(img) {{
+            console.warn('Image failed to load:', img.src);
+            const fallbackUrls = [
+                'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1622790698141-94e30457ef12?auto=format&fit=crop&w=800&q=80'
+            ];
+            if (img.dataset.triedFallback) {{
+                img.src = 'https://via.placeholder.com/800x450/1a1a1a/ffffff?text=Image+Unavailable';
+                return;
+            }}
+            img.dataset.triedFallback = 'true';
+            img.src = fallbackUrls[Math.floor(Math.random() * fallbackUrls.length)];
+        }}
+    </script>
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="{base_path}js/config.js"></script>
@@ -100,6 +117,12 @@ def update_latest():
         </div>
     </div>
     '''
+
+    # 更新所有页面的内容（添加 onerror 到所有图片）
+    def inject_image_handlers(content):
+        # 为没有 onerror 的 img 标签添加 onerror 处理器
+        content = re.sub(r'<img\s+(?![^>]*onerror=)([^>]+)>', r'<img \1 onerror="handleImageError(this)">', content)
+        return content
 
     # 生成导航栏 HTML (用于 Portal 和所有页面)
     def generate_nav_html(current_date=None, is_portal=False):
@@ -381,7 +404,10 @@ def update_latest():
             with open(abs_path, 'r', encoding='utf-8') as f:
                 page_content = f.read()
             
-            # 更新整个 Sidebar
+            # 1. 注入图片处理逻辑
+            page_content = inject_image_handlers(page_content)
+            
+            # 2. 更新整个 Sidebar
             sidebar_pattern = r'<!-- Sidebar -->\s*<aside.*?>.*?</aside>'
             new_sidebar = generate_sidebar_html(entry["date"])
             
@@ -397,11 +423,15 @@ def update_latest():
                 depth = file_path.count('/')
                 base_path = "../" * depth
                 auth_assets = get_auth_assets(base_path)
-                page_content = page_content.replace('</body>', f'{auth_assets}</body>')
+                # 在 </body> 前插入
+                page_content = page_content.replace('</body>', f'{auth_assets}\n</body>')
             else:
-                # 如果已存在，但可能是旧版本，尝试替换掉重复的脚本引用或更新它
-                # 简单起见，我们先确保 auth.js 的逻辑是健壮的（已在 auth.js 中处理）
-                pass
+                # 如果已存在，也要确保图片处理脚本在里面
+                if 'function handleImageError' not in page_content:
+                    depth = file_path.count('/')
+                    base_path = "../" * depth
+                    # 插入到 <head> 结束前
+                    page_content = page_content.replace('</head>', f'<script>function handleImageError(img) {{ /* fallback logic */ img.src="https://via.placeholder.com/800x450?text=Error"; }}</script>\n</head>')
             
             with open(abs_path, 'w', encoding='utf-8') as f:
                 f.write(page_content)

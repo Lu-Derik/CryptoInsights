@@ -53,6 +53,7 @@
             document.documentElement.classList.add(savedTheme);
         })();
     </script>
+<script>function handleImageError(img) { /* fallback logic */ img.src="https://via.placeholder.com/800x450?text=Error"; }</script>
 </head>
 <body class="flex min-h-screen">
     <!-- Theme Toggle Floating -->
@@ -182,7 +183,7 @@
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <img src="../../../../imgs/2026/01/26/btc_drop.jpg" alt="BTC Chart" class="card-img h-64">
+                    <img src="../../../../imgs/2026/01/26/btc_drop.jpg" alt="BTC Chart" class="card-img h-64" onerror="handleImageError(this)">
                     <div class="bg-red-500/5 dark:bg-red-500/10 border border-red-500/10 dark:border-red-500/20 rounded-xl p-4">
                         <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
                             2026年1月26日，比特币（BTC）价格跌至约 $87,826.83，24小时跌幅约 1.08%。市场避险情绪升温，投资者对华盛顿预算僵局感到不安。
@@ -198,7 +199,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">以太坊巨鲸复苏</h3>
                 <p class="text-gray-400 text-sm mb-4">ETH 价格波动</p>
-                <img src="../../../../imgs/2026/01/26/eth_whale.jpg" alt="ETH Whale" class="card-img">
+                <img src="../../../../imgs/2026/01/26/eth_whale.jpg" alt="ETH Whale" class="card-img" onerror="handleImageError(this)">
                 <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
                     ETH 今日价约 $2,882.67。一名沉睡九年的巨鲸苏醒并转移了 1.45 亿美元 ETH，引发市场对其抛售压力的关注。
                 </p>
@@ -211,7 +212,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">Matcha Meta 遭攻击</h3>
                 <p class="text-gray-400 text-sm mb-4">DeFi 安全警示</p>
-                <img src="../../../../imgs/2026/01/26/matcha_hack.jpg" alt="Matcha Hack" class="card-img">
+                <img src="../../../../imgs/2026/01/26/matcha_hack.jpg" alt="Matcha Hack" class="card-img" onerror="handleImageError(this)">
                 <p class="text-xs text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
                     Matcha Meta 在 SwapNet 事件中损失 1680 万美元。PeckShield 监测显示该攻击凸显了 DeFi 生态系统的持续安全风险。
                 </p>
@@ -224,7 +225,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2 text-red-500">政府停摆危机倒计时</h3>
                 <p class="text-gray-400 text-sm mb-4">宏观政治影响</p>
-                <img src="../../../../imgs/2026/01/26/gov_shutdown.jpg" alt="Gov Shutdown" class="card-img">
+                <img src="../../../../imgs/2026/01/26/gov_shutdown.jpg" alt="Gov Shutdown" class="card-img" onerror="handleImageError(this)">
                 <p class="text-xs text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
                     1 月 31 日红线逼近，预算僵局未破。政府停摆可能导致 SEC/CFTC 关键监管工作停滞，推迟 2026 年重要加密政策。
                 </p>
@@ -252,7 +253,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">监管框架演讲预告</h3>
                 <p class="text-gray-400 text-sm mb-4">重点事件预告</p>
-                <img src="../../../../imgs/2026/01/26/sec_reg.jpg" alt="SEC Regulation" class="card-img">
+                <img src="../../../../imgs/2026/01/26/sec_reg.jpg" alt="SEC Regulation" class="card-img" onerror="handleImageError(this)">
                 <p class="text-xs text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
                     SEC 主席 Atkins 与 CFTC 主席 Selig 预计下周明确 2026 年数字商品的法律定义，发布年度重要监管信号。
                 </p>

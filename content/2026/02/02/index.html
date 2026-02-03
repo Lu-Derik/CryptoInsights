@@ -95,6 +95,7 @@
             document.documentElement.classList.add(savedTheme);
         })();
     </script>
+<script>function handleImageError(img) { /* fallback logic */ img.src="https://via.placeholder.com/800x450?text=Error"; }</script>
 </head>
 <body class="flex min-h-screen">
     <button onclick="toggleTheme()" class="fixed top-6 right-6 z-50 p-3 rounded-xl bento-card text-orange-500 hover:scale-110 active:scale-95 transition-all">
@@ -242,7 +243,7 @@
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=800&q=80" alt="White House Summit" class="card-img h-64">
+                    <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=800&q=80" alt="White House Summit" class="card-img h-64" onerror="handleImageError(this)">
                     <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4">
                         <p class="text-base leading-relaxed text-gray-600 dark:text-gray-300">
                             2026 年 2 月 2 日，白宫召集顶级银行高管与加密货币领袖举行紧急峰会，旨在打破《CLARITY 法案》的僵局。争议核心在于“稳定币奖励”——银行担心稳定币利息会导致存款流失，而加密行业认为这是金融创新的基石。
@@ -258,7 +259,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">Tether 2025 利润超百亿</h3>
                 <p class="text-gray-400 text-sm mb-4">Stablecoin Dominance</p>
-                <img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=400&q=80" alt="Tether Profit" class="card-img">
+                <img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=400&q=80" alt="Tether Profit" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
                     稳定币巨头 Tether 披露其 2025 年净利润超过 100 亿美元，超额储备突破 63 亿美元，彰显霸主地位。
                 </p>
@@ -271,7 +272,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">Grayscale: 机构时代黎明</h3>
                 <p class="text-gray-400 text-sm mb-4">Institutional Era</p>
-                <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=400&q=80" alt="Grayscale Outlook" class="card-img">
+                <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=400&q=80" alt="Grayscale Outlook" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
                     随着 3 月第 2000 万枚比特币挖出，稀缺性叙事将吸引更多机构资金全面融入 TradFi。
                 </p>
@@ -284,7 +285,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">AI 与加密货币深度融合</h3>
                 <p class="text-gray-400 text-sm mb-4">AI Agents & Machine Economy</p>
-                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=400&q=80" alt="AI Crypto" class="card-img">
+                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=400&q=80" alt="AI Crypto" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
                     Coinbase 预测 AI 代理将成为链上支付的主要推动力，利用加密货币开启“机器经济”新纪元。
                 </p>
@@ -297,7 +298,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">BTC 企稳，分析师看好反弹</h3>
                 <p class="text-gray-400 text-sm mb-4">Market Recovery</p>
-                <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80" alt="BTC Recovery" class="card-img">
+                <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80" alt="BTC Recovery" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-orange-500/5 p-3 rounded-lg border border-orange-500/10">
                     尽管 1 月 ETF 流出 16 亿美元，但分析师看好年内反弹，目标价指向 13 万至 20 万美元。
                 </p>
@@ -329,7 +330,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">SEC: 代币化是现代金融关键</h3>
                 <p class="text-gray-400 text-sm mb-4">RWA & Market Modernization</p>
-                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=400&q=80" alt="SEC Tokenization" class="card-img">
+                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=400&q=80" alt="SEC Tokenization" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
                     SEC 主席 Atkins 重申 RWA 代币化是 U.S. 市场现代化的核心，贝莱德等巨头入场加速这一进程。
                 </p>

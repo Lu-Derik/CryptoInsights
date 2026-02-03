@@ -39,6 +39,26 @@
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
     <script>
+        // 全局图片错误处理：当图片加载失败时，尝试使用备用链接或占位图
+        function handleImageError(img) {
+            console.warn('Image failed to load:', img.src);
+            const fallbackUrls = [
+                'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80', // Crypto generic
+                'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80', // BTC generic
+                'https://images.unsplash.com/photo-1622790698141-94e30457ef12?auto=format&fit=crop&w=800&q=80'  // ETH generic
+            ];
+            
+            // 如果已经尝试过备用了，就不再尝试，避免死循环
+            if (img.dataset.triedFallback) {
+                img.src = 'https://via.placeholder.com/800x450/1a1a1a/ffffff?text=Image+Unavailable';
+                return;
+            }
+            
+            img.dataset.triedFallback = 'true';
+            // 随机选择一个备用图
+            img.src = fallbackUrls[Math.floor(Math.random() * fallbackUrls.length)];
+        }
+
         async function fetchMarketData() {
             try {
                 const priceResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
@@ -241,7 +261,7 @@
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1611974717535-7c8579630ad8?auto=format&fit=crop&w=800&q=80" alt="ETF Outflows" class="card-img h-64">
+                    <img src="https://images.unsplash.com/photo-1611974717535-7c8579630ad8?auto=format&fit=crop&w=800&q=80" alt="ETF Outflows" class="card-img h-64" onerror="handleImageError(this)">
                     <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4">
                         <p class="text-base leading-relaxed text-gray-600 dark:text-gray-300">
                             截至 2026 年 2 月 3 日，数字资产投资产品已连续两周出现资金流出，累计流出额达 17 亿美元。这使得 2026 年初至今的全球净流量转为负值（约 -10 亿美元），反映出市场在比特币跌破 8 万美元后的审慎情绪。
@@ -257,7 +277,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">摩根士丹利申请 SOL ETF</h3>
                 <p class="text-gray-400 text-sm mb-4">Wall Street Expansion</p>
-                <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=400&q=80" alt="Morgan Stanley ETF" class="card-img">
+                <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=400&q=80" alt="Morgan Stanley ETF" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
                     华尔街巨头正式向 SEC 提交申请，计划推出比特币和 Solana 现货 ETF，标志着传统金融向山寨币投资工具的深度转型。
                 </p>
@@ -270,7 +290,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">GENIUS 法案全面执行</h3>
                 <p class="text-gray-400 text-sm mb-4">Regulatory Implementation</p>
-                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=400&q=80" alt="GENIUS Act" class="card-img">
+                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=400&q=80" alt="GENIUS Act" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
                     2026 年 2 月进入全面执行阶段，FDIC 提议银行发行稳定币程序，正式开启银行业稳定币采用时代。
                 </p>
@@ -283,7 +303,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">以太坊主网资金外流</h3>
                 <p class="text-gray-400 text-sm mb-4">L2 & Sidechain Migration</p>
-                <img src="https://images.unsplash.com/photo-1640341667851-7a9a4b643588?auto=format&fit=crop&w=400&q=80" alt="Ethereum Outflows" class="card-img">
+                <img src="https://images.unsplash.com/photo-1622790698141-94e30457ef12?auto=format&fit=crop&w=400&q=80" alt="Ethereum Outflows" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
                     录得 6.88 亿美元资金外流，用户正加速向低成本 L2 迁移。USDT 占有率回升至 68.8%，避险情绪升温。
                 </p>
@@ -296,7 +316,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">BTC 跌破 8 万美元</h3>
                 <p class="text-gray-400 text-sm mb-4">Healthy Correction</p>
-                <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80" alt="BTC Correction" class="card-img">
+                <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=400&q=80" alt="BTC Support" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-orange-500/5 p-3 rounded-lg border border-orange-500/10">
                     尽管跌至 78,867 美元，分析师认为美联储信号被过度解读，年内目标价维持在 13 万至 20 万美元。
                 </p>
@@ -309,7 +329,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">ETH Denver 2026 预热</h3>
                 <p class="text-gray-400 text-sm mb-4">Camp BUIDL Mid-Feb</p>
-                <img src="https://images.unsplash.com/photo-1526303313259-339cb62063bc?auto=format&fit=crop&w=400&q=80" alt="ETH Denver" class="card-img">
+                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80" alt="ETH Denver" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-green-500/5 p-3 rounded-lg border border-green-500/10">
                     训练营将于 2 月中旬启动，重点关注“链上智能”治理和去中心化 AI 代理，推动以太坊技术革命。
                 </p>
@@ -322,7 +342,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">巴西加密新规生效</h3>
                 <p class="text-gray-400 text-sm mb-4">Central Bank Oversight</p>
-                <img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=400&q=80" alt="Brazil Crypto" class="card-img">
+                <img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=400&q=80" alt="Brazil Crypto" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
                     稳定币跨境支付正式纳入央行监管体系。巴西成为南美加密监管先行者，要求服务商 10 月前完成合规。
                 </p>

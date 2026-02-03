@@ -95,6 +95,7 @@
             document.documentElement.classList.add(savedTheme);
         })();
     </script>
+<script>function handleImageError(img) { /* fallback logic */ img.src="https://via.placeholder.com/800x450?text=Error"; }</script>
 </head>
 <body class="flex min-h-screen">
     <button onclick="toggleTheme()" class="fixed top-6 right-6 z-50 p-3 rounded-xl bento-card text-orange-500 hover:scale-110 active:scale-95 transition-all">
@@ -242,7 +243,7 @@
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <img src="../../../../imgs/2026/02/01/btc_outflow.jpg" alt="BTC Outflow" class="card-img h-64">
+                    <img src="../../../../imgs/2026/02/01/btc_outflow.jpg" alt="BTC Outflow" class="card-img h-64" onerror="handleImageError(this)">
                     <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4">
                         <p class="text-base leading-relaxed text-gray-600 dark:text-gray-300">
                             比特币在 2026 年 1 月经历了极其困难的一月，全月 ETF 净流出额达到 16 亿美元，为史上第三差的单月表现。受此影响，BTC 价格在周末跌破 $80,000 心理关口，市场正在重新评估机构资金的流入速度。
@@ -258,7 +259,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">巨鲸清仓：2.5 亿美元亏损</h3>
                 <p class="text-gray-400 text-sm mb-4">Whale Capitulation</p>
-                <img src="../../../../imgs/2026/02/01/whale_exit.jpg" alt="Whale Exit" class="card-img">
+                <img src="../../../../imgs/2026/02/01/whale_exit.jpg" alt="Whale Exit" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
                     臭名昭著的“Hyperunit”巨鲸清空全部 ETH 仓位，亏损达 2.5 亿美元，余额仅剩 $53。
                 </p>
@@ -271,7 +272,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">Step Finance $2900万遭窃</h3>
                 <p class="text-gray-400 text-sm mb-4">Security Breach</p>
-                <img src="../../../../imgs/2026/02/01/step_hack.jpg" alt="Step Finance Hack" class="card-img">
+                <img src="../../../../imgs/2026/02/01/step_hack.jpg" alt="Step Finance Hack" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
                     Solana 生态协议 Step Finance 国库遭攻击，代币 STEP 暴跌 80%。
                 </p>
@@ -284,7 +285,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">Tether 2025 利润超百亿</h3>
                 <p class="text-gray-400 text-sm mb-4">Stablecoin Dominance</p>
-                <img src="../../../../imgs/2026/02/01/tether_profit.jpg" alt="Tether Profit" class="card-img">
+                <img src="../../../../imgs/2026/02/01/tether_profit.jpg" alt="Tether Profit" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
                     Tether 2025 年净利润超 100 亿美元，超额储备突破 63 亿美元，地位稳固。
                 </p>
@@ -297,7 +298,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">国家战略储备蓝图将定</h3>
                 <p class="text-gray-400 text-sm mb-4">Strategic BTC Reserve</p>
-                <img src="../../../../imgs/2026/02/01/btc_reserve.jpg" alt="BTC Reserve" class="card-img">
+                <img src="../../../../imgs/2026/02/01/btc_reserve.jpg" alt="BTC Reserve" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-orange-500/5 p-3 rounded-lg border border-orange-500/10">
                     美国政府计划在 2026 年 7 月前完成战略比特币储备蓝图。
                 </p>
@@ -329,7 +330,7 @@
                 </a>
                 <h3 class="text-xl font-bold mb-2">白宫讨论稳定币奖励</h3>
                 <p class="text-gray-400 text-sm mb-4">Policy Summit</p>
-                <img src="../../../../imgs/2026/02/01/whitehouse_summit.jpg" alt="White House Summit" class="card-img">
+                <img src="../../../../imgs/2026/02/01/whitehouse_summit.jpg" alt="White House Summit" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
                     周一白宫峰会将讨论稳定币奖励政策框架，整合传统金融。
                 </p>
