@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Insight - 2026.01.25</title>
+    <title>Crypto Insight - 2026.02.03</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -17,7 +17,7 @@
         .dark body { background-color: #050505; color: #e5e5e5; }
         .light body { background-color: #f3f4f6; color: #111827; }
         
-        .bento-card { backdrop-filter: blur(10px); border-radius: 24px; transition: all 0.3s ease; }
+        .bento-card { backdrop-filter: blur(10px); border-radius: 24px; transition: all 0.3s ease; overflow: hidden; }
         .dark .bento-card { background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); }
         .light .bento-card { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
         
@@ -26,14 +26,57 @@
         .light .bento-card:hover { border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         
         .grad-orange { background: linear-gradient(135deg, #ff9900, #ff4d4d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .grad-green { background: linear-gradient(135deg, #4caf50, #8bc34a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .grad-blue { background: linear-gradient(135deg, #00c6ff, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .grad-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .grad-purple { background: linear-gradient(135deg, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .sidebar { transition: all 0.3s ease; }
         .dark .sidebar { background: rgba(10, 10, 10, 0.8); border-right: 1px solid rgba(255, 255, 255, 0.05); }
         .light .sidebar { background: rgba(255, 255, 255, 0.9); border-right: 1px solid rgba(0, 0, 0, 0.05); }
+
+        .card-img { width: 100%; height: 160px; object-fit: cover; border-radius: 16px; margin-bottom: 1rem; }
+        header .update-time { font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem; display: flex; align-items: center; gap: 0.25rem; }
+        .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
     <script>
+        async function fetchMarketData() {
+            try {
+                const priceResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+                const priceData = await priceResponse.json();
+                
+                if (priceData.bitcoin) {
+                    const btcPrice = priceData.bitcoin.usd;
+                    const btcChange = priceData.bitcoin.usd_24h_change;
+                    document.getElementById('btc-price-display').innerHTML = `$${btcPrice.toLocaleString()} <span class="text-xs font-normal ${btcChange >= 0 ? 'text-green-500' : 'text-red-500'}">${btcChange >= 0 ? '+' : ''}${btcChange.toFixed(2)}%</span>`;
+                }
+                
+                if (priceData.ethereum) {
+                    const ethPrice = priceData.ethereum.usd;
+                    const ethChange = priceData.ethereum.usd_24h_change;
+                    document.getElementById('eth-price-display').innerHTML = `$${ethPrice.toLocaleString()} <span class="text-xs font-normal ${ethChange >= 0 ? 'text-green-500' : 'text-red-500'}">${ethChange >= 0 ? '+' : ''}${ethChange.toFixed(2)}%</span>`;
+                }
+
+                const fngResponse = await fetch('https://api.alternative.me/fng/');
+                const fngData = await fngResponse.json();
+                
+                if (fngData.data && fngData.data.length > 0) {
+                    const sentiment = fngData.data[0];
+                    const fngValue = sentiment.value;
+                    const fngClass = sentiment.value_classification;
+                    document.getElementById('sentiment-display').innerHTML = `${fngClass} <span class="text-xs font-normal text-gray-400">Index: ${fngValue}</span>`;
+                }
+                
+                document.getElementById('last-update-time').innerText = new Date().toLocaleTimeString();
+            } catch (error) {
+                console.error('Failed to fetch market data:', error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchMarketData();
+            setInterval(fetchMarketData, 60000);
+        });
+
         function toggleTheme() {
             const html = document.documentElement;
             if (html.classList.contains('dark')) {
@@ -54,7 +97,6 @@
     </script>
 </head>
 <body class="flex min-h-screen">
-    <!-- Theme Toggle Floating -->
     <button onclick="toggleTheme()" class="fixed top-6 right-6 z-50 p-3 rounded-xl bento-card text-orange-500 hover:scale-110 active:scale-95 transition-all">
         <i class="fa-solid fa-circle-half-stroke text-xl"></i>
     </button>
@@ -78,7 +120,7 @@
                 <i class="fa-solid fa-house"></i> Portal
             </a>
          
-                <a href="/content/2026/02/03/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
+                <a href="/content/2026/02/03/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
                     <i class="fa-solid fa-calendar-day"></i> 2026.02.03
                 </a>
              
@@ -156,173 +198,142 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto">
         <header class="mb-12">
-            <p class="text-orange-500 font-bold text-sm uppercase tracking-widest mb-2">Market Briefing</p>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+                <p class="text-orange-500 font-bold text-sm uppercase tracking-widest">Market Briefing</p>
+                <div class="update-time flex items-center gap-2">
+                    <span class="live-dot"></span>
+                    <span>Live Market Status • Last updated: <span id="last-update-time">Loading...</span></span>
+                </div>
+            </div>
             <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-4 leading-none">
-                Fed Pivot Odds <span class="grad-orange">Plummet</span>
+                ETF 资金 <span class="grad-orange">首次转负</span>
             </h1>
-            <p class="text-gray-400 text-lg max-w-2xl">受超预期 GDP 数据影响，1 月降息概率降至 13.3%，BTC 在 $88,000 关口面临方向性选择。</p>
+            <p class="text-gray-400 text-lg max-w-2xl">2026 年初至今加密 ETF 累计流出 17 亿美元，市场情绪转向审慎。摩根士丹利申请 Solana ETF，华尔街巨头逆势布局。</p>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-orange-500/5 border border-orange-500/10 rounded-2xl p-4">
+                    <p class="text-xs font-bold text-gray-500 uppercase mb-1">BTC Price</p>
+                    <p class="text-xl font-black text-orange-500" id="btc-price-display">$Loading... <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                </div>
+                <div class="bg-blue-500/5 border border-blue-500/10 rounded-2xl p-4">
+                    <p class="text-xs font-bold text-gray-500 uppercase mb-1">ETH Momentum</p>
+                    <p class="text-xl font-black text-blue-500" id="eth-price-display">$Loading... <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                </div>
+                <div class="bg-red-500/5 border border-red-500/10 rounded-2xl p-4">
+                    <p class="text-xs font-bold text-gray-500 uppercase mb-1">Market Sentiment</p>
+                    <p class="text-xl font-black text-red-500" id="sentiment-display">Loading... <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                </div>
+            </div>
         </header>
 
-        <!-- Bento Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            
-            <!-- Main Chart Card -->
-            <div class="md:col-span-4 lg:col-span-4 row-span-2 bento-card p-8 flex flex-col justify-between overflow-hidden relative">
+            <!-- Main Story: ETF Outflows -->
+            <div class="md:col-span-4 lg:col-span-4 row-span-2 bento-card p-8 flex flex-col justify-between group">
                 <div class="relative z-10">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h2 class="text-2xl font-bold mb-1">Market Sentiment</h2>
-                            <p class="text-gray-400 text-sm mb-4">核心市场动态 (24H)</p>
-                            <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4 max-w-md">
-                                <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                                    加密货币总市值微涨 0.79%，比特币持稳于 $88,000 左右。受 GDP 数据影响，CME 显示 1 月维持利率不变概率升至 86%。
-                                </p>
-                            </div>
+                            <h2 class="text-2xl font-bold mb-1">加密货币 ETF 2026 年首次出现年度净流出</h2>
+                            <p class="text-gray-400 text-sm mb-4">Investment Flows & Market Sentiment</p>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <a href="https://www.coindesk.com/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            </a>
-                            <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-bold rounded-full border border-blue-500/30">NEUTRAL / WAIT</span>
-                        </div>
-                    </div>
-                </div>
-                <img src="../../../../imgs/market_trend.svg" class="w-full h-auto rounded-xl mt-4 relative z-10 opacity-80 hover:opacity-100 transition-opacity" alt="Market Trend">
-                <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-orange-500/5 to-transparent pointer-events-none"></div>
-            </div>
-
-            <!-- USDC Settlement Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative">
-                <a href="https://crypto.news/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <div>
-                    <h3 class="text-xl font-bold mb-2">IBKR USDC 24/7</h3>
-                    <p class="text-gray-400 text-sm mb-4">实时美元结算支持</p>
-                    <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                        盈透证券实现 USDC 24/7 存款及自动兑换，显著降低跨境汇款延迟，未来将接入 RLUSD 与 PYUSD。
-                    </p>
-                </div>
-                <div class="mt-6 flex justify-center">
-                    <img src="../../../../imgs/usdc_settlement.svg" class="h-32 w-auto group-hover:scale-110 transition-transform duration-500" alt="USDC">
-                </div>
-            </div>
-
-            <!-- Grayscale BNB Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative overflow-hidden">
-                <a href="https://www.theblock.co/latest-crypto-news" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors z-10">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <div class="relative z-10">
-                    <h3 class="text-xl font-bold mb-2">Grayscale GBNB</h3>
-                    <p class="text-gray-400 text-sm mb-4">BNB 现货 ETF 申请推进</p>
-                    <p class="text-xs text-gray-500 leading-relaxed bg-yellow-500/5 p-3 rounded-lg border border-yellow-500/10">
-                        继昨日提交申请后，市场热议 GBNB 基金是否能在 Nasdaq 顺利挂牌，这可能成为首个挂钩非单一共识代币的 ETF。
-                    </p>
-                </div>
-                <div class="mt-4 flex justify-end">
-                    <i class="fa-brands fa-binance text-yellow-500 text-6xl opacity-20 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"></i>
-                </div>
-            </div>
-
-            <!-- Gov Shutdown Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative bg-gradient-to-br from-red-500/5 to-transparent">
-                <a href="https://coingape.com/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <div>
-                    <h3 class="text-xl font-bold mb-2 flex items-center gap-2 text-red-500">
-                        Shutdown Risk <i class="fa-solid fa-triangle-exclamation text-sm animate-pulse"></i>
-                    </h3>
-                    <p class="text-gray-400 text-sm mb-4">1月31日关门红线迫近</p>
-                    <p class="text-xs text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                        国会预算僵局若不破除，政府停摆可能导致 SEC 和 CFTC 等监管机构工作停滞，推迟关键加密政策执行。
-                    </p>
-                </div>
-                <div class="mt-4">
-                    <img src="../../../../imgs/shutdown_risk.svg" class="w-full h-16 object-cover rounded-lg" alt="Shutdown">
-                </div>
-            </div>
-
-            <!-- CLARITY Act Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col justify-between group relative">
-                <a href="https://coingape.com/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <div>
-                    <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mb-4">
-                        <i class="fa-solid fa-gavel text-blue-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">CLARITY Act</h3>
-                    <p class="text-gray-400 text-sm mb-4">参议院审议启动</p>
-                    <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                        旨在明确数字商品定义、限制 SEC 越权监管的法案正寻求参议院支持。
-                    </p>
-                </div>
-            </div>
-
-            <!-- Crypto Week Quote Card -->
-            <div class="md:col-span-3 lg:col-span-3 bento-card p-8 relative overflow-hidden">
-                <a href="https://www.cryptocraft.com/calendar" target="_blank" class="absolute top-4 right-4 text-gray-700 hover:text-orange-500 transition-colors z-20">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <i class="fa-solid fa-calendar-check text-orange-500/20 text-6xl absolute -top-2 -left-2"></i>
-                <div class="relative z-10">
-                    <h3 class="text-xl font-bold mb-4">Washington Crypto Week</h3>
-                    <p class="text-gray-300 italic mb-4">"下周二多位监管高官将发表演讲，特朗普总统也可能参与相关讨论，政策转折点在即。"</p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-user-tie"></i></div>
-                        <span class="text-sm font-semibold text-gray-400">Policy Outlook</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick News List -->
-            <div class="md:col-span-6 bento-card p-8">
-                <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-bolt-lightning text-yellow-500"></i> Industry & Tech
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="border-l-2 border-orange-500/30 pl-4 group">
-                        <a href="https://crypto.news/" target="_blank" class="flex items-center gap-2 hover:text-orange-500 transition-colors">
-                            <h4 class="font-bold text-sm mb-1">Cloud Mining Industrialization</h4>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                        <a href="https://bitcoinethereumnews.com/bitcoin/bitcoin-ethereum-etf-investments-flip-negative-for-2026-as-crypto-funds-shed-1-7b/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
-                        <p class="text-xs text-gray-500">比特币挖矿难度攀升，HashBitcoin 等透明化云挖矿平台成为散户新选择。</p>
                     </div>
-                    <div class="border-l-2 border-blue-500/30 pl-4 group">
-                        <a href="https://coingape.com/" target="_blank" class="flex items-center gap-2 hover:text-blue-500 transition-colors">
-                            <h4 class="font-bold text-sm mb-1">Altcoin Demand Weak</h4>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                        </a>
-                        <p class="text-xs text-gray-500">机构对山寨币需求疲软，交易员正将资金转向更具确定性的资产。</p>
-                    </div>
-                    <div class="border-l-2 border-red-500/30 pl-4 group">
-                        <a href="https://www.cryptocraft.com/calendar" target="_blank" class="flex items-center gap-2 hover:text-red-500 transition-colors">
-                            <h4 class="font-bold text-sm mb-1">Regulatory Keynote</h4>
-                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                        </a>
-                        <p class="text-xs text-gray-500">下周二 SEC 主席 Atkins 与 CFTC 主席 Selig 将发表监管框架演讲。</p>
+                    <img src="https://images.unsplash.com/photo-1611974717535-7c8579630ad8?auto=format&fit=crop&w=800&q=80" alt="ETF Outflows" class="card-img h-64">
+                    <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4">
+                        <p class="text-base leading-relaxed text-gray-600 dark:text-gray-300">
+                            截至 2026 年 2 月 3 日，数字资产投资产品已连续两周出现资金流出，累计流出额达 17 亿美元。这使得 2026 年初至今的全球净流量转为负值（约 -10 亿美元），反映出市场在比特币跌破 8 万美元后的审慎情绪。
+                        </p>
                     </div>
                 </div>
             </div>
 
+            <!-- Morgan Stanley ETF -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://blog.amberdata.io/crypto-markets-in-early-2026-rally-builds-as-etf-flows-return" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">摩根士丹利申请 SOL ETF</h3>
+                <p class="text-gray-400 text-sm mb-4">Wall Street Expansion</p>
+                <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=400&q=80" alt="Morgan Stanley ETF" class="card-img">
+                <p class="text-sm text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
+                    华尔街巨头正式向 SEC 提交申请，计划推出比特币和 Solana 现货 ETF，标志着传统金融向山寨币投资工具的深度转型。
+                </p>
+            </div>
+
+            <!-- GENIUS Act -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://finance.yahoo.com/news/top-us-crypto-bills-watch-100215687.html" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">GENIUS 法案全面执行</h3>
+                <p class="text-gray-400 text-sm mb-4">Regulatory Implementation</p>
+                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=400&q=80" alt="GENIUS Act" class="card-img">
+                <p class="text-sm text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
+                    2026 年 2 月进入全面执行阶段，FDIC 提议银行发行稳定币程序，正式开启银行业稳定币采用时代。
+                </p>
+            </div>
+
+            <!-- Ethereum Outflows -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://blog.amberdata.io/crypto-markets-in-early-2026-rally-builds-as-etf-flows-return" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">以太坊主网资金外流</h3>
+                <p class="text-gray-400 text-sm mb-4">L2 & Sidechain Migration</p>
+                <img src="https://images.unsplash.com/photo-1640341667851-7a9a4b643588?auto=format&fit=crop&w=400&q=80" alt="Ethereum Outflows" class="card-img">
+                <p class="text-sm text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
+                    录得 6.88 亿美元资金外流，用户正加速向低成本 L2 迁移。USDT 占有率回升至 68.8%，避险情绪升温。
+                </p>
+            </div>
+
+            <!-- BTC Support -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://bitcoinethereumnews.com/bitcoin/bitcoin-ethereum-etf-investments-flip-negative-for-2026-as-crypto-funds-shed-1-7b/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">BTC 跌破 8 万美元</h3>
+                <p class="text-gray-400 text-sm mb-4">Healthy Correction</p>
+                <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80" alt="BTC Correction" class="card-img">
+                <p class="text-sm text-gray-500 leading-relaxed bg-orange-500/5 p-3 rounded-lg border border-orange-500/10">
+                    尽管跌至 78,867 美元，分析师认为美联储信号被过度解读，年内目标价维持在 13 万至 20 万美元。
+                </p>
+            </div>
+
+            <!-- ETH Denver -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://eakdigital.com/top-web3-crypto-and-blockchain-events-to-attend-in-2026/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">ETH Denver 2026 预热</h3>
+                <p class="text-gray-400 text-sm mb-4">Camp BUIDL Mid-Feb</p>
+                <img src="https://images.unsplash.com/photo-1526303313259-339cb62063bc?auto=format&fit=crop&w=400&q=80" alt="ETH Denver" class="card-img">
+                <p class="text-sm text-gray-500 leading-relaxed bg-green-500/5 p-3 rounded-lg border border-green-500/10">
+                    训练营将于 2 月中旬启动，重点关注“链上智能”治理和去中心化 AI 代理，推动以太坊技术革命。
+                </p>
+            </div>
+
+            <!-- Brazil Crypto -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://www.trmlabs.com/reports-and-whitepapers/global-crypto-policy-review-outlook-2025-26" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">巴西加密新规生效</h3>
+                <p class="text-gray-400 text-sm mb-4">Central Bank Oversight</p>
+                <img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=400&q=80" alt="Brazil Crypto" class="card-img">
+                <p class="text-sm text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
+                    稳定币跨境支付正式纳入央行监管体系。巴西成为南美加密监管先行者，要求服务商 10 月前完成合规。
+                </p>
+            </div>
         </div>
 
-        <!-- Footer -->
-        <footer class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
-            <p>&copy; 2026 Crypto Insight. Sources: CoinDesk, CoinGape, The Block, Crypto.news.</p>
-            <div class="flex gap-6">
-                <a href="#" class="hover:text-white transition-colors">Twitter</a>
-                <a href="#" class="hover:text-white transition-colors">Discord</a>
-                <a href="#" class="hover:text-white transition-colors">Github</a>
-            </div>
+        <footer class="mt-20 pt-8 border-t border-white/5 text-center">
+            <p class="text-gray-500 text-sm">© 2026 Crypto Insight. All rights reserved.</p>
+            <p class="text-gray-600 text-xs mt-2">Created by @Derik LU</p>
         </footer>
     </main>
-
 
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -358,5 +369,5 @@
             </div>
         </div>
     </div>
-    </body>
+</body>
 </html>
