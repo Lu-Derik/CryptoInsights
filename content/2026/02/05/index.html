@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Insight - 2026.01.26</title>
+    <title>Crypto Insight - 2026.02.05</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -26,15 +26,72 @@
         .light .bento-card:hover { border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         
         .grad-orange { background: linear-gradient(135deg, #ff9900, #ff4d4d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .grad-red { background: linear-gradient(135deg, #f87171, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .grad-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .grad-purple { background: linear-gradient(135deg, #8b5cf6, #d946ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .sidebar { transition: all 0.3s ease; }
         .dark .sidebar { background: rgba(10, 10, 10, 0.8); border-right: 1px solid rgba(255, 255, 255, 0.05); }
         .light .sidebar { background: rgba(255, 255, 255, 0.9); border-right: 1px solid rgba(0, 0, 0, 0.05); }
 
         .card-img { width: 100%; height: 160px; object-fit: cover; border-radius: 16px; margin-bottom: 1rem; }
+        header .update-time { font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem; display: flex; align-items: center; gap: 0.25rem; }
+        .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
     <script>
+        function handleImageError(img) {
+            console.warn('Image failed to load:', img.src);
+            const fallbackUrls = [
+                'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1622790698141-94e30457ef12?auto=format&fit=crop&w=800&q=80'
+            ];
+            if (img.dataset.triedFallback) {
+                img.src = 'https://via.placeholder.com/800x450/1a1a1a/ffffff?text=Image+Unavailable';
+                return;
+            }
+            img.dataset.triedFallback = 'true';
+            img.src = fallbackUrls[Math.floor(Math.random() * fallbackUrls.length)];
+        }
+
+        async function fetchMarketData() {
+            try {
+                const priceResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+                const priceData = await priceResponse.json();
+                
+                if (priceData.bitcoin) {
+                    const btcPrice = priceData.bitcoin.usd;
+                    const btcChange = priceData.bitcoin.usd_24h_change;
+                    document.getElementById('btc-price-display').innerHTML = `$${btcPrice.toLocaleString()} <span class="text-xs font-normal ${btcChange >= 0 ? 'text-green-500' : 'text-red-500'}">${btcChange >= 0 ? '+' : ''}${btcChange.toFixed(2)}%</span>`;
+                }
+                
+                if (priceData.ethereum) {
+                    const ethPrice = priceData.ethereum.usd;
+                    const ethChange = priceData.ethereum.usd_24h_change;
+                    document.getElementById('eth-price-display').innerHTML = `$${ethPrice.toLocaleString()} <span class="text-xs font-normal ${ethChange >= 0 ? 'text-green-500' : 'text-red-500'}">${ethChange >= 0 ? '+' : ''}${ethChange.toFixed(2)}%</span>`;
+                }
+
+                const fngResponse = await fetch('https://api.alternative.me/fng/');
+                const fngData = await fngResponse.json();
+                
+                if (fngData.data && fngData.data.length > 0) {
+                    const sentiment = fngData.data[0];
+                    const fngValue = sentiment.value;
+                    const fngClass = sentiment.value_classification;
+                    document.getElementById('sentiment-display').innerHTML = `${fngClass} <span class="text-xs font-normal text-gray-400">Index: ${fngValue}</span>`;
+                }
+                
+                document.getElementById('last-update-time').innerText = new Date().toLocaleTimeString();
+            } catch (error) {
+                console.error('Failed to fetch market data:', error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchMarketData();
+            setInterval(fetchMarketData, 60000);
+        });
+
         function toggleTheme() {
             const html = document.documentElement;
             if (html.classList.contains('dark')) {
@@ -53,10 +110,8 @@
             document.documentElement.classList.add(savedTheme);
         })();
     </script>
-<script>function handleImageError(img) { /* fallback logic */ img.src="https://via.placeholder.com/800x450?text=Error"; }</script>
 </head>
 <body class="flex min-h-screen">
-    <!-- Theme Toggle Floating -->
     <button onclick="toggleTheme()" class="fixed top-6 right-6 z-50 p-3 rounded-xl bento-card text-orange-500 hover:scale-110 active:scale-95 transition-all">
         <i class="fa-solid fa-circle-half-stroke text-xl"></i>
     </button>
@@ -80,7 +135,7 @@
                 <i class="fa-solid fa-house"></i> Portal
             </a>
          
-                <a href="/content/2026/02/05/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
+                <a href="/content/2026/02/05/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
                     <i class="fa-solid fa-calendar-day"></i> 2026.02.05
                 </a>
              
@@ -166,122 +221,167 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto">
         <header class="mb-12">
-            <p class="text-orange-500 font-bold text-sm uppercase tracking-widest mb-2">Market Briefing</p>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+                <p class="text-orange-500 font-bold text-sm uppercase tracking-widest">Market Briefing</p>
+                <div class="update-time flex items-center gap-2">
+                    <span class="live-dot"></span>
+                    <span>Live Market Status • Last updated: <span id="last-update-time">Loading...</span></span>
+                </div>
+            </div>
             <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-4 leading-none">
-                BTC <span class="grad-red">跌破 $88,000</span>
+                市场遭遇 <span class="grad-orange">历史性血洗</span>
             </h1>
-            <p class="text-gray-400 text-lg max-w-2xl">受美国政府停摆担忧及宏观政策不确定性影响，加密市场今日普遍回调，比特币领跌至 8.7 万美元区间。</p>
+            <p class="text-gray-400 text-lg max-w-2xl">比特币一度跌破 6.1 万美元，单日爆仓超 27 亿美元。宏观逆风与机构抛售交织，市场进入极端恐慌期。</p>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-orange-500/5 border border-orange-500/10 rounded-2xl p-4">
+                    <p class="text-xs font-bold text-gray-500 uppercase mb-1">BTC Price</p>
+                    <p class="text-xl font-black text-orange-500" id="btc-price-display">$Loading... <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                </div>
+                <div class="bg-blue-500/5 border border-blue-500/10 rounded-2xl p-4">
+                    <p class="text-xs font-bold text-gray-500 uppercase mb-1">ETH Momentum</p>
+                    <p class="text-xl font-black text-blue-500" id="eth-price-display">$Loading... <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                </div>
+                <div class="bg-red-500/5 border border-red-500/10 rounded-2xl p-4">
+                    <p class="text-xs font-bold text-gray-500 uppercase mb-1">Market Sentiment</p>
+                    <p class="text-xl font-black text-red-500" id="sentiment-display">Loading... <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                </div>
+            </div>
         </header>
 
-        <!-- Bento Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            
-            <!-- BTC Price Card -->
+            <!-- 1. Liquidation Blooodbath -->
             <div class="md:col-span-4 lg:col-span-4 row-span-2 bento-card p-8 flex flex-col justify-between group">
                 <div class="relative z-10">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h2 class="text-2xl font-bold mb-1">比特币跌破 88,000 美元</h2>
-                            <p class="text-gray-400 text-sm mb-4">Market Core Insights</p>
+                            <h2 class="text-2xl font-bold mb-1">24小时全网爆仓突破 27 亿美元</h2>
+                            <p class="text-gray-400 text-sm mb-4">Leverage Flush & Capitulation</p>
                         </div>
-                        <a href="https://www.coindesk.com/price/bitcoin" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
+                        <a href="https://www.theblock.co/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <img src="../../../../imgs/2026/01/26/btc_drop.jpg" alt="BTC Chart" class="card-img h-64" onerror="handleImageError(this)">
+                    <img src="https://images.unsplash.com/photo-1614028674026-a65e31bfd27c?auto=format&fit=crop&w=800&q=80" alt="Market Bloodbath" class="card-img h-64" onerror="handleImageError(this)">
                     <div class="bg-red-500/5 dark:bg-red-500/10 border border-red-500/10 dark:border-red-500/20 rounded-xl p-4">
-                        <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                            2026年1月26日，比特币（BTC）价格跌至约 $87,826.83，24小时跌幅约 1.08%。市场避险情绪升温，投资者对华盛顿预算僵局感到不安。
+                        <p class="text-base leading-relaxed text-gray-600 dark:text-gray-300">
+                            加密市场在过去 24 小时内经历剧烈动荡，比特币（BTC）一度跌破 61,000 美元，单日跌幅超过 15%。据统计，全网爆仓金额高达 27 亿美元，其中多头占比超过 90%，创下近年最高记录。
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- ETH Whale Card -->
+            <!-- 2. Macro Headwinds (Warsh) -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/337145/ethereum-whale-resurfaces-after-nine-years-moves-145-million-in-eth" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://finance.yahoo.com/news/bitcoin-ethereum-liquidations-hit-704m-120113179.html" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">以太坊巨鲸复苏</h3>
-                <p class="text-gray-400 text-sm mb-4">ETH 价格波动</p>
-                <img src="../../../../imgs/2026/01/26/eth_whale.jpg" alt="ETH Whale" class="card-img" onerror="handleImageError(this)">
-                <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                    ETH 今日价约 $2,882.67。一名沉睡九年的巨鲸苏醒并转移了 1.45 亿美元 ETH，引发市场对其抛售压力的关注。
+                <h3 class="text-xl font-bold mb-2">Warsh 提名引发流动性恐慌</h3>
+                <p class="text-gray-400 text-sm mb-4">Macro Policy</p>
+                <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=400&q=80" alt="Macro Economy" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
+                    美联储主席提名人 Kevin Warsh 的政策立场引发市场对流动性收缩的担忧。黄金避险属性凸显，表现优于加密资产。
                 </p>
             </div>
 
-            <!-- Matcha Meta Card -->
+            <!-- 3. Vanguard Mystery Buying -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/337146/matcha-meta-sees-16-8-million-drained-in-swapnet-incident-peckshield" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://cryptonews.com/news/live-crypto-news-today-latest-updates-for-feb-05-2026/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">Matcha Meta 遭攻击</h3>
-                <p class="text-gray-400 text-sm mb-4">DeFi 安全警示</p>
-                <img src="../../../../imgs/2026/01/26/matcha_hack.jpg" alt="Matcha Hack" class="card-img" onerror="handleImageError(this)">
-                <p class="text-xs text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                    Matcha Meta 在 SwapNet 事件中损失 1680 万美元。PeckShield 监测显示该攻击凸显了 DeFi 生态系统的持续安全风险。
+                <h3 class="text-xl font-bold mb-2">万亿巨头先锋集团秘密买入</h3>
+                <p class="text-gray-400 text-sm mb-4">Institutional Accumulation</p>
+                <img src="https://images.unsplash.com/photo-1611974717535-7c8579630ad8?auto=format&fit=crop&w=400&q=80" alt="Vanguard" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
+                    尽管市场恐慌，报道称先锋集团正低调增持 BTC。华尔街顶级机构或在利用回调进行长期布局。
                 </p>
             </div>
 
-            <!-- Gov Shutdown Card -->
+            <!-- 4. BitMine Loss -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/337143/bitcoin-slides-near-87000-as-us-government-shutdown-fears-weigh-on-crypto" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://cryptonews.com/news/live-crypto-news-today-latest-updates-for-feb-05-2026/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2 text-red-500">政府停摆危机倒计时</h3>
-                <p class="text-gray-400 text-sm mb-4">宏观政治影响</p>
-                <img src="../../../../imgs/2026/01/26/gov_shutdown.jpg" alt="Gov Shutdown" class="card-img" onerror="handleImageError(this)">
-                <p class="text-xs text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                    1 月 31 日红线逼近，预算僵局未破。政府停摆可能导致 SEC/CFTC 关键监管工作停滞，推迟 2026 年重要加密政策。
+                <h3 class="text-xl font-bold mb-2">BitMine 浮亏 70 亿美元</h3>
+                <p class="text-gray-400 text-sm mb-4">Mining Sector Stress</p>
+                <img src="https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?auto=format&fit=crop&w=400&q=80" alt="BitMine" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-orange-500/5 p-3 rounded-lg border border-orange-500/10">
+                    ETH 跌破 2100 美元，导致矿业巨头 BitMine 面临巨额未实现亏损，引发市场对矿工抛压的担忧。
                 </p>
             </div>
 
-            <!-- Fed Rate Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.coindesk.com/markets/2026/01/21/heres-what-feds-highly-anticipated-rate-decision-this-week-means-for-bitcoin-and-the-dollar/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+            <!-- 5. ETF Outflows -->
+            <div class="md:col-span-3 lg:col-span-3 bento-card p-6 flex flex-col group relative">
+                <a href="https://www.cnbc.com/2026/02/05/bitcoin-price-today-70000-in-focus.html" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">美联储利率决议</h3>
-                <p class="text-gray-400 text-sm mb-4">经济宏观影响</p>
-                <div class="flex-1 flex items-center justify-center p-4 bg-orange-500/5 rounded-xl mb-4 border border-orange-500/10">
-                    <i class="fa-solid fa-landmark text-orange-500 text-5xl opacity-50"></i>
+                <h3 class="text-xl font-bold mb-2">现货 ETF 转为净卖家</h3>
+                <p class="text-gray-400 text-sm mb-4">ETF Flows</p>
+                <img src="https://images.unsplash.com/photo-1640341667851-7a9a4b643588?auto=format&fit=crop&w=800&q=80" alt="ETF" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
+                    美国现货 ETF 资金流向发生逆转，机构资金的持续撤离成为本轮崩盘的核心推手之一。
+                </p>
+            </div>
+
+            <!-- 6. Ripple XRP Unlock -->
+            <div class="md:col-span-3 lg:col-span-3 bento-card p-6 flex flex-col group relative">
+                <a href="https://cryptonews.com/news/live-crypto-news-today-latest-updates-for-feb-05-2026/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">Ripple 解锁 10 亿枚 XRP</h3>
+                <p class="text-gray-400 text-sm mb-4">Supply Shock</p>
+                <img src="https://images.unsplash.com/photo-1628151015968-3a4429e9ef04?auto=format&fit=crop&w=800&q=80" alt="XRP" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
+                    大额解锁在流动性匮乏的市场中引发了对供应冲击的担忧，XRP 随大盘深度回调。
+                </p>
+            </div>
+
+            <!-- 7. AI Predictions -->
+            <div class="md:col-span-6 lg:col-span-6 bento-card p-6 flex flex-col group relative">
+                <a href="https://cryptonews.com/news/live-crypto-news-today-latest-updates-for-feb-05-2026/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">AI 模型对 2026 行情预测出现分歧</h3>
+                <p class="text-gray-400 text-sm mb-4">AI Analysis</p>
+                <div class="flex flex-col md:flex-row gap-6">
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=400&q=80" alt="AI" class="card-img md:w-1/3" onerror="handleImageError(this)">
+                    <p class="text-base text-gray-500 leading-relaxed bg-green-500/5 p-6 rounded-2xl border border-green-500/10 flex-1">
+                        DeepSeek 与 Gemini AI 虽然长期看涨，但在对 Solana 和 XRP 的具体点位预测上存在显著分歧，反映出 AI 模型在极端市场下的局限性。
+                    </p>
                 </div>
-                <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                    市场预期本周利率决议为“鸽派暂停”，但鲍威尔对未来政策的表态将直接影响 BTC 等风险资产的流动性。
-                </p>
             </div>
-
-            <!-- SEC & CFTC Card -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/336442/the-blocks-2026-digital-asset-outlook-report-is-out-now" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <h3 class="text-xl font-bold mb-2">监管框架演讲预告</h3>
-                <p class="text-gray-400 text-sm mb-4">重点事件预告</p>
-                <img src="../../../../imgs/2026/01/26/sec_reg.jpg" alt="SEC Regulation" class="card-img" onerror="handleImageError(this)">
-                <p class="text-xs text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
-                    SEC 主席 Atkins 与 CFTC 主席 Selig 预计下周明确 2026 年数字商品的法律定义，发布年度重要监管信号。
-                </p>
-            </div>
-
         </div>
 
-        <!-- Footer -->
-        <footer class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
-            <p>&copy; 2026 Crypto Insight. @Derik LU. Sources: CoinDesk, The Block.</p>
-            <div class="flex gap-6">
-                <a href="#" class="hover:text-white transition-colors">Twitter</a>
-                <a href="#" class="hover:text-white transition-colors">Discord</a>
-                <a href="#" class="hover:text-white transition-colors">Github</a>
+        <footer class="mt-12 pt-12 border-t border-white/5 text-center">
+            <p class="text-gray-500 text-sm mb-4">© 2026 Crypto Insight. All rights reserved.</p>
+            <div class="flex justify-center gap-6 mb-8">
+                <a href="#" class="text-gray-600 hover:text-orange-500 transition-colors"><i class="fa-brands fa-twitter text-xl"></i></a>
+                <a href="#" class="text-gray-600 hover:text-orange-500 transition-colors"><i class="fa-brands fa-discord text-xl"></i></a>
+                <a href="#" class="text-gray-600 hover:text-orange-500 transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
             </div>
+            <p class="text-xs text-gray-600">Created by <span class="text-orange-500 font-bold">@Derik LU</span></p>
         </footer>
     </main>
 
-    <!-- Supabase and Auth will be injected by script -->
-
+    <!-- Image Fallback Script -->
+    <script>
+        function handleImageError(img) {
+            console.warn('Image failed to load:', img.src);
+            const fallbackUrls = [
+                'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1622790698141-94e30457ef12?auto=format&fit=crop&w=800&q=80'
+            ];
+            if (img.dataset.triedFallback) {
+                img.src = 'https://via.placeholder.com/800x450/1a1a1a/ffffff?text=Image+Unavailable';
+                return;
+            }
+            img.dataset.triedFallback = 'true';
+            img.src = fallbackUrls[Math.floor(Math.random() * fallbackUrls.length)];
+        }
+    </script>
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../../../../js/config.js"></script>
@@ -316,5 +416,6 @@
             </div>
         </div>
     </div>
-    </body>
+    
+</body>
 </html>
