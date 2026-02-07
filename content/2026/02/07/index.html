@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Insight - 2026.01.28</title>
+    <title>Crypto Insight - 2026.02.07</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -34,14 +34,28 @@
         .light .sidebar { background: rgba(255, 255, 255, 0.9); border-right: 1px solid rgba(0, 0, 0, 0.05); }
 
         .card-img { width: 100%; height: 160px; object-fit: cover; border-radius: 16px; margin-bottom: 1rem; }
-        header .update-time { font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem; display: flex; items-center: center; gap: 0.25rem; }
+        header .update-time { font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem; display: flex; align-items: center; gap: 0.25rem; }
         .live-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
     <script>
+        function handleImageError(img) {
+            console.warn('Image failed to load:', img.src);
+            const fallbackUrls = [
+                'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1622790698141-94e30457ef12?auto=format&fit=crop&w=800&q=80'
+            ];
+            if (img.dataset.triedFallback) {
+                img.src = 'https://via.placeholder.com/800x450/1a1a1a/ffffff?text=Image+Unavailable';
+                return;
+            }
+            img.dataset.triedFallback = 'true';
+            img.src = fallbackUrls[Math.floor(Math.random() * fallbackUrls.length)];
+        }
+
         async function fetchMarketData() {
             try {
-                // Fetch BTC and ETH prices from CoinGecko
                 const priceResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
                 const priceData = await priceResponse.json();
                 
@@ -49,7 +63,6 @@
                     const btcPrice = priceData.bitcoin.usd;
                     const btcChange = priceData.bitcoin.usd_24h_change;
                     document.getElementById('btc-price-display').innerHTML = `$${btcPrice.toLocaleString()} <span class="text-xs font-normal ${btcChange >= 0 ? 'text-green-500' : 'text-red-500'}">${btcChange >= 0 ? '+' : ''}${btcChange.toFixed(2)}%</span>`;
-                    document.getElementById('header-btc-price').innerText = `$${btcPrice.toLocaleString()}`;
                 }
                 
                 if (priceData.ethereum) {
@@ -58,7 +71,6 @@
                     document.getElementById('eth-price-display').innerHTML = `$${ethPrice.toLocaleString()} <span class="text-xs font-normal ${ethChange >= 0 ? 'text-green-500' : 'text-red-500'}">${ethChange >= 0 ? '+' : ''}${ethChange.toFixed(2)}%</span>`;
                 }
 
-                // Fetch Fear & Greed Index
                 const fngResponse = await fetch('https://api.alternative.me/fng/');
                 const fngData = await fngResponse.json();
                 
@@ -77,7 +89,7 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             fetchMarketData();
-            setInterval(fetchMarketData, 60000); // Update every minute
+            setInterval(fetchMarketData, 60000);
         });
 
         function toggleTheme() {
@@ -98,15 +110,13 @@
             document.documentElement.classList.add(savedTheme);
         })();
     </script>
-<script>function handleImageError(img) { /* fallback logic */ img.src="https://via.placeholder.com/800x450?text=Error"; }</script>
 </head>
 <body class="flex min-h-screen">
-    <!-- Theme Toggle Floating -->
     <button onclick="toggleTheme()" class="fixed top-6 right-6 z-50 p-3 rounded-xl bento-card text-orange-500 hover:scale-110 active:scale-95 transition-all">
         <i class="fa-solid fa-circle-half-stroke text-xl"></i>
     </button>
 
-    <!-- Sidebar (Will be synced by update_latest.py) -->
+    <!-- Sidebar (Placeholder, will be updated by script) -->
     <!-- Sidebar -->
     <aside class="hidden lg:flex flex-col w-64 p-6 sidebar sticky top-0 h-screen">
         <a href="/" class="flex items-center gap-3 mb-10 hover:opacity-80 transition-opacity">
@@ -126,7 +136,7 @@
                 <i class="fa-solid fa-house"></i> Portal
             </a>
          
-                <a href="/content/2026/02/07/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
+                <a href="/content/2026/02/07/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
                     <i class="fa-solid fa-calendar-day"></i> 2026.02.07
                 </a>
              
@@ -216,155 +226,170 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto">
         <header class="mb-12">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
-                <p class="text-orange-500 font-bold text-sm uppercase tracking-widest">Market Briefing</p>
+                <p class="text-orange-500 font-bold text-sm uppercase tracking-widest">Daily Crypto Report</p>
                 <div class="update-time flex items-center gap-2">
                     <span class="live-dot"></span>
                     <span>Live Market Status • Last updated: <span id="last-update-time">Loading...</span></span>
                 </div>
             </div>
             <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-4 leading-none">
-                BTC <span class="grad-orange" id="header-btc-price">$86,400</span> 支撑测试
+                市场正在 <span class="grad-orange">寻找底部</span>
             </h1>
-            <p class="text-gray-400 text-lg max-w-2xl">受宏观贸易局势及大规模强平影响，市场情绪转入“恐惧”。Tether 推出美国监管稳定币 USAT 挑战 Circle。</p>
+            <p class="text-gray-400 text-lg max-w-2xl">比特币测试 6.5 万美元支撑，ENS Labs 战略转向主网，宏观流动性紧缩预期持续施压。</p>
             
             <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-orange-500/5 border border-orange-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">BTC Price</p>
-                    <p class="text-xl font-black text-orange-500" id="btc-price-display">$86,400 <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                    <p class="text-xl font-black text-orange-500" id="btc-price-display">$Loading... <span class="text-xs font-normal text-gray-400">Loading...</span></p>
                 </div>
                 <div class="bg-blue-500/5 border border-blue-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">ETH Momentum</p>
-                    <p class="text-xl font-black text-blue-500" id="eth-price-display">$2,850 <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                    <p class="text-xl font-black text-blue-500" id="eth-price-display">$Loading... <span class="text-xs font-normal text-gray-400">Loading...</span></p>
                 </div>
                 <div class="bg-red-500/5 border border-red-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">Market Sentiment</p>
-                    <p class="text-xl font-black text-red-500" id="sentiment-display">Fear <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                    <p class="text-xl font-black text-red-500" id="sentiment-display">Loading... <span class="text-xs font-normal text-gray-400">Loading...</span></p>
                 </div>
             </div>
         </header>
 
-        <!-- Bento Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            
-            <!-- Tether USAT Card -->
+            <!-- 1. ENS Labs Strategy Shift -->
             <div class="md:col-span-4 lg:col-span-4 row-span-2 bento-card p-8 flex flex-col justify-between group">
                 <div class="relative z-10">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h2 class="text-2xl font-bold mb-1">Tether 推出“美国制造”稳定币 USAT</h2>
-                            <p class="text-gray-400 text-sm mb-4">Stablecoin Wars</p>
+                            <h2 class="text-2xl font-bold mb-1">ENS Labs 取消 Namechain L2，回归主网</h2>
+                            <p class="text-gray-400 text-sm mb-4">Infrastructure Pivot</p>
                         </div>
-                        <a href="https://www.coindesk.com/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
+                        <a href="https://www.theblock.co/post/339485/ens-labs-scraps-namechain-l2-shifts-ensv2-fully-to-ethereum-mainnet" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <img src="../../../../imgs/2026/01/28/tether_usat.jpg" alt="Tether USAT" class="card-img h-64" onerror="handleImageError(this)">
+                    <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80" alt="ENS Labs" class="card-img h-64" onerror="handleImageError(this)">
                     <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4">
-                        <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                            Tether 联合 Anchorage Digital Bank 推出符合 GENIUS 法案的稳定币 USAT。该代币旨在满足机构对美国监管下数字美元的需求，直接挑战 Circle 的市场地位。
+                        <p class="text-base leading-relaxed text-gray-600 dark:text-gray-300">
+                            ENS Labs 宣布放弃 Namechain L2 扩展计划，将 ENSv2 功能直接集成至以太坊主网。此举旨在利用主网安全性应对市场波动，标志着 L2 叙事在极端行情下的战略收缩。
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- White House Davos Card -->
+            <!-- 2. Bitwise CIO View -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.coindesk.com/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://www.theblock.co/post/339414/bad-news-is-already-priced-in-bitwise-cio-sees-possible-exhaustion-as-bitcoin-logs-steepest-two-week-drop-since-june-2022" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">达沃斯 2026：监管转折</h3>
-                <p class="text-gray-400 text-sm mb-4">Policy & Regulation</p>
-                <img src="../../../../imgs/2026/01/28/white_house_davos.jpg" alt="Davos 2026" class="card-img" onerror="handleImageError(this)">
-                <p class="text-xs text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                    白宫顾问 Patrick Witt 认为 2026 年达沃斯是加密货币全球常态化的关键节点，稳定币正成为全球金融的“门户”。
+                <h3 class="text-xl font-bold mb-2">Bitwise: 比特币接近“卖盘枯竭”</h3>
+                <p class="text-gray-400 text-sm mb-4">Market Sentiment</p>
+                <img src="https://images.unsplash.com/photo-1640341667851-7a9a4b643588?auto=format&fit=crop&w=400&q=80" alt="Exhaustion" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
+                    Bitwise CIO 认为市场已消化大部分利空，两周内的剧烈跌幅可能正接近底部。
                 </p>
             </div>
 
-            <!-- Vitalik ETH Card -->
+            <!-- 3. Bithumb Error -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://cryptonews.com/news/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://www.theblock.co/post/339439/the-daily-strategys-safe-unless-btc-falls-to-8k-charles-hoskinsons-down-over-3b-in-crypto-bithumb-mistakenly-sends-bitcoin-to-users-and-more" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">Vitalik：2026 主权回归</h3>
-                <p class="text-gray-400 text-sm mb-4">Ethereum Vision</p>
-                <img src="../../../../imgs/2026/01/28/vitalik_eth.jpg" alt="Vitalik ETH" class="card-img" onerror="handleImageError(this)">
-                <p class="text-xs text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
-                    Vitalik 呼吁以太坊回归无许可核心，夺回在追求主流化过程中失去的“自我主权”。
+                <h3 class="text-xl font-bold mb-2">Bithumb 误发比特币引发热议</h3>
+                <p class="text-gray-400 text-sm mb-4">Exchange Glitch</p>
+                <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=400&q=80" alt="Bithumb" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
+                    韩国交易所 Bithumb 发生技术失误，错误向用户发放 BTC，目前正紧急回收资金。
                 </p>
             </div>
 
-            <!-- Steak 'n Shake BTC Card -->
+            <!-- 4. Michael Burry Critique -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://cryptonews.com/news/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://finance.yahoo.com/news/bitcoin-ethereum-liquidations-hit-704m-120113179.html" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">餐饮巨头购入 $10M BTC</h3>
-                <p class="text-gray-400 text-sm mb-4">Corporate Treasury</p>
-                <img src="../../../../imgs/2026/01/28/steak_shake_btc.jpg" alt="Steak n Shake" class="card-img" onerror="handleImageError(this)">
-                <p class="text-xs text-gray-500 leading-relaxed bg-orange-500/5 p-3 rounded-lg border border-orange-500/10">
-                    Steak ’n Shake 将 BTC 作为资产储备。餐饮连锁巨头开始模仿 MicroStrategy 的财务策略。
+                <h3 class="text-xl font-bold mb-2">Michael Burry: 比特币无有机用途</h3>
+                <p class="text-gray-400 text-sm mb-4">Macro Skepticism</p>
+                <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=400&q=80" alt="Michael Burry" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
+                    “大空头”原型认为加密资产缺乏实质使用场景，难以抵御流动性收缩的冲击。
                 </p>
             </div>
 
-            <!-- BRICS Digital Card -->
+            <!-- 5. Hoskinson Loss -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://cryptonews.com/news/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://www.theblock.co/post/339439/the-daily-strategys-safe-unless-btc-falls-to-8k-charles-hoskinsons-down-over-3b-in-crypto-bithumb-mistakenly-sends-bitcoin-to-users-and-more" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">BRICS 跨境结算提案</h3>
-                <p class="text-gray-400 text-sm mb-4">Global CBDC</p>
-                <img src="../../../../imgs/2026/01/28/brics_digital.jpg" alt="BRICS Digital" class="card-img" onerror="handleImageError(this)">
-                <p class="text-xs text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
-                    印度提议 BRICS 国家链接数字货币以简化支付，旨在建立去 SWIFT 化的跨境结算体系。
+                <h3 class="text-xl font-bold mb-2">Hoskinson 身家缩水 30 亿美元</h3>
+                <p class="text-gray-400 text-sm mb-4">Founder Wealth</p>
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80" alt="Wealth" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
+                    Cardano 创始人受市场暴跌冲击，个人加密财富大幅缩水，凸显行业寒冬残酷性。
                 </p>
             </div>
 
-            <!-- BTC Mining Card -->
-            <div class="md:col-span-4 lg:col-span-4 bento-card p-8 flex flex-col justify-center relative overflow-hidden group">
-                <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <i class="fa-solid fa-microchip text-9xl"></i>
-                </div>
-                <div class="relative z-10">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="px-3 py-1 rounded-full bg-red-500/10 text-red-500 text-[10px] font-bold uppercase tracking-wider">Network Status</span>
-                        <a href="https://www.coindesk.com/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </div>
-                    <h2 class="text-3xl font-black mb-4 tracking-tight">BTC 算力跌破 1,000 EH/s</h2>
-                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
-                        受矿工向 AI 与高效计算（HPC）业务转型影响，全网算力自 9 月以来首次大幅回落。矿工正在宏观压力下寻找更多元化的收益来源。
-                    </p>
-                    <div class="flex items-center gap-4">
-                        <div class="h-px flex-1 bg-white/10"></div>
-                        <span class="text-xs text-gray-500 font-medium uppercase tracking-widest">Mining Economics Shift</span>
-                        <div class="h-px flex-1 bg-white/10"></div>
-                    </div>
-                </div>
+            <!-- 6. Gemini Profitability -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://www.theblock.co/post/339462/analysts-see-400-upside-for-gemi-as-geminis-overseas-exit-may-speed-profitability" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">Gemini 战略退出加速盈利</h3>
+                <p class="text-gray-400 text-sm mb-4">Exchange Strategy</p>
+                <img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=400&q=80" alt="Gemini" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-green-500/5 p-3 rounded-lg border border-green-500/10">
+                    分析师认为 Gemini 退出非核心海外市场有助于精简成本，GEMI 代币被看好。
+                </p>
             </div>
 
+            <!-- 7. Macro Liquidity -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://cryptoticker.io/en/crypto-market-crash-update-february-2026/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">Kevin Warsh 提名施压流动性</h3>
+                <p class="text-gray-400 text-sm mb-4">Macro Headwinds</p>
+                <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=400&q=80" alt="Warsh" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
+                    下届美联储主席提名人的强硬立场加剧市场对流动性收紧的恐慌。
+                </p>
+            </div>
         </div>
 
-        <!-- Footer -->
-        <footer class="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
-            <p>&copy; 2026 Crypto Insight. @Derik LU. Sources: CoinDesk, The Block, CoinMarketCap.</p>
-            <div class="flex gap-6">
-                <a href="#" class="hover:text-white transition-colors">Twitter</a>
-                <a href="#" class="hover:text-white transition-colors">Discord</a>
-                <a href="#" class="hover:text-white transition-colors">Github</a>
+        <footer class="mt-20 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-bolt text-black"></i>
+                </div>
+                <p class="text-gray-500 text-sm">© 2026 Crypto Insight. All rights reserved.</p>
             </div>
+            <div class="flex gap-6">
+                <a href="#" class="text-gray-500 hover:text-orange-500 transition-colors"><i class="fa-brands fa-twitter text-xl"></i></a>
+                <a href="#" class="text-gray-500 hover:text-orange-500 transition-colors"><i class="fa-brands fa-discord text-xl"></i></a>
+                <a href="#" class="text-gray-500 hover:text-orange-500 transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
+            </div>
+            <p class="text-gray-600 text-xs">Created by @Derik LU</p>
         </footer>
     </main>
 
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="../../../../js/config.js"></script>
-    <script src="../../../../js/auth.js"></script>
-
+    <!-- Image Fallback Script -->
+    <script>
+        function handleImageError(img) {
+            console.warn('Image failed to load:', img.src);
+            const fallbackUrls = [
+                'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1622790698141-94e30457ef12?auto=format&fit=crop&w=800&q=80'
+            ];
+            if (img.dataset.triedFallback) {
+                img.src = 'https://via.placeholder.com/800x450/1a1a1a/ffffff?text=Image+Unavailable';
+                return;
+            }
+            img.dataset.triedFallback = 'true';
+            img.src = fallbackUrls[Math.floor(Math.random() * fallbackUrls.length)];
+        }
+    </script>
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../../../../js/config.js"></script>
@@ -399,5 +424,6 @@
             </div>
         </div>
     </div>
-    </body>
+    
+</body>
 </html>
