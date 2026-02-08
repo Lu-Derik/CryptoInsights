@@ -45,6 +45,21 @@
         }
         .light { background-color: #f9fafb; color: #111827; }
         .dark { background-color: #080808; color: #e5e7eb; }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 153, 0, 0.2);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 153, 0, 0.4);
+        }
     </style>
     <script>
         function toggleTheme() {

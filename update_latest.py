@@ -148,15 +148,26 @@ def update_latest():
         # History 区域 (8天以前的所有条目)
         history_section = ""
         if len(entries) > 8:
+            import datetime
             history_entries = entries[8:]
             history_data = {}
             for entry in history_entries: 
-                y, m, d = entry['date'].split('-')
+                date_obj = datetime.datetime.strptime(entry['date'], '%Y-%m-%d')
+                y = str(date_obj.year)
+                m = str(date_obj.month).zfill(2)
+                # 获取该日期属于当月的第几周
+                first_day = date_obj.replace(day=1)
+                dom = date_obj.day
+                adjusted_dom = dom + first_day.weekday()
+                week_num = int((adjusted_dom - 1) / 7) + 1
+                w = f"第{week_num}周"
+                
                 if y not in history_data: history_data[y] = {}
-                if m not in history_data[y]: history_data[y][m] = []
-                history_data[y][m].append(entry)
+                if m not in history_data[y]: history_data[y][m] = {}
+                if w not in history_data[y][m]: history_data[y][m][w] = []
+                history_data[y][m][w].append(entry)
             
-            # 对年份和月份进行倒序排序
+            # 对年份、月份、周进行倒序排序
             sorted_years = sorted(history_data.keys(), reverse=True)
             years_html = []
             for year in sorted_years:
@@ -164,19 +175,37 @@ def update_latest():
                 sorted_months = sorted(months.keys(), reverse=True)
                 months_html = []
                 for month in sorted_months:
-                    days = months[month]
-                    # 日已经在 entries 中排好序了（最新的在前）
-                    days_html = []
-                    for day_entry in days:
-                        days_html.append(f'''
-                            <a href="{day_entry['url']}" class="block text-[11px] text-gray-500 hover:text-orange-500 py-1 border-l border-white/5 pl-3 -ml-[1px]">
-                                {day_entry['date']}
-                            </a>
+                    weeks = months[month]
+                    sorted_weeks = sorted(weeks.keys(), reverse=True)
+                    weeks_html = []
+                    for week in sorted_weeks:
+                        days = weeks[week]
+                        days_html = []
+                        for day_entry in days:
+                            days_html.append(f'''
+                                <a href="{day_entry['url']}" class="block text-[11px] text-gray-500 hover:text-orange-500 py-1 border-l border-white/5 pl-3 -ml-[1px]">
+                                    {day_entry['date']}
+                                </a>
+                            ''')
+                        weeks_html.append(f'''
+                            <details class="group/week ml-2">
+                                <summary class="flex items-center justify-between text-[11px] text-gray-500 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none">
+                                    <span>{week}</span>
+                                    <i class="fa-solid fa-chevron-right text-[7px] transition-transform group-open/week:rotate-90"></i>
+                                </summary>
+                                <div class="pl-2 mt-1 space-y-1">{" ".join(days_html)}</div>
+                            </details>
                         ''')
-                    months_html.append(f'''<details class="group/month ml-2"><summary class="flex items-center justify-between text-[12px] text-gray-400 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none"><span>{month}月</span><i class="fa-solid fa-chevron-right text-[8px] transition-transform group-open/month:rotate-90"></i></summary><div class="pl-2 mt-1 space-y-1">{" ".join(days_html)}</div></details>''')
+                    months_html.append(f'''<details class="group/month ml-2"><summary class="flex items-center justify-between text-[12px] text-gray-400 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none"><span>{month}月</span><i class="fa-solid fa-chevron-right text-[8px] transition-transform group-open/month:rotate-90"></i></summary><div class="pl-2 mt-1 space-y-1">{" ".join(weeks_html)}</div></details>''')
                 years_html.append(f'''<details class="group/year"><summary class="flex items-center justify-between text-sm text-gray-300 p-2 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none"><span class="flex items-center gap-2"><i class="fa-solid fa-folder text-xs text-orange-500/50"></i> {year}年</span><i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/year:rotate-90"></i></summary><div class="pl-2 mt-1 space-y-1">{" ".join(months_html)}</div></details>''')
             
-            history_section = f'''<div class="mt-8 pt-6 border-t border-white/5"><p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">History Archive</p><div class="space-y-1">{" ".join(years_html)}</div></div>'''
+            history_section = f'''
+            <div class="mt-8 pt-6 border-t border-white/5">
+                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">History Archive</p>
+                <div class="max-h-[300px] overflow-y-auto pr-2 custom-scrollbar space-y-1">
+                    {" ".join(years_html)}
+                </div>
+            </div>'''
         
         # 用户 Auth UI (登录按钮和用户信息)
         auth_ui = f'''
@@ -307,6 +336,21 @@ def update_latest():
         }}
         .light {{ background-color: #f9fafb; color: #111827; }}
         .dark {{ background-color: #080808; color: #e5e7eb; }}
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {{
+            width: 4px;
+        }}
+        .custom-scrollbar::-webkit-scrollbar-track {{
+            background: transparent;
+        }}
+        .custom-scrollbar::-webkit-scrollbar-thumb {{
+            background: rgba(255, 153, 0, 0.2);
+            border-radius: 10px;
+        }}
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {{
+            background: rgba(255, 153, 0, 0.4);
+        }}
     </style>
     <script>
         function toggleTheme() {{
