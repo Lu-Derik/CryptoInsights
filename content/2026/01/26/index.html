@@ -83,10 +83,10 @@
                 </div>
             </div>
             
-            <details class="group/recent" >
+            <details class="group/recent" name="sidebar-nav" >
                 <summary class="flex items-center justify-between text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 cursor-pointer hover:text-orange-500 transition-colors list-none">
                     <span class="flex items-center gap-2">
-                        <i class="fa-solid fa-clock-rotate-left"></i> Recent Updates
+                        <i class="fa-solid fa-clock-rotate-left"></i> Recent Info
                     </span>
                     <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/recent:rotate-90"></i>
                 </summary>
@@ -128,52 +128,69 @@
             </details>
         
             
-            <div class="mt-8 pt-6 border-t border-white/5">
-                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">History Archive</p>
+            <details class="group/history mt-4 pt-4 border-t border-white/5" name="sidebar-nav" open>
+                <summary class="flex items-center justify-between text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 cursor-pointer hover:text-orange-500 transition-colors list-none">
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-box-archive"></i> History Archive
+                    </span>
+                    <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/history:rotate-90"></i>
+                </summary>
                 <div class="max-h-[300px] overflow-y-auto pr-2 custom-scrollbar space-y-1">
-                    <details class="group/year"><summary class="flex items-center justify-between text-sm text-gray-300 p-2 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none"><span class="flex items-center gap-2"><i class="fa-solid fa-folder text-xs text-orange-500/50"></i> 2026年</span><i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/year:rotate-90"></i></summary><div class="pl-2 mt-1 space-y-1"><details class="group/month ml-2"><summary class="flex items-center justify-between text-[12px] text-gray-400 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none"><span>01月</span><i class="fa-solid fa-chevron-right text-[8px] transition-transform group-open/month:rotate-90"></i></summary><div class="pl-2 mt-1 space-y-1">
-                            <details class="group/week ml-2">
+                    <details class="group/year" open>
+                    <summary class="flex items-center justify-between text-sm text-gray-300 p-2 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder text-xs text-orange-500/50"></i> 2026年</span>
+                        <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/year:rotate-90"></i>
+                    </summary>
+                    <div class="pl-2 mt-1 space-y-1"><details class="group/month ml-2" open>
+                        <summary class="flex items-center justify-between text-[12px] text-gray-400 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none">
+                            <span>01月</span>
+                            <i class="fa-solid fa-chevron-right text-[8px] transition-transform group-open/month:rotate-90"></i>
+                        </summary>
+                        <div class="pl-2 mt-1 space-y-1">
+                            <details class="group/week ml-2" open>
                                 <summary class="flex items-center justify-between text-[11px] text-gray-500 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none">
                                     <span>第5周</span>
                                     <i class="fa-solid fa-chevron-right text-[7px] transition-transform group-open/week:rotate-90"></i>
                                 </summary>
                                 <div class="pl-2 mt-1 space-y-1">
-                                <a href="/content/2026/01/29/index.html" class="block text-[11px] text-gray-500 hover:text-orange-500 py-1 border-l border-white/5 pl-3 -ml-[1px]">
+                                <a href="/content/2026/01/29/index.html" class="block text-[11px] text-gray-500 hover:text-orange-500 hover:bg-orange-500/5 py-1 border-l border-white/5 pl-3 -ml-[1px] rounded-md transition-all">
                                     2026-01-29
                                 </a>
                              
-                                <a href="/content/2026/01/28/index.html" class="block text-[11px] text-gray-500 hover:text-orange-500 py-1 border-l border-white/5 pl-3 -ml-[1px]">
+                                <a href="/content/2026/01/28/index.html" class="block text-[11px] text-gray-500 hover:text-orange-500 hover:bg-orange-500/5 py-1 border-l border-white/5 pl-3 -ml-[1px] rounded-md transition-all">
                                     2026-01-28
                                 </a>
                              
-                                <a href="/content/2026/01/27/index.html" class="block text-[11px] text-gray-500 hover:text-orange-500 py-1 border-l border-white/5 pl-3 -ml-[1px]">
+                                <a href="/content/2026/01/27/index.html" class="block text-[11px] text-gray-500 hover:text-orange-500 hover:bg-orange-500/5 py-1 border-l border-white/5 pl-3 -ml-[1px] rounded-md transition-all">
                                     2026-01-27
                                 </a>
                              
-                                <a href="/content/2026/01/26/index.html" class="block text-[11px] text-gray-500 hover:text-orange-500 py-1 border-l border-white/5 pl-3 -ml-[1px]">
+                                <a href="/content/2026/01/26/index.html" class="block text-[11px] text-orange-500 bg-orange-500/10 font-bold py-1 border-l border-white/5 pl-3 -ml-[1px] rounded-md transition-all">
                                     2026-01-26
                                 </a>
                             </div>
                             </details>
                          
-                            <details class="group/week ml-2">
+                            <details class="group/week ml-2" >
                                 <summary class="flex items-center justify-between text-[11px] text-gray-500 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none">
                                     <span>第4周</span>
                                     <i class="fa-solid fa-chevron-right text-[7px] transition-transform group-open/week:rotate-90"></i>
                                 </summary>
                                 <div class="pl-2 mt-1 space-y-1">
-                                <a href="/content/2026/01/25/index.html" class="block text-[11px] text-gray-500 hover:text-orange-500 py-1 border-l border-white/5 pl-3 -ml-[1px]">
+                                <a href="/content/2026/01/25/index.html" class="block text-[11px] text-gray-500 hover:text-orange-500 hover:bg-orange-500/5 py-1 border-l border-white/5 pl-3 -ml-[1px] rounded-md transition-all">
                                     2026-01-25
                                 </a>
                              
-                                <a href="/content/2026/01/24/index.html" class="block text-[11px] text-gray-500 hover:text-orange-500 py-1 border-l border-white/5 pl-3 -ml-[1px]">
+                                <a href="/content/2026/01/24/index.html" class="block text-[11px] text-gray-500 hover:text-orange-500 hover:bg-orange-500/5 py-1 border-l border-white/5 pl-3 -ml-[1px] rounded-md transition-all">
                                     2026-01-24
                                 </a>
                             </div>
                             </details>
-                        </div></details></div></details>
+                        </div>
+                    </details></div>
+                </details>
                 </div>
-            </div>
+            </details>
             
         <div class="mt-6 pt-6 border-t border-white/5">
             <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Account</p>

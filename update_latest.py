@@ -143,10 +143,10 @@ def update_latest():
         # 如果当前日期在最近 8 天内，默认展开
         is_recent_active = any(e['date'] == current_date for e in display_entries)
         recent_section = f'''
-            <details class="group/recent" {"open" if is_recent_active else ""}>
+            <details class="group/recent" name="sidebar-nav" {"open" if is_recent_active else ""}>
                 <summary class="flex items-center justify-between text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 cursor-pointer hover:text-orange-500 transition-colors list-none">
                     <span class="flex items-center gap-2">
-                        <i class="fa-solid fa-clock-rotate-left"></i> Recent Updates
+                        <i class="fa-solid fa-clock-rotate-left"></i> Recent Info
                     </span>
                     <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/recent:rotate-90"></i>
                 </summary>
@@ -191,6 +191,8 @@ def update_latest():
             # 对年份、月份、周进行倒序排序
             sorted_years = sorted(history_data.keys(), reverse=True)
             years_html = []
+            is_history_active = any(e['date'] == current_date for e in history_entries)
+            
             for year in sorted_years:
                 months = history_data[year]
                 sorted_months = sorted(months.keys(), reverse=True)
@@ -203,13 +205,18 @@ def update_latest():
                         days = weeks[week]
                         days_html = []
                         for day_entry in days:
+                            is_current_day = day_entry['date'] == current_date
+                            day_active_class = "text-orange-500 bg-orange-500/10 font-bold" if is_current_day else "text-gray-500 hover:text-orange-500 hover:bg-orange-500/5"
                             days_html.append(f'''
-                                <a href="{day_entry['url']}" class="block text-[11px] text-gray-500 hover:text-orange-500 py-1 border-l border-white/5 pl-3 -ml-[1px]">
+                                <a href="{day_entry['url']}" class="block text-[11px] {day_active_class} py-1 border-l border-white/5 pl-3 -ml-[1px] rounded-md transition-all">
                                     {day_entry['date']}
                                 </a>
                             ''')
+                        
+                        # 如果当前日期在这一周，默认展开周
+                        is_week_active = any(d['date'] == current_date for d in days)
                         weeks_html.append(f'''
-                            <details class="group/week ml-2">
+                            <details class="group/week ml-2" {"open" if is_week_active else ""}>
                                 <summary class="flex items-center justify-between text-[11px] text-gray-500 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none">
                                     <span>{week}</span>
                                     <i class="fa-solid fa-chevron-right text-[7px] transition-transform group-open/week:rotate-90"></i>
@@ -217,16 +224,39 @@ def update_latest():
                                 <div class="pl-2 mt-1 space-y-1">{" ".join(days_html)}</div>
                             </details>
                         ''')
-                    months_html.append(f'''<details class="group/month ml-2"><summary class="flex items-center justify-between text-[12px] text-gray-400 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none"><span>{month}月</span><i class="fa-solid fa-chevron-right text-[8px] transition-transform group-open/month:rotate-90"></i></summary><div class="pl-2 mt-1 space-y-1">{" ".join(weeks_html)}</div></details>''')
-                years_html.append(f'''<details class="group/year"><summary class="flex items-center justify-between text-sm text-gray-300 p-2 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none"><span class="flex items-center gap-2"><i class="fa-solid fa-folder text-xs text-orange-500/50"></i> {year}年</span><i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/year:rotate-90"></i></summary><div class="pl-2 mt-1 space-y-1">{" ".join(months_html)}</div></details>''')
+                    
+                    # 如果当前日期在这个月，默认展开月
+                    is_month_active = any(any(d['date'] == current_date for d in w_days) for w_days in weeks.values())
+                    months_html.append(f'''<details class="group/month ml-2" {"open" if is_month_active else ""}>
+                        <summary class="flex items-center justify-between text-[12px] text-gray-400 p-1 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none">
+                            <span>{month}月</span>
+                            <i class="fa-solid fa-chevron-right text-[8px] transition-transform group-open/month:rotate-90"></i>
+                        </summary>
+                        <div class="pl-2 mt-1 space-y-1">{" ".join(weeks_html)}</div>
+                    </details>''')
+                
+                # 如果当前日期在这一年，默认展开年
+                is_year_active = any(any(any(d['date'] == current_date for d in w_days) for w_days in m_weeks.values()) for m_weeks in months.values())
+                years_html.append(f'''<details class="group/year" {"open" if is_year_active else ""}>
+                    <summary class="flex items-center justify-between text-sm text-gray-300 p-2 cursor-pointer hover:text-orange-500 dark:hover:text-white list-none">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder text-xs text-orange-500/50"></i> {year}年</span>
+                        <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/year:rotate-90"></i>
+                    </summary>
+                    <div class="pl-2 mt-1 space-y-1">{" ".join(months_html)}</div>
+                </details>''')
             
             history_section = f'''
-            <div class="mt-8 pt-6 border-t border-white/5">
-                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">History Archive</p>
+            <details class="group/history mt-4 pt-4 border-t border-white/5" name="sidebar-nav" {"open" if is_history_active else ""}>
+                <summary class="flex items-center justify-between text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 cursor-pointer hover:text-orange-500 transition-colors list-none">
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-box-archive"></i> History Archive
+                    </span>
+                    <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/history:rotate-90"></i>
+                </summary>
                 <div class="max-h-[300px] overflow-y-auto pr-2 custom-scrollbar space-y-1">
                     {" ".join(years_html)}
                 </div>
-            </div>'''
+            </details>'''
         
         # 用户 Auth UI (登录按钮和用户信息)
         auth_ui = f'''
