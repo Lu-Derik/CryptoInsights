@@ -76,8 +76,8 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            fetchMarketData();
-            setInterval(fetchMarketData, 60000); // Update every minute
+            // fetchMarketData(); // Frozen for history
+            // setInterval(fetchMarketData, 60000); // Frozen for history // Update every minute
         });
 
         function toggleTheme() {
@@ -278,7 +278,7 @@
                 <p class="text-orange-500 font-bold text-sm uppercase tracking-widest">Market Briefing</p>
                 <div class="update-time flex items-center gap-2">
                     <span class="live-dot"></span>
-                    <span>Live Market Status • Last updated: <span id="last-update-time">Loading...</span></span>
+                    <span>Live Market Status • Last updated: <span id="last-update-time">15:34:17 (Frozen)</span></span>
                 </div>
             </div>
             <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-4 leading-none">

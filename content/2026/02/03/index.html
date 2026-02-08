@@ -93,8 +93,8 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            fetchMarketData();
-            setInterval(fetchMarketData, 60000);
+            // fetchMarketData(); // Frozen for history
+            // setInterval(fetchMarketData, 60000); // Frozen for history
         });
 
         function toggleTheme() {
@@ -292,7 +292,7 @@
                 <p class="text-orange-500 font-bold text-sm uppercase tracking-widest">Market Briefing</p>
                 <div class="update-time flex items-center gap-2">
                     <span class="live-dot"></span>
-                    <span>Live Market Status • Last updated: <span id="last-update-time">Loading...</span></span>
+                    <span>Live Market Status • Last updated: <span id="last-update-time">15:34:17 (Frozen)</span></span>
                 </div>
             </div>
             <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-4 leading-none">
@@ -303,15 +303,15 @@
             <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-orange-500/5 border border-orange-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">BTC Price</p>
-                    <p class="text-xl font-black text-orange-500" id="btc-price-display">$Loading... <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                    <p class="text-xl font-black text-orange-500" id="btc-price-display">$69,441 <span class="text-xs font-normal text-green-500">+2.64%</span></p>
                 </div>
                 <div class="bg-blue-500/5 border border-blue-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">ETH Momentum</p>
-                    <p class="text-xl font-black text-blue-500" id="eth-price-display">$Loading... <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                    <p class="text-xl font-black text-blue-500" id="eth-price-display">$2,075.28 <span class="text-xs font-normal text-green-500">+3.21%</span></p>
                 </div>
                 <div class="bg-red-500/5 border border-red-500/10 rounded-2xl p-4">
                     <p class="text-xs font-bold text-gray-500 uppercase mb-1">Market Sentiment</p>
-                    <p class="text-xl font-black text-red-500" id="sentiment-display">Loading... <span class="text-xs font-normal text-gray-400">Loading...</span></p>
+                    <p class="text-xl font-black text-red-500" id="sentiment-display">Extreme Fear <span class="text-xs font-normal text-gray-400">Index: 7</span></p>
                 </div>
             </div>
         </header>

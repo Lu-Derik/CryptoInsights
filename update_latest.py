@@ -1,6 +1,44 @@
 import os
 import re
 import json
+import urllib.request
+
+def get_market_data():
+    import time
+    import subprocess
+    
+    def fetch_with_curl(url):
+        try:
+            result = subprocess.run(['curl', '-sS', url], capture_output=True, text=True, timeout=15)
+            if result.returncode == 0:
+                return json.loads(result.stdout)
+            else:
+                print(f"Curl error for {url}: {result.stderr}")
+        except Exception as e:
+            print(f"Curl fetch failed for {url}: {e}")
+        return None
+
+    for attempt in range(3):
+        try:
+            # Coingecko
+            price_data = fetch_with_curl('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true')
+            
+            # Alternative.me (FnG)
+            fng_data = fetch_with_curl('https://api.alternative.me/fng/')
+                
+            if price_data and fng_data:
+                return {
+                    "btc": price_data.get('bitcoin', {}),
+                    "eth": price_data.get('ethereum', {}),
+                    "fng": fng_data.get('data', [{}])[0]
+                }
+        except Exception as e:
+            print(f"Attempt {attempt + 1} failed: {e}")
+            if attempt < 2:
+                time.sleep(2)
+    
+    print("All market data fetch attempts failed.")
+    return None
 
 def get_summary_from_md(date_str):
     md_path = f"{date_str}.md"
@@ -61,6 +99,11 @@ def update_latest():
     latest_entry = entries[0]
     past_entries = entries[1:]
     print(f"Detected {len(entries)} entries. Latest: {latest_entry['date']}")
+
+    # Fetch market data once for freezing historical pages
+    market_data = get_market_data()
+    if market_data:
+        print("Market data fetched successfully for freezing.")
 
     # 生成通用的 Auth 模态框和脚本引用
     def get_auth_assets(base_path="./"):
@@ -505,12 +548,55 @@ def update_latest():
 
     # 更新所有页面的 Sidebar 和 Auth Assets
     for entry in entries:
+        is_latest = (entry['date'] == latest_entry['date'])
         file_path = entry['url'].lstrip('/')
         abs_path = os.path.join(os.getcwd(), file_path)
         if os.path.exists(abs_path):
             with open(abs_path, 'r', encoding='utf-8') as f:
                 page_content = f.read()
             
+            # 0. 如果不是最新页面，冻结市场数据
+            if not is_latest and market_data:
+                try:
+                    import datetime
+                    now_str = datetime.datetime.now().strftime('%H:%M:%S')
+                    
+                    # BTC 数据
+                    btc = market_data['btc']
+                    btc_price = f"{btc.get('usd', 0):,}"
+                    btc_change = btc.get('usd_24h_change', 0)
+                    btc_color = "text-green-500" if btc_change >= 0 else "text-red-500"
+                    btc_sign = "+" if btc_change >= 0 else ""
+                    btc_html = f"${btc_price} <span class=\"text-xs font-normal {btc_color}\">{btc_sign}{btc_change:.2f}%</span>"
+                    
+                    # ETH 数据
+                    eth = market_data['eth']
+                    eth_price = f"{eth.get('usd', 0):,}"
+                    eth_change = eth.get('usd_24h_change', 0)
+                    eth_color = "text-green-500" if eth_change >= 0 else "text-red-500"
+                    eth_sign = "+" if eth_change >= 0 else ""
+                    eth_html = f"${eth_price} <span class=\"text-xs font-normal {eth_color}\">{eth_sign}{eth_change:.2f}%</span>"
+                    
+                    # FnG 数据
+                    fng = market_data['fng']
+                    fng_val = fng.get('value', 'N/A')
+                    fng_class = fng.get('value_classification', 'N/A')
+                    fng_html = f"{fng_class} <span class=\"text-xs font-normal text-gray-400\">Index: {fng_val}</span>"
+                    
+                    # 替换内容
+                    page_content = page_content.replace('id="btc-price-display">$Loading... <span class="text-xs font-normal text-gray-400">Loading...</span>', f'id="btc-price-display">{btc_html}')
+                    page_content = page_content.replace('id="eth-price-display">$Loading... <span class="text-xs font-normal text-gray-400">Loading...</span>', f'id="eth-price-display">{eth_html}')
+                    page_content = page_content.replace('id="sentiment-display">Loading... <span class="text-xs font-normal text-gray-400">Loading...</span>', f'id="sentiment-display">{fng_html}')
+                    page_content = page_content.replace('id="last-update-time">Loading...</span>', f'id="last-update-time">{now_str} (Frozen)</span>')
+                    
+                    # 禁用 JS 自动刷新
+                    page_content = page_content.replace('fetchMarketData();', '// fetchMarketData(); // Frozen for history')
+                    page_content = page_content.replace('setInterval(fetchMarketData, 60000);', '// setInterval(fetchMarketData, 60000); // Frozen for history')
+                    
+                    print(f"Froze market data for {entry['date']}")
+                except Exception as e:
+                    print(f"Failed to freeze market data for {entry['date']}: {e}")
+
             # 1. 注入图片处理逻辑
             page_content = inject_image_handlers(page_content)
             
