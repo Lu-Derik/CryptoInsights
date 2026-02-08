@@ -128,22 +128,43 @@ def update_latest():
     def generate_nav_html(current_date=None, is_portal=False):
         portal_link_class = "flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl" if is_portal else "flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors"
         
-        # 基础导航项
-        nav_items = [f'''
-            <a href="/" class="{portal_link_class}">
-                <i class="fa-solid fa-house"></i> Portal
-            </a>
-        ''']
-        
-        # 日期条目
+        # 日期条目 (最近 8 天)
         display_entries = entries[:8]
+        recent_items = []
         for entry in display_entries:
             active_class = "flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl" if current_date == entry['date'] else "flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors"
-            nav_items.append(f'''
+            recent_items.append(f'''
                 <a href="{entry['url']}" class="{active_class}">
                     <i class="fa-solid fa-calendar-day"></i> {entry['date'].replace('-', '.')}
                 </a>
             ''')
+        
+        # 将最近 8 天做成折叠结构 (2层)
+        # 如果当前日期在最近 8 天内，默认展开
+        is_recent_active = any(e['date'] == current_date for e in display_entries)
+        recent_section = f'''
+            <details class="group/recent" {"open" if is_recent_active else ""}>
+                <summary class="flex items-center justify-between text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 cursor-pointer hover:text-orange-500 transition-colors list-none">
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Recent Updates
+                    </span>
+                    <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/recent:rotate-90"></i>
+                </summary>
+                <div class="space-y-1 mb-4">
+                    {" ".join(recent_items)}
+                </div>
+            </details>
+        '''
+        
+        # 基础导航项 (Portal)
+        portal_item = f'''
+            <a href="/" class="{portal_link_class}">
+                <i class="fa-solid fa-house"></i> Portal
+            </a>
+        '''
+
+        # History 区域 (8天以前的所有条目)
+        # ... (此处逻辑保持不变)
         
         # History 区域 (8天以前的所有条目)
         history_section = ""
@@ -232,12 +253,13 @@ def update_latest():
 
         return f'''
         <div class="space-y-2">
-            <div>
+            <div class="mb-6">
                 <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Navigation</p>
                 <div class="space-y-1">
-                    {" ".join(nav_items)}
+                    {portal_item}
                 </div>
             </div>
+            {recent_section}
             {history_section}
             {auth_ui}
         </div>

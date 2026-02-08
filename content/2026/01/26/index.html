@@ -72,14 +72,26 @@
         <nav class="space-y-6">
             
         <div class="space-y-2">
-            <div>
+            <div class="mb-6">
                 <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Navigation</p>
                 <div class="space-y-1">
                     
             <a href="/" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
                 <i class="fa-solid fa-house"></i> Portal
             </a>
-         
+        
+                </div>
+            </div>
+            
+            <details class="group/recent" >
+                <summary class="flex items-center justify-between text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 cursor-pointer hover:text-orange-500 transition-colors list-none">
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Recent Updates
+                    </span>
+                    <i class="fa-solid fa-chevron-right text-[10px] transition-transform group-open/recent:rotate-90"></i>
+                </summary>
+                <div class="space-y-1 mb-4">
+                    
                 <a href="/content/2026/02/08/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
                     <i class="fa-solid fa-calendar-day"></i> 2026.02.08
                 </a>
@@ -113,7 +125,8 @@
                 </a>
             
                 </div>
-            </div>
+            </details>
+        
             
             <div class="mt-8 pt-6 border-t border-white/5">
                 <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">History Archive</p>
