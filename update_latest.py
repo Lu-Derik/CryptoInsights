@@ -209,8 +209,8 @@ def update_latest():
                     {" ".join(nav_items)}
                 </div>
             </div>
-            {auth_ui}
             {history_section}
+            {auth_ui}
         </div>
         '''
 
