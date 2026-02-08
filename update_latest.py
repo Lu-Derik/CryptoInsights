@@ -145,20 +145,27 @@ def update_latest():
                 </a>
             ''')
         
-        # History 区域 (如果多于8个条目)
+        # History 区域 (8天以前的所有条目)
         history_section = ""
         if len(entries) > 8:
+            history_entries = entries[8:]
             history_data = {}
-            for entry in entries[8:]: 
+            for entry in history_entries: 
                 y, m, d = entry['date'].split('-')
                 if y not in history_data: history_data[y] = {}
                 if m not in history_data[y]: history_data[y][m] = []
                 history_data[y][m].append(entry)
             
+            # 对年份和月份进行倒序排序
+            sorted_years = sorted(history_data.keys(), reverse=True)
             years_html = []
-            for year, months in history_data.items():
+            for year in sorted_years:
+                months = history_data[year]
+                sorted_months = sorted(months.keys(), reverse=True)
                 months_html = []
-                for month, days in months.items():
+                for month in sorted_months:
+                    days = months[month]
+                    # 日已经在 entries 中排好序了（最新的在前）
                     days_html = []
                     for day_entry in days:
                         days_html.append(f'''
@@ -233,6 +240,24 @@ def update_latest():
 
     # 生成摘要 HTML
     latest_summaries_html = "".join([f'<li class="flex items-start gap-2 mb-2"><i class="fa-solid fa-circle-dot text-[8px] mt-2 text-orange-500/60"></i><span>{s}</span></li>' for s in latest_entry['summaries']])
+
+    # 生成 Archive Grid (仅显示最近 9 天)
+    archive_entries = past_entries[:8] # 1个最新的 + 8个历史 = 9个
+    archive_grid_html = " ".join([f'''
+                <a href="{item['url']}" class="glass-card p-6 rounded-2xl group flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-gray-500 dark:text-gray-400 font-mono text-sm">{item['date']}</span>
+                        <i class="fa-solid fa-calendar-day text-gray-700 dark:text-gray-600 group-hover:text-orange-500/50 transition-colors"></i>
+                    </div>
+                    <h4 class="font-bold mb-4 group-hover:text-orange-500 transition-colors">市场日报</h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-3 mb-6 flex-1">
+                        {item['summaries'][0] if item['summaries'] else '查看当日详细市场报告...'}
+                    </p>
+                    <div class="text-xs text-orange-500 font-bold flex items-center gap-1 mt-auto">
+                        查看详情 <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </div>
+                </a>
+                ''' for item in archive_entries]) if archive_entries else '<p class="text-gray-600 dark:text-gray-500 col-span-full italic">暂无更多历史记录</p>'
 
     # 生成 Portal HTML
     portal_html = f"""<!DOCTYPE html>
@@ -362,24 +387,10 @@ def update_latest():
         <section>
             <h2 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
                 <span class="w-8 h-[1px] bg-gray-500/30"></span>
-                历史存档
+                历史存档 (最近 8 天)
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {" ".join([f'''
-                <a href="{item['url']}" class="glass-card p-6 rounded-2xl group flex flex-col h-full">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="text-gray-500 dark:text-gray-400 font-mono text-sm">{item['date']}</span>
-                        <i class="fa-solid fa-calendar-day text-gray-700 dark:text-gray-600 group-hover:text-orange-500/50 transition-colors"></i>
-                    </div>
-                    <h4 class="font-bold mb-4 group-hover:text-orange-500 transition-colors">市场日报</h4>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-3 mb-6 flex-1">
-                        {item['summaries'][0] if item['summaries'] else '查看当日详细市场报告...'}
-                    </p>
-                    <div class="text-xs text-orange-500 font-bold flex items-center gap-1 mt-auto">
-                        查看详情 <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                    </div>
-                </a>
-                ''' for item in past_entries]) if past_entries else '<p class="text-gray-600 dark:text-gray-500 col-span-full italic">暂无更多历史记录</p>'}
+                {archive_grid_html}
             </div>
         </section>
 
