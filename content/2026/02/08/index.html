@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Insight - 2026.02.02</title>
+    <title>Crypto Insight - 2026.02.08</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -39,6 +39,21 @@
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
     <script>
+        function handleImageError(img) {
+            console.warn('Image failed to load:', img.src);
+            const fallbackUrls = [
+                'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1622790698141-94e30457ef12?auto=format&fit=crop&w=800&q=80'
+            ];
+            if (img.dataset.triedFallback) {
+                img.src = 'https://via.placeholder.com/800x450/1a1a1a/ffffff?text=Image+Unavailable';
+                return;
+            }
+            img.dataset.triedFallback = 'true';
+            img.src = fallbackUrls[Math.floor(Math.random() * fallbackUrls.length)];
+        }
+
         async function fetchMarketData() {
             try {
                 const priceResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
@@ -95,14 +110,13 @@
             document.documentElement.classList.add(savedTheme);
         })();
     </script>
-<script>function handleImageError(img) { /* fallback logic */ img.src="https://via.placeholder.com/800x450?text=Error"; }</script>
 </head>
 <body class="flex min-h-screen">
     <button onclick="toggleTheme()" class="fixed top-6 right-6 z-50 p-3 rounded-xl bento-card text-orange-500 hover:scale-110 active:scale-95 transition-all">
         <i class="fa-solid fa-circle-half-stroke text-xl"></i>
     </button>
 
-    <!-- Sidebar (Placeholder for update_latest.py) -->
+    <!-- Sidebar (Placeholder, will be updated by script) -->
     <!-- Sidebar -->
     <aside class="hidden lg:flex flex-col w-64 p-6 sidebar sticky top-0 h-screen">
         <a href="/" class="flex items-center gap-3 mb-10 hover:opacity-80 transition-opacity">
@@ -122,7 +136,7 @@
                 <i class="fa-solid fa-house"></i> Portal
             </a>
          
-                <a href="/content/2026/02/08/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
+                <a href="/content/2026/02/08/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
                     <i class="fa-solid fa-calendar-day"></i> 2026.02.08
                 </a>
              
@@ -142,7 +156,7 @@
                     <i class="fa-solid fa-calendar-day"></i> 2026.02.03
                 </a>
              
-                <a href="/content/2026/02/02/index.html" class="flex items-center gap-3 text-sm font-semibold text-orange-500 bg-orange-500/10 p-2 rounded-xl">
+                <a href="/content/2026/02/02/index.html" class="flex items-center gap-3 text-sm text-gray-400 p-2 hover:text-orange-500 dark:hover:text-white transition-colors">
                     <i class="fa-solid fa-calendar-day"></i> 2026.02.02
                 </a>
              
@@ -219,16 +233,16 @@
     <main class="flex-1 p-6 lg:p-12 overflow-y-auto">
         <header class="mb-12">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
-                <p class="text-orange-500 font-bold text-sm uppercase tracking-widest">Market Briefing</p>
+                <p class="text-orange-500 font-bold text-sm uppercase tracking-widest">Daily Crypto Report</p>
                 <div class="update-time flex items-center gap-2">
                     <span class="live-dot"></span>
                     <span>Live Market Status • Last updated: <span id="last-update-time">Loading...</span></span>
                 </div>
             </div>
             <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-4 leading-none">
-                白宫加密峰会 <span class="grad-orange">僵局待破</span>
+                算力调整与 <span class="grad-orange">流动性考验</span>
             </h1>
-            <p class="text-gray-400 text-lg max-w-2xl">白宫紧急召集银行与加密领袖，聚焦 CLARITY 法案稳定币奖励争议。Tether 披露 2025 年百亿利润，机构化时代加速到来。</p>
+            <p class="text-gray-400 text-lg max-w-2xl">比特币难度创纪录下调 11%，周末流动性枯竭加剧震荡，机构重新评估宏观风险框架。</p>
             
             <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-orange-500/5 border border-orange-500/10 rounded-2xl p-4">
@@ -247,118 +261,139 @@
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            <!-- Main Story: White House Summit -->
+            <!-- 1. Bitcoin Mining Difficulty -->
             <div class="md:col-span-4 lg:col-span-4 row-span-2 bento-card p-8 flex flex-col justify-between group">
                 <div class="relative z-10">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h2 class="text-2xl font-bold mb-1">白宫加密峰会召开，聚焦 CLARITY 法案与稳定币奖励僵局</h2>
-                            <p class="text-gray-400 text-sm mb-4">Policy Summit & Regulatory Deadlock</p>
+                            <h2 class="text-2xl font-bold mb-1">BTC 挖矿难度创纪录下调 11%</h2>
+                            <p class="text-gray-400 text-sm mb-4">Network Security Adjustment</p>
                         </div>
-                        <a href="https://www.coindesk.com/policy/2026/01/28/white-house-to-meet-with-crypto-banking-executives-to-discuss-market-structure-bill-reuters-reports" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
+                        <a href="https://www.theblock.co/post/339487/bitcoin-mining-difficulty-drops-11-in-largest-negative-adjustment-since-chinas-2021-ban" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=800&q=80" alt="White House Summit" class="card-img h-64" onerror="handleImageError(this)">
+                    <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=800&q=80" alt="Bitcoin Mining" class="card-img h-64" onerror="handleImageError(this)">
                     <div class="bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/10 dark:border-orange-500/20 rounded-xl p-4">
                         <p class="text-base leading-relaxed text-gray-600 dark:text-gray-300">
-                            2026 年 2 月 2 日，白宫召集顶级银行高管与加密货币领袖举行紧急峰会，旨在打破《CLARITY 法案》的僵局。争议核心在于“稳定币奖励”——银行担心稳定币利息会导致存款流失，而加密行业认为这是金融创新的基石。
+                            受价格低迷影响，BTC 挖矿难度创下自 2021 年以来最大跌幅。大量算力离网，标志着矿工进入“投降”阶段，通常是市场周期的重要转折信号。
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- Tether Profit -->
+            <!-- 2. Crypto Robbery Attempt -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.theblock.co/post/302138/tether-rakes-in-over-10-billion-net-profit-in-2025" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://www.theblock.co/post/339486/teens-face-felony-charges-after-600-mile-drive-to-allegedly-attempt-a-66-million-crypto-robbery-reports" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">Tether 2025 利润超百亿</h3>
-                <p class="text-gray-400 text-sm mb-4">Stablecoin Dominance</p>
-                <img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=400&q=80" alt="Tether Profit" class="card-img" onerror="handleImageError(this)">
+                <h3 class="text-xl font-bold mb-2">6600 万美元线下劫案未遂</h3>
+                <p class="text-gray-400 text-sm mb-4">Security Alert</p>
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=400&q=80" alt="Security" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-white/5 p-3 rounded-lg border border-white/5">
-                    稳定币巨头 Tether 披露其 2025 年净利润超过 100 亿美元，超额储备突破 63 亿美元，彰显霸主地位。
+                    青少年驱车 600 英里企图抢劫加密持有者，引发对大额持币者现实安全风险的关注。
                 </p>
             </div>
 
-            <!-- Grayscale Outlook -->
+            <!-- 3. Weekend Liquidity -->
             <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://research.grayscale.com/reports/2026-digital-asset-outlook-dawn-of-the-institutional-era" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                <a href="https://www.reuters.com/markets/wealth/crypto-market-volatility-triggers-25-billion-bitcoin-liquidations-2026-02-02/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
                 </a>
-                <h3 class="text-xl font-bold mb-2">Grayscale: 机构时代黎明</h3>
-                <p class="text-gray-400 text-sm mb-4">Institutional Era</p>
-                <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=400&q=80" alt="Grayscale Outlook" class="card-img" onerror="handleImageError(this)">
-                <p class="text-sm text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
-                    随着 3 月第 2000 万枚比特币挖出，稀缺性叙事将吸引更多机构资金全面融入 TradFi。
-                </p>
-            </div>
-
-            <!-- AI & Crypto -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.dlnews.com/articles/markets/blackrock-coinbase-and-others-share-2026-predictions/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <h3 class="text-xl font-bold mb-2">AI 与加密货币深度融合</h3>
-                <p class="text-gray-400 text-sm mb-4">AI Agents & Machine Economy</p>
-                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=400&q=80" alt="AI Crypto" class="card-img" onerror="handleImageError(this)">
-                <p class="text-sm text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
-                    Coinbase 预测 AI 代理将成为链上支付的主要推动力，利用加密货币开启“机器经济”新纪元。
-                </p>
-            </div>
-
-            <!-- BTC Recovery -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://money.com/crypto-bitcoin-predictions-2026/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <h3 class="text-xl font-bold mb-2">BTC 企稳，分析师看好反弹</h3>
-                <p class="text-gray-400 text-sm mb-4">Market Recovery</p>
-                <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80" alt="BTC Recovery" class="card-img" onerror="handleImageError(this)">
-                <p class="text-sm text-gray-500 leading-relaxed bg-orange-500/5 p-3 rounded-lg border border-orange-500/10">
-                    尽管 1 月 ETF 流出 16 亿美元，但分析师看好年内反弹，目标价指向 13 万至 20 万美元。
-                </p>
-            </div>
-
-            <!-- Pantera Intelligence -->
-            <div class="md:col-span-4 lg:col-span-4 bento-card p-8 flex flex-col justify-center relative overflow-hidden group">
-                <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <i class="fa-solid fa-microchip text-9xl"></i>
-                </div>
-                <div class="relative z-10">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-[10px] font-bold uppercase tracking-wider">Security Analysis</span>
-                        <a href="https://panteracapital.com/blockchain-letter/navigating-crypto-in-2026/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-colors">
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                    </div>
-                    <h2 class="text-3xl font-black mb-4 tracking-tight">Pantera: 2026 进入“链上智能”治理时代</h2>
-                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
-                        加密行业将从简单的智能合约治理转向基于“链上智能”的确定性规则。实时代码审计和漏洞即时反馈将成为 DeFi 生态安全的新标准。
-                    </p>
-                </div>
-            </div>
-
-            <!-- SEC Tokenization -->
-            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
-                <a href="https://www.nasdaq.com/articles/2-important-changes-coming-cryptocurrency-trading-2026" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
-                <h3 class="text-xl font-bold mb-2">SEC: 代币化是现代金融关键</h3>
-                <p class="text-gray-400 text-sm mb-4">RWA & Market Modernization</p>
-                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=400&q=80" alt="SEC Tokenization" class="card-img" onerror="handleImageError(this)">
+                <h3 class="text-xl font-bold mb-2">周末流动性枯竭放大震荡</h3>
+                <p class="text-gray-400 text-sm mb-4">Market Liquidity</p>
+                <img src="https://images.unsplash.com/photo-1611974717535-7c8579630ad8?auto=format&fit=crop&w=400&q=80" alt="Liquidity" class="card-img" onerror="handleImageError(this)">
                 <p class="text-sm text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                    SEC 主席 Atkins 重申 RWA 代币化是 U.S. 市场现代化的核心，贝莱德等巨头入场加速这一进程。
+                    BTC 徘徊于 6.5 万美元下方，缺乏机构入场的周末交易时间段波动显著。
+                </p>
+            </div>
+
+            <!-- 4. Risk Framework Reassessment -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://www.reuters.com/markets/wealth/crypto-market-volatility-triggers-25-billion-bitcoin-liquidations-2026-02-02/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">机构重新评估风险框架</h3>
+                <p class="text-gray-400 text-sm mb-4">Institutional Strategy</p>
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80" alt="Strategy" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-blue-500/5 p-3 rounded-lg border border-blue-500/10">
+                    分析师指出，机构正被迫根据宏观政策预期调整其对加密资产的长期头寸。
+                </p>
+            </div>
+
+            <!-- 5. ETH 2000 Support -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://cryptoticker.io/en/crypto-market-crash-update-february-2026/" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">ETH 测试 2000 美元心理关口</h3>
+                <p class="text-gray-400 text-sm mb-4">Ethereum Outlook</p>
+                <img src="https://images.unsplash.com/photo-1622790698141-94e30457ef12?auto=format&fit=crop&w=400&q=80" alt="Ethereum" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-purple-500/5 p-3 rounded-lg border border-purple-500/10">
+                    以太坊现货 ETF 持续净流出，叠加 L2 叙事降温，ETH 价格面临严峻考验。
+                </p>
+            </div>
+
+            <!-- 6. Kalshi Giannis Clarification -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://www.theblock.co/post/339482/kalshi-says-nba-star-giannis-antetokounmpos-stake-is-below-1-controversial-deal-was-signed-thursday" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">字母哥持股 Kalshi 不足 1%</h3>
+                <p class="text-gray-400 text-sm mb-4">Market Clarification</p>
+                <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=400&q=80" alt="NBA" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-green-500/5 p-3 rounded-lg border border-green-500/10">
+                    Kalshi 澄清 NBA 球星持股比例，平息了市场关于名人操纵预测市场的传闻。
+                </p>
+            </div>
+
+            <!-- 7. Macro Risk Sentiment -->
+            <div class="md:col-span-2 lg:col-span-2 bento-card p-6 flex flex-col group relative">
+                <a href="https://abcnews.go.com/Business/price-bitcoin-plummeted-experts-explain/story?id=129778940" target="_blank" class="absolute top-4 right-4 text-gray-600 hover:text-white transition-colors">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+                <h3 class="text-xl font-bold mb-2">关税与地缘政治压制风险</h3>
+                <p class="text-gray-400 text-sm mb-4">Macro Sentiment</p>
+                <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=400&q=80" alt="Macro" class="card-img" onerror="handleImageError(this)">
+                <p class="text-sm text-gray-500 leading-relaxed bg-red-500/5 p-3 rounded-lg border border-red-500/10">
+                    全球地缘政治紧张及关税威胁促使资金重回避险资产，BTC 避险成色受考。
                 </p>
             </div>
         </div>
 
-        <footer class="mt-20 pt-8 border-t border-white/5 text-center">
-            <p class="text-gray-500 text-sm">© 2026 Crypto Insight. All rights reserved.</p>
-            <p class="text-gray-600 text-xs mt-2">Created by @Derik LU</p>
+        <footer class="mt-20 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-bolt text-black"></i>
+                </div>
+                <p class="text-gray-500 text-sm">© 2026 Crypto Insight. All rights reserved.</p>
+            </div>
+            <div class="flex gap-6">
+                <a href="#" class="text-gray-500 hover:text-orange-500 transition-colors"><i class="fa-brands fa-twitter text-xl"></i></a>
+                <a href="#" class="text-gray-500 hover:text-orange-500 transition-colors"><i class="fa-brands fa-discord text-xl"></i></a>
+                <a href="#" class="text-gray-500 hover:text-orange-500 transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
+            </div>
+            <p class="text-gray-600 text-xs">Created by @Derik LU</p>
         </footer>
     </main>
 
+    <!-- Image Fallback Script -->
+    <script>
+        function handleImageError(img) {
+            console.warn('Image failed to load:', img.src);
+            const fallbackUrls = [
+                'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1622790698141-94e30457ef12?auto=format&fit=crop&w=800&q=80'
+            ];
+            if (img.dataset.triedFallback) {
+                img.src = 'https://via.placeholder.com/800x450/1a1a1a/ffffff?text=Image+Unavailable';
+                return;
+            }
+            img.dataset.triedFallback = 'true';
+            img.src = fallbackUrls[Math.floor(Math.random() * fallbackUrls.length)];
+        }
+    </script>
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../../../../js/config.js"></script>
@@ -393,5 +428,6 @@
             </div>
         </div>
     </div>
-    </body>
+    
+</body>
 </html>
